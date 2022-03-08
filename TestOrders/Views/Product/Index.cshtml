@@ -1,0 +1,51 @@
+﻿@model List<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>Menu</h4>
+    <hr />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Img</th>
+                <th>Edit</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Category</td>
+                <td>@product.Description
+                <td>@product.Price.ToString("F2")</td>
+                <td>
+                    <img src="@product.Url"
+                     class="w-100 shadow-1-strong rounded mb-4"
+                     alt="@product.Name"
+                     height="100" />
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id">Edit</a> 
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    
+    
+</div>
+<div>
+@*    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+*@    <a asp-action="Index">Back to List</a>
+</div>

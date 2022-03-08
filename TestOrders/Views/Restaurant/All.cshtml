@@ -1,0 +1,35 @@
+﻿@model List<ObjectViewModel>
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<section>
+        @{
+            var test = Model
+                .Select(x => x.Category).ToHashSet();
+            foreach (var category in test)
+            {
+                <div class="text-center">
+                    <h1>@category</h1>
+                </div>
+
+                <div class="text-center container-fluid">
+                @foreach (var item in Model.Where(x => x.Category == category))
+                {
+                        <a class="btn btn-primary" asp-controller="Restaurant" asp-action="Index" asp-route-Id="@item.Id">
+                            <h3>@item.Name</h3>
+                            <img src="@item.Url"
+                         class="w-100 shadow-1-strong rounded mb-4"
+                         alt="@item.Name"
+                         height="300" />
+                            <div class="caption">
+                                <p>@item.Description</p>
+                            </div>
+                        </a>                    
+                }
+                </div>
+            }
+        }
+
+</section>
+
