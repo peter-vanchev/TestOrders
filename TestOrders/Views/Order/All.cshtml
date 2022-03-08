@@ -1,0 +1,57 @@
+﻿@model List<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>PhoneNumner</th>
+                <th>Address</th>
+                <th>PaymentType</th>
+                <th>Price</th>
+                <th>DeliveryPrice</th>
+                <th>Total Price</th> 
+                <th>Status</th> 
+                <th>LastAction</th> 
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+            <tr>
+                <td>@order.Email</td>
+                <td>@order.PhoneNumner</td>
+                <td>@order.Town, @order.Street, @order.Number</td>
+                <td>@order.PaymentType</td>
+                <td>@order.Price</td>
+                <td>@order.DeliveryPrice</td>
+                <td>
+                    @(order.Price + order.DeliveryPrice)
+                </td> 
+                <td>@order.Status</td>
+                <td>@order.LastStatusTime</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@order.Id">Details</a> 
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@order.Id">Edit</a> 
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-controller="Restaurant" asp-action="Index">Back to List</a>
+</div>
+

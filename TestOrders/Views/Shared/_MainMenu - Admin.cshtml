@@ -1,0 +1,69 @@
+﻿<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+            <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Home</a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Users
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Role">
+                        <p>Role Manager</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="UserRole">
+                        <p>User Roles</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Restaurants
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-controller="Restaurant" asp-action="All">
+                        <p>All Restaurants</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Restaurant" asp-action="Create">
+                        <p>Create Restaurant</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+                <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Orders
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-controller="Order" asp-action="All">
+                        <p>All Orders</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Order" asp-action="Create">
+                        <p>Create Order</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
