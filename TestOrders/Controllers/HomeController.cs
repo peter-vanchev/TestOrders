@@ -7,10 +7,7 @@ namespace TestOrders.Controllers
 {
     public class HomeController : Controller
     {
-<<<<<<< HEAD
-=======
         private readonly IRestaurantService restaurantService;
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
         private readonly ILogger<HomeController> logger;
 
         public HomeController(ILogger<HomeController> _logger)
@@ -20,10 +17,6 @@ namespace TestOrders.Controllers
 
         public IActionResult Index()
         {
-<<<<<<< HEAD
-
-=======
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
             if (User.IsInRole("Admin"))
             {
                 return Redirect("/Admin");
