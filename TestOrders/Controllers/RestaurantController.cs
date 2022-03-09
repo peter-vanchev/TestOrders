@@ -28,41 +28,19 @@ namespace TestOrders.Controllers
             return View();
         }
 
-<<<<<<< HEAD
         public async Task<IActionResult> All()
         {
-            //var user = userManager.Users.Where(x => x.Email == "Stroeja@abv.bg").FirstOrDefault();
+            var restaurants = await restaurantService.GetAll();
 
-            //var temp = await userManager.ChangePasswordAsync(user, "Stroeja1", "Ala-Bala-123");
-            //var temp1 = await userManager.AddPasswordAsync(user, "Ala-Bala-123");
-
-            var restaurants = restaurantService.GetAll();
-
-            //if (temp.Succeeded)
-            //{
-            //    return View(restaurants);
-
-            //}
-=======
-        public IActionResult All()
-        {
-            var restaurants = restaurantService.GetAll();
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
-            return View(restaurants);
+            return  View(restaurants);
         }
 
         public IActionResult Create() => View();
 
         [HttpPost]
-<<<<<<< HEAD
         public async Task<IActionResult> Create(RestaurantViewModel model)
         {
             var (created, error) = await restaurantService.Create(model);
-=======
-        public IActionResult Create(RestaurantViewModel model)
-        {
-            var (created, error) = restaurantService.Create(model);
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
             if (!created)
             {
                 return View(error, "/Error");

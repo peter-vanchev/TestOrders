@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TestOrders.Contracts;
-=======
-﻿using TestOrders.Contracts;
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
 using TestOrders.Data.Common;
 using TestOrders.Data.Models;
 using TestOrders.Models;
@@ -13,7 +10,6 @@ namespace TestOrders.Services
     public class RestaurantService : IRestaurantService
     {
         private readonly IRepository repo;
-<<<<<<< HEAD
         private readonly UserManager<ApplicationUser> userManager;
 
 
@@ -26,20 +22,10 @@ namespace TestOrders.Services
         }
 
         public async Task<(bool created, string error)> Create(RestaurantViewModel model)
-=======
-
-        public RestaurantService(IRepository _repo)
-        {
-            repo = _repo;
-        }
-
-        public (bool created, string error) Create(RestaurantViewModel model)
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
         {
             bool created = true;
             string error = null;
 
-<<<<<<< HEAD
             var user = new ApplicationUser
             {
                 Email = model.UserEmail,
@@ -47,9 +33,6 @@ namespace TestOrders.Services
                 EmailConfirmed = true
             };
 
-=======
-            //var (isValid, validationError) = validationService.ValidateModel(model);
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
             var address = new Address()
             {
                 Town = model.Town,
@@ -70,10 +53,7 @@ namespace TestOrders.Services
 
             try
             {
-<<<<<<< HEAD
                 await userManager.CreateAsync(user, model.UserPassword);
-=======
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
                 repo.Add(restaurant);
                 repo.SaveChanges();
                 created = true;
@@ -83,11 +63,8 @@ namespace TestOrders.Services
                 error = "Could not save product";
             }
 
-<<<<<<< HEAD
             var temp = await userManager.AddToRoleAsync(user, "Restaurant");
 
-=======
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
             return (created, error);
         }
 
@@ -96,9 +73,9 @@ namespace TestOrders.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ObjectViewModel> GetAll()
+        public async Task<IEnumerable<ObjectViewModel>> GetAll()
         {
-            var restaurant = repo.All<Restaurant>()
+            var restaurant = await repo.All<Restaurant>()
                 .Select(p => new ObjectViewModel()
                 {
                     Id = p.Id,
@@ -107,8 +84,7 @@ namespace TestOrders.Services
                     Description = p.Description,
                     Url = p.Url                    
                 })
-                .ToList();
-
+                .ToListAsync();
             return restaurant;
         }
 
@@ -127,8 +103,6 @@ namespace TestOrders.Services
 
             return restaurant;
         }
-
-
     }
 }
 

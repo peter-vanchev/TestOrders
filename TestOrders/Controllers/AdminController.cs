@@ -6,11 +6,7 @@ using TestOrders.Models;
 namespace TestOrders.Controllers
 {
 
-<<<<<<< HEAD
     [Authorize(Roles = "Admin")]
-=======
-    [Authorize(Roles = "Admin, Manager")]
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
     public class AdminController : Controller
     {
         private readonly IAdminService adminService;

@@ -71,7 +71,7 @@ namespace TestOrders.Controllers
         {
             ViewBag.drivers = await orderService.GetFreeDrivers();
             var order = await orderService.GetOrderById(Id);
-            var restorants = restaurantService.GetAll().ToList();
+            var restorants = await restaurantService.GetAll();
             ViewBag.restorants = restorants;
             return View(order);
         }

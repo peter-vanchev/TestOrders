@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
 using TestOrders.Contracts;
-=======
-using System.Globalization;
-using TestOrders.Contracts;
-using TestOrders.Data;
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
 using TestOrders.Data.Common;
 using TestOrders.Data.Models;
 using TestOrders.Models;
@@ -19,7 +13,6 @@ namespace TestOrders.Services
     {
         private readonly IRepository repo;
         private readonly UserManager<ApplicationUser> userManager;
-<<<<<<< HEAD
 
         public OrderService(
             IRepository _repo,
@@ -27,18 +20,6 @@ namespace TestOrders.Services
         {
             repo = _repo;
             userManager = _userManager;
-=======
-        private readonly ApplicationDbContext dbContext;
-
-        public OrderService(
-            IRepository _repo,
-            UserManager<ApplicationUser> _userManager,
-            ApplicationDbContext _dbContext)
-        {
-            repo = _repo;
-            userManager = _userManager;
-            dbContext = _dbContext;
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
         }
 
         [Authorize]
@@ -67,13 +48,8 @@ namespace TestOrders.Services
                         Status = o.Status,
                         LastStatusTime = o.Time
                     }).ToListAsync();
-<<<<<<< HEAD
             
             return orders;
-=======
-
-                return orders;
->>>>>>> e861814d30e26a93f10edce1a3f4906e5ef6ea83
         }
 
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
