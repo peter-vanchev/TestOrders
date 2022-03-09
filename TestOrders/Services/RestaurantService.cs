@@ -29,7 +29,9 @@ namespace TestOrders.Services
             var user = new ApplicationUser
             {
                 Email = model.UserEmail,
+                NormalizedEmail = model.UserEmail.ToUpper(),
                 UserName = model.UserEmail,
+                NormalizedUserName = model.UserEmail.ToUpper(),
                 EmailConfirmed = true
             };
 
@@ -48,7 +50,9 @@ namespace TestOrders.Services
                 Category = model.Category,
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
-                Url = model.Url                
+                Url = model.Url,
+                User = user,
+                UserId = user.Id
             };
 
             try
@@ -60,7 +64,7 @@ namespace TestOrders.Services
             }
             catch (Exception)
             {
-                error = "Could not save product";
+                error = "Could not Create Restaurant";
             }
 
             var temp = await userManager.AddToRoleAsync(user, "Restaurant");

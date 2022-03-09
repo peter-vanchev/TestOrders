@@ -31,6 +31,7 @@ builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IDriverServices, DriverServices>();
 builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.Configure<IdentityOptions>(options =>

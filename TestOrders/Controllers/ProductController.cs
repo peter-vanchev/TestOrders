@@ -1,25 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TestOrders.Contracts;
-using TestOrders.Data.Models;
 using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ILogger<HomeController> logger;
         private readonly IProductService productService;
-        private readonly UserManager<ApplicationUser> userManager;
 
-        public ProductController(
-            ILogger<HomeController> _logger,
-            IProductService _productService,
-            UserManager<ApplicationUser> _userManager)
+        public ProductController(IProductService _productService)
         {
             productService = _productService;
-            logger = _logger;
-            userManager = _userManager;
         }
 
         public IActionResult Index(string Id)
