@@ -1,62 +1,114 @@
 ﻿@model TestOrders.Models.OrderViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Създаване на нова поръчка";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!---------------------------------lentoff form create owner---------------------------------------->
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Нова поръчка</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="card-body">
 
-<h1>Create</h1>
-<h4>Order</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Street" class="control-label"></label>
-                <input asp-for="Street" class="form-control" />
-                <span asp-validation-for="Street" class="text-danger"></span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <input asp-for="Street" class="form-control" />
+                                <span asp-validation-for="Street" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Сума</label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">лв</span>
+                                </div>
+                            </div>
+
+                            <!-- select -->
+                            <div class="form-group">
+                                <label asp-for="DeliveryPrice" class="control-label">Цена на доставка</label>
+                                <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
+                                <select class="custom-select" name="DeliveryPrice" id="DeliveryPrice">
+                                    <option value="3.99">3.99 лв.</option>
+                                    <option value="5.99">5.99 лв.</option>
+                                    <option value="10.99">10.99 лв.</option>
+                                </select>
+                            </div>
+
+                            @*  
+                                <div class="form-group">
+                                <label asp-for="DeliveryPrice" class="control-label">Цена на доставка</label>
+                                <input asp-for="DeliveryPrice" class="form-control" />
+                                <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
+                                <select name="DeliveryPrice" id="DeliveryPrice">
+                                <option value=30>30 мин.</option>
+                                <option value=45>45 мин.</option>
+                                <option value=90>90 мин.</option>
+                                </select>
+                                </div>*@
+
+                            <!-- checkbox -->
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" asp-for="PaymentType" type="checkbox" id="PaymentType">
+                                    <label for="PaymentType" class="custom-control-label">В брой</label>
+                                </div>
+
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input custom-control-input-danger" asp-for="PaymentType" type="checkbox" id="PaymentType2">
+                                    <label for="PaymentType2" class="custom-control-label">С карта</label>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" value="Create" class="btn btn-info">Създай</button>
+                            </div>
+                            <!-- /.card-footer -->
+                            <!-- /.card -->
+                        </div>
+                        <!--/.col (left) -->
+
+                    </form>
+
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
             </div>
-            <div class="form-group">
-                <label asp-for="Number" class="control-label"></label>
-                <input asp-for="Number" class="form-control" />
-                <span asp-validation-for="Number" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumner" class="control-label"></label>
-                <input asp-for="PhoneNumner" class="form-control" />
-                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeliveryPrice" class="control-label"></label>
-                <input asp-for="DeliveryPrice" class="form-control" />
-                <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
-            </div>
-            <div class="container-fluid form-group">
-                <label for="PaymentType" asp-for="PaymentType" class="control-label"></label>
-                <select name="PaymentType" id="PaymentType">
-                    <option value="В брой">В брой</option>
-                    <option value="Card">Card</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
 
-<div>
-    <a asp-controller="Order" asp-action="All">Back to List</a>
-</div>
 
