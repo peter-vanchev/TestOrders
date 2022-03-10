@@ -4,7 +4,7 @@
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        public string Town { get; set; }
+        public string Town { get; set; } = "София";
 
         public string Street { get; set; }
 

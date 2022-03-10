@@ -28,7 +28,7 @@ namespace TestOrders.Services
 
             var address = new Address()
             {
-                Town = model.Town,
+                Town = "София",
                 Number = model.Number,
                 Street = model.Street
             };
@@ -41,7 +41,7 @@ namespace TestOrders.Services
                 Category = model.Category,
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
-                Url = model.Url,
+                Url = model.Url,     
             };
 
             var user = new ApplicationUser

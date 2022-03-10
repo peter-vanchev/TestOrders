@@ -31,7 +31,7 @@ namespace TestOrders.Data
 
         public DbSet<ProductOrder> ProductOrders { get; set; }
 
-        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderData> OrderStatuses { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 

@@ -27,10 +27,10 @@ namespace TestOrders.Services
         {
             var user = userManager.Users.Where(x => x.Id == userId).FirstOrDefault();
 
-                var orders = await repo.All<OrderStatus>()
+                var orders = await repo.All<OrderData>()
                     .Include(x => x.Order)
                     .ThenInclude(r => r.Address)
-                    .OrderByDescending(d => d.Time)
+                    .OrderByDescending(d => d.Create)
                     .Select(o => new OrderViewModel
                     {
                         Id = o.Id,
@@ -46,7 +46,7 @@ namespace TestOrders.Services
                         UserId = userId,
                         UserName = user.UserName,
                         Status = o.Status,
-                        LastStatusTime = o.Time
+                        LastStatusTime = o.Create
                     }).ToListAsync();
             
             return orders;
@@ -85,11 +85,11 @@ namespace TestOrders.Services
             };
 
 
-            var orderData = new OrderStatus()
+            var orderData = new OrderData()
             {
                 Order = order,
                 OrderId = order.Id,
-                Time = DateTime.Now,
+                Create = DateTime.Now,
                 Status = Status.Нова
             };
 
@@ -112,7 +112,7 @@ namespace TestOrders.Services
 
         public async Task<OrderViewModel> GetOrderById(string orderId)
         {
-            var order = await repo.All<OrderStatus>()
+            var order = await repo.All<OrderData>()
                 .Where(x => x.Id == orderId)
                 .Include(x => x.Order)
                 .ThenInclude(r => r.Address)
@@ -132,7 +132,7 @@ namespace TestOrders.Services
                     UserId = o.Order.UserId,
                     UserName = o.Order.User.UserName,
                     Status = o.Status,
-                    LastStatusTime = o.Time,
+                    LastStatusTime = o.Create,
                     Order = o.Order,
                     OrderId = o.OrderId
                 }).FirstOrDefaultAsync();
@@ -166,9 +166,9 @@ namespace TestOrders.Services
             order.Status = Status.Изпратена;
 
 
-            var orderStatus = new OrderStatus
+            var orderStatus = new OrderData
             {
-                Time = DateTime.Now,
+                Create = DateTime.Now,
                 DriverId = model.DriverId,
                 Driver = driver,
                 Order = order,

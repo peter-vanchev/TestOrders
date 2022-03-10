@@ -24,6 +24,7 @@ namespace TestOrders.Services
         {
             var drivers = await repo.All<ApplicationUser>()
                 .Include(x => x.Driver)
+                .Where(x => x.Driver != null)
                 .Select(p => new DriverViewModel()
                 {
                     Name = p.UserName,
@@ -46,7 +47,6 @@ namespace TestOrders.Services
                 Status = Status.Свободен
             };
 
-
             var user = new ApplicationUser
             {
                 Email = model.Email,
@@ -61,14 +61,20 @@ namespace TestOrders.Services
             try
             {
                 await userManager.CreateAsync(user, model.Password);
-                repo.Add(driver);
-                repo.SaveChanges();
-                await userManager.AddToRoleAsync(user, "Driver");
                 created = true;
             }
             catch (Exception)
             {
                 error = "Could not Create Driver";
+            }
+
+            try
+            {
+                await userManager.AddToRoleAsync(user, "Driver");
+            }
+            catch (Exception)
+            {
+                error = "Could not Create \"Restaurant\" role for User";
             }
 
             return (created, error);
