@@ -44,10 +44,11 @@ namespace TestOrders.Controllers
 
             if (!created)
             {
-                return View(error, "/Error");
+                ModelState.AddModelError("",error);
+                return View();
             }
 
-            return Redirect("/Restaurant");
+            return Redirect("/Restaurant/All");
         }
 
         public IActionResult RemoveRestaurant(string restaurantId)
@@ -56,7 +57,8 @@ namespace TestOrders.Controllers
 
             if (!delete)
             {
-                return View(error, "/Error");
+                ModelState.AddModelError("", error);
+                return View();
             }
 
             return Redirect("/Restaurant");

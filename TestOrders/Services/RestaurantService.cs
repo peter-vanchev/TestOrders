@@ -23,7 +23,7 @@ namespace TestOrders.Services
 
         public async Task<(bool created, string error)> Create(RestaurantViewModel model)
         {
-            bool created = true;
+            bool created = false;
             string error = null;
 
             var address = new Address()
@@ -55,26 +55,22 @@ namespace TestOrders.Services
                 RestaurantId = restaurant.Id
             };
 
-            try
-            {
-                await userManager.CreateAsync(user, model.UserPassword);
-                created = true;
-            }
-            catch (Exception)
+            var test = await userManager.CreateAsync(user, model.UserPassword);
+
+            if (!test.Succeeded)
             {
                 error = "Could not Create Restaurant";
+                return (created, error);
             }
 
-            try
-            {
-                await userManager.AddToRoleAsync(user, "Restaurant");
-            }
-            catch (Exception)
+            test = await userManager.AddToRoleAsync(user, "Restaurant");
+            if (!test.Succeeded)
             {
                 error = "Could not Create \"Restaurant\" role for User";
-            } 
+                return (created, error);
+            }
 
-            return (created, error);
+            return (true, error);
         }
 
         public (bool created, string error) Delete(string restaurantId)
