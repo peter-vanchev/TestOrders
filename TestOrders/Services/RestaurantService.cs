@@ -58,8 +58,6 @@ namespace TestOrders.Services
             try
             {
                 await userManager.CreateAsync(user, model.UserPassword);
-                repo.Add(restaurant);
-                repo.SaveChanges();
                 created = true;
             }
             catch (Exception)
@@ -67,7 +65,14 @@ namespace TestOrders.Services
                 error = "Could not Create Restaurant";
             }
 
-            var temp = await userManager.AddToRoleAsync(user, "Restaurant");
+            try
+            {
+                await userManager.AddToRoleAsync(user, "Restaurant");
+            }
+            catch (Exception)
+            {
+                error = "Could not Create \"Restaurant\" role for User";
+            } 
 
             return (created, error);
         }

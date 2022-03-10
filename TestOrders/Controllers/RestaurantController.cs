@@ -41,6 +41,7 @@ namespace TestOrders.Controllers
         public async Task<IActionResult> Create(RestaurantViewModel model)
         {
             var (created, error) = await restaurantService.Create(model);
+
             if (!created)
             {
                 return View(error, "/Error");
