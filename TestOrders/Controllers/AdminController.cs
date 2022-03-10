@@ -6,8 +6,8 @@ using TestOrders.Models;
 namespace TestOrders.Controllers
 {
 
-    //[Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    [Authorize(Roles = "Admin")]
+    public class AdminController : BaseController
     {
         private readonly IAdminService adminService;
 

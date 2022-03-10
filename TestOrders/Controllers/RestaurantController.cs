@@ -6,7 +6,7 @@ using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {
-    public class RestaurantController : Controller
+    public class RestaurantController : BaseController
     {
         private readonly IOrderService orderService;
         private readonly UserManager<ApplicationUser> userManager;

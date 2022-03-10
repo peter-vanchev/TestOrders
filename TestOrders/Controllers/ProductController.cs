@@ -4,7 +4,7 @@ using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IProductService productService;
 

@@ -6,7 +6,7 @@ using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         private readonly ILogger<HomeController> logger;
         private readonly IOrderService orderService;

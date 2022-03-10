@@ -6,7 +6,7 @@ using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {
-    public class DriverController : Controller
+    public class DriverController : BaseController
     {
         private readonly ILogger<HomeController> logger;
         private readonly UserManager<ApplicationUser> userManager;
