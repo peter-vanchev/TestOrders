@@ -84,6 +84,7 @@ namespace TestOrders.Services
                 UserId = userId
             };
 
+
             var orderData = new OrderStatus()
             {
                 Order = order,
@@ -153,7 +154,7 @@ namespace TestOrders.Services
                 .FirstOrDefaultAsync();
 
             var driver = await repo.All<Driver>()
-                .Where(x => x.UserId == model.DriverId)
+                .Where(x => x.Id == model.DriverId)
                 .FirstOrDefaultAsync();
 
             order.PaymentType = model.PaymentType;
@@ -163,6 +164,7 @@ namespace TestOrders.Services
             order.Restaurant = restaurant;
             order.PhoneNumner = model.PhoneNumner;
             order.Status = Status.Изпратена;
+
 
             var orderStatus = new OrderStatus
             {
@@ -191,15 +193,15 @@ namespace TestOrders.Services
             return (created, error);
         }
 
-        public async Task<IEnumerable<UserRolesViewModel>> GetFreeDrivers()
+        public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()
         {
-            var drivers = await repo.All<Driver>()
-                .Where(x => x.Status == Status.Свободен)                               
-                .Select(x => new UserRolesViewModel { 
-                    Email = x.User.Email,
-                    UserName = x.User.UserName,
-                    UserId = x.User.Id,
-                    Roles = new List<string> { x.User.Id }
+            var drivers = await repo.All<ApplicationUser>()
+                .Include(u => u.Driver)                
+                .Where(x => x.Driver.Status == Status.Свободен)                               
+                .Select(x => new DriverViewModel {
+                    Id = x.Id,
+                    Email = x.Email,
+                    Status = x.Driver.Status
                 })
                 .ToListAsync();
 

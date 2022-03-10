@@ -12,8 +12,8 @@ using TestOrders.Data;
 namespace TestOrders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220308092727_2022.03.08")]
-    partial class _20220308
+    [Migration("20220310072304_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -266,14 +266,9 @@ namespace TestOrders.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Driver");
                 });
@@ -420,14 +415,9 @@ namespace TestOrders.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Restaurants");
                 });
@@ -504,13 +494,7 @@ namespace TestOrders.Migrations
                         .WithMany()
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("TestOrders.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TestOrders.Data.Models.Order", b =>
@@ -587,13 +571,7 @@ namespace TestOrders.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("TestOrders.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Address");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TestOrders.Data.Models.ApplicationUser", b =>

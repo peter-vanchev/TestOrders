@@ -22,14 +22,14 @@ namespace TestOrders.Services
 
         public async Task<IEnumerable<DriverViewModel>> GetAll()
         {
-            var drivers = await repo.All<Driver>()
-                .Include(x => x.User)
+            var drivers = await repo.All<ApplicationUser>()
+                .Include(x => x.Driver)
                 .Select(p => new DriverViewModel()
                 {
-                    Name = p.User.UserName,
-                    Email = p.User.Email,
-                    OrderId = p.OrderId,
-                    Status = p.Status
+                    Name = p.UserName,
+                    Email = p.Email,
+                    OrderId = p.Driver.OrderId,
+                    Status = p.Driver.Status
                 })
                 .ToListAsync();
 
@@ -41,24 +41,22 @@ namespace TestOrders.Services
             bool created = true;
             string error = null;
 
+            var driver = new Driver()
+            {
+                Status = Status.Свободен
+            };
+
+
             var user = new ApplicationUser
             {
                 Email = model.Email,
                 NormalizedEmail = model.Email.ToUpper(),
                 UserName = model.Email,
                 NormalizedUserName = model.Email.ToUpper(),
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Driver = driver,
+                DriverId = driver.Id
             };
-
-            var driver = new Driver()
-            {
-                User = user,
-                UserId = user.Id,
-                Status = Status.Свободен                
-            };
-
-            //user.Driver = driver;
-            //user.DriverId = driver.Id;
 
             try
             {

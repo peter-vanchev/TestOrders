@@ -41,9 +41,9 @@
              <div class="form-group">
                 <label for="Driver" asp-for="Driver" class="control-label"></label>
                 <select name="DriverId" >
-                @foreach (var user in ViewBag.drivers)
+                @foreach (var driver in ViewBag.drivers)
                 {
-                    <option value="@user.UserId">@user.Email</option>
+                    <option value="@driver.Id">@driver.Email</option>
                 }
                 </select>
             </div>

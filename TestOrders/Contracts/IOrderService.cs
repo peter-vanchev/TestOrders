@@ -12,6 +12,6 @@ namespace TestOrders.Contracts
 
         Task<(bool created, string error)> AsignDriver(OrderViewModel model);
 
-        Task<IEnumerable<UserRolesViewModel>> GetFreeDrivers();
+        Task<IEnumerable<DriverViewModel>> GetFreeDrivers();
     }
 }

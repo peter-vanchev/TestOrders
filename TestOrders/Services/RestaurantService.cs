@@ -26,15 +26,6 @@ namespace TestOrders.Services
             bool created = true;
             string error = null;
 
-            var user = new ApplicationUser
-            {
-                Email = model.UserEmail,
-                NormalizedEmail = model.UserEmail.ToUpper(),
-                UserName = model.UserEmail,
-                NormalizedUserName = model.UserEmail.ToUpper(),
-                EmailConfirmed = true
-            };
-
             var address = new Address()
             {
                 Town = model.Town,
@@ -51,8 +42,17 @@ namespace TestOrders.Services
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
                 Url = model.Url,
-                User = user,
-                UserId = user.Id
+            };
+
+            var user = new ApplicationUser
+            {
+                Email = model.UserEmail,
+                NormalizedEmail = model.UserEmail.ToUpper(),
+                UserName = model.UserEmail,
+                NormalizedUserName = model.UserEmail.ToUpper(),
+                EmailConfirmed = true,
+                Restaurant = restaurant,
+                RestaurantId = restaurant.Id
             };
 
             try
