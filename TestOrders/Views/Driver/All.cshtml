@@ -1,0 +1,45 @@
+﻿@model List<DriverViewModel>
+
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>OrderId</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var driver in Model)
+            {
+            <tr>
+                <td>@driver.Name</td>
+                <td>@driver.Email</td>
+                <td>@driver.OrderId</td>
+                <td>@driver.Status</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@driver.Id">Details</a> 
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@driver.Id">Edit</a> 
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

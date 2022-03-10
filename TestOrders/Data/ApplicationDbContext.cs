@@ -36,5 +36,7 @@ namespace TestOrders.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public Driver Drivers { get; set; }
+
+        public DbSet<TestOrders.Models.DriverViewModel> DriverViewModel { get; set; }
     }
 }

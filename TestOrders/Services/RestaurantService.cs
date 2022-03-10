@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TestOrders.Contracts;
 using TestOrders.Data.Common;
 using TestOrders.Data.Models;
@@ -10,6 +11,7 @@ namespace TestOrders.Services
     {
         private readonly IRepository repo;
         private readonly UserManager<ApplicationUser> userManager;
+
 
         public RestaurantService(
             IRepository _repo,
@@ -27,7 +29,9 @@ namespace TestOrders.Services
             var user = new ApplicationUser
             {
                 Email = model.UserEmail,
+                NormalizedEmail = model.UserEmail.ToUpper(),
                 UserName = model.UserEmail,
+                NormalizedUserName = model.UserEmail.ToUpper(),
                 EmailConfirmed = true
             };
 
@@ -46,20 +50,21 @@ namespace TestOrders.Services
                 Category = model.Category,
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
-                Url = model.Url                
+                Url = model.Url,
+                User = user,
+                UserId = user.Id
             };
 
             try
             {
                 await userManager.CreateAsync(user, model.UserPassword);
-                
                 repo.Add(restaurant);
                 repo.SaveChanges();
                 created = true;
             }
             catch (Exception)
             {
-                error = "Could not save product";
+                error = "Could not Create Restaurant";
             }
 
             var temp = await userManager.AddToRoleAsync(user, "Restaurant");
@@ -72,9 +77,9 @@ namespace TestOrders.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ObjectViewModel> GetAll()
+        public async Task<IEnumerable<ObjectViewModel>> GetAll()
         {
-            var restaurant = repo.All<Restaurant>()
+            var restaurant = await repo.All<Restaurant>()
                 .Select(p => new ObjectViewModel()
                 {
                     Id = p.Id,
@@ -83,8 +88,7 @@ namespace TestOrders.Services
                     Description = p.Description,
                     Url = p.Url                    
                 })
-                .ToList();
-
+                .ToListAsync();
             return restaurant;
         }
 
@@ -103,8 +107,6 @@ namespace TestOrders.Services
 
             return restaurant;
         }
-
-
     }
 }
 

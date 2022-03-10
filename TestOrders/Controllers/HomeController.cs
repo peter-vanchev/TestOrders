@@ -7,7 +7,6 @@ namespace TestOrders.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRestaurantService restaurantService;
         private readonly ILogger<HomeController> logger;
 
         public HomeController(ILogger<HomeController> _logger)

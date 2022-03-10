@@ -30,9 +30,9 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
-            var restaurants = restaurantService.GetAll();
+            var restaurants = await restaurantService.GetAll();
 
-            return View(restaurants);
+            return  View(restaurants);
         }
 
         public IActionResult Create() => View();
