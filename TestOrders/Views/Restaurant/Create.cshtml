@@ -1,10 +1,171 @@
 ﻿@model TestOrders.Models.RestaurantViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Restaurant";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@*@//--------------------------------//@*@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Създаване на нов ресторант</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Създаване на нов ресторант</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+<!-- Main content -->
+<form class="form-horizontal" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!---------------------------------lentoff form create owner---------------------------------------->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Данни на управител</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label asp-for="UserEmail" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" placeholder="Email" asp-for="UserEmail">
+                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="UserPassword" class="col-sm-2 col-form-label">Парола</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" placeholder="Password" asp-for="UserPassword">
+                                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="ConfirmPassword" class="col-sm-2 col-form-label">Повторно парола</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" asp-for="ConfirmPassword">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="submit" lass="btn btn-info">Създай</button>
+                        </div>
+                        <!-- /.card-footer -->
+
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+                <!---------------------------------lentoff form create restaurant---------------------------------------->
+                <!-- right column -->
+                <div class="col-md-6">
+                    <!-- Form Element sizes -->
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Данни на ресторант</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input asp-for="Name" class="form-control" placeholder="Име на ресторант">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="container-fluid row">
+                                <div class="form-group">
+                                    <label asp-for="Street" class="control-label"></label>
+                                    <input asp-for="Street" class="form-control" />
+                                    <span asp-validation-for="Street" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Number" class="control-label"></label>
+                                    <input asp-for="Number" class="form-control" />
+                                    <span asp-validation-for="Number" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <input asp-for="Town" class="form-control" placeholder="Град">
+                                <span asp-validation-for="Town" class="text-danger"></span>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <input asp-for="Number" class="form-control" placeholder="Номер">
+                                <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input asp-for="PhoneNumner" class="form-control" placeholder="Телефон">
+                                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
+                            </div>
+
+                            <!-- select -->
+                            <div class="form-group">
+                                <label>Категория</label>
+                                <select class="custom-select">
+                                    <option>Пицария</option>
+                                    <option>Рибен</option>
+                                    <option>Fast Food</option>
+                                    <option>Италиански</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Лого</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Избери файл</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Качи</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Description">Описание на ресторанта</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Въведи ..."></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+</form>
+
+@*
 <h1>Create</h1>
 <h4>Restaurant</h4>
 <hr />
@@ -12,34 +173,8 @@
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="container-fluid row">
-                <div class="form-group">
-                    <label asp-for="Street" class="control-label"></label>
-                    <input asp-for="Street" class="form-control" />
-                    <span asp-validation-for="Street" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Number" class="control-label"></label>
-                    <input asp-for="Number" class="form-control" />
-                    <span asp-validation-for="Number" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="container-fluid row">
-                <div class="form-group">
-                    <label asp-for="UserEmail" class="control-label"></label>
-                    <input asp-for="UserEmail" class="form-control" />
-                    <span asp-validation-for="UserEmail" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserPassword" class="control-label"></label>
-                    <input asp-for="UserPassword" class="form-control" />
-                    <span asp-validation-for="UserPassword" class="text-danger"></span>
-                </div>
-            </div>
+
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
@@ -52,9 +187,6 @@
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumner" class="control-label"></label>
-                <input asp-for="PhoneNumner" class="form-control" />
-                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -64,12 +196,10 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-       </form>            
+        </form>
     </div>
- </div> 
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
-
-@*@//--------------------------------//@*@
+</div>*@
