@@ -26,6 +26,8 @@ namespace TestOrders.Data.Models
 
         public Status Status { get; set; }
 
+        public string Description { get; set; }
+
         public string RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]

@@ -33,6 +33,8 @@ namespace TestOrders.Models
 
         public Status Status { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime LastStatusTime { get; set; }
 
         public string DriverId { get; set; }

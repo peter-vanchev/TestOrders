@@ -1,14 +1,22 @@
 ﻿<nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
         <li class="nav-item">
-            <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Home</a>
+            <a href="/" class="nav-link">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    Начало
+                </p>
+            </a>
         </li>
 
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-dragon"></i>
                 <p>
                     Users
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
@@ -27,20 +35,23 @@
 
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-book"></i>
                 <p>
-                    Restaurants
+                    Ресторанти
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a asp-controller="Restaurant" asp-action="All">
-                        <p>All Restaurants</p>
+                    <a class="nav-link" asp-controller="Restaurant" asp-action="Create">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Създай</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-controller="Restaurant" asp-action="Create">
-                        <p>Create Restaurant</p>
+                    <a class="nav-link" asp-controller="Restaurant" asp-action="All">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Всички</p>
                     </a>
                 </li>
             </ul>
@@ -48,44 +59,72 @@
 
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-car"></i>
                 <p>
-                    Drivers
+                    Шофьори
+                    <i class="fas fa-angle-left right"></i>
+
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a asp-controller="Driver" asp-action="All">
-                        <p>All Drivers</p>
+                    <a class="nav-link" asp-controller="Driver" asp-action="Create">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Създай</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-controller="Driver" asp-action="Create">
-                        <p>Create Driver</p>
+                    <a class="nav-link" asp-controller="Driver" asp-action="All">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Всички</p>
                     </a>
                 </li>
             </ul>
         </li>
 
         <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a class="nav-link" asp-controller="Order" asp-action="NewOrders">
+                <i class="nav-icon far fa-plus-square"></i>
                 <p>
-                    Orders
+                    Нови поръчки
+                    <span class="badge badge-info right">4</span>
+                </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon far fa-plus-square"></i>
+                <p>
+                    Поръчки
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a asp-controller="Order" asp-action="All">
-                        <p>All Orders</p>
+                    <a class="nav-link" asp-controller="Order" asp-action="Create">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Създай</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-controller="Order" asp-action="Create">
-                        <p>Create Order</p>
+                    <a class="nav-link" asp-controller="Order" asp-action="All">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Всички</p>
                     </a>
                 </li>
             </ul>
+        </li>
+
+
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                    Отчети
+                </p>
+            </a>
         </li>
     </ul>
 </nav>
