@@ -14,11 +14,11 @@ namespace TestOrders.Controllers
 
 
         public RestaurantController(
-            UserManager<ApplicationUser> _userManager, 
+            UserManager<ApplicationUser> _userManager,
             IOrderService _orderService,
             IRestaurantService _restaurantService)
         {
-            orderService = _orderService;               
+            orderService = _orderService;
             userManager = _userManager;
             restaurantService = _restaurantService;
         }
@@ -32,19 +32,38 @@ namespace TestOrders.Controllers
         {
             var restaurants = await restaurantService.GetAll();
 
-            return  View(restaurants);
+            return View(restaurants);
         }
 
         public IActionResult Create() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Create(RestaurantViewModel model)
+        public async Task<IActionResult> Create(RestaurantViewModel model, IFormFile file)
         {
+            //var filePath = Path.GetTempFileName(); // Full path to file in temp location
+            var fileType = "." + file.FileName.Split(".", StringSplitOptions.RemoveEmptyEntries)[1];
+            var filePath = Path.Combine("wwwroot", "image",model.Name) + fileType;
+
+            try
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Cant save file");
+                return View();
+            }
+
+            model.Url = "/Image/Restaurant/" + model.Name + fileType;
+
             var (created, error) = await restaurantService.Create(model);
 
             if (!created)
             {
-                ModelState.AddModelError("",error);
+                ModelState.AddModelError("", error);
                 return View();
             }
 

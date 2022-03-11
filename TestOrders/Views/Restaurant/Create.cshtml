@@ -88,6 +88,25 @@
                                 <input asp-for="Name" class="form-control" placeholder="Име на ресторант">
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Лого</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="file" class="custom-file-input">
+                                        <label class="custom-file-label" for="exampleInputFile">Избери файл</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <input asp-for="Town" class="form-control" placeholder="Град">
+                                <span asp-validation-for="Town" class="text-danger"></span>
+                            </div>
+
                             <div class="container-fluid row">
                                 <div class="form-group">
                                     <label asp-for="Street" class="control-label"></label>
@@ -103,31 +122,16 @@
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
-                                </div>
-                                <input asp-for="Town" class="form-control" placeholder="Град">
-                                <span asp-validation-for="Town" class="text-danger"></span>
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
-                                </div>
-                                <input asp-for="Number" class="form-control" placeholder="Номер">
-                                <span asp-validation-for="Number" class="text-danger"></span>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
                                 <input asp-for="PhoneNumner" class="form-control" placeholder="Телефон">
                                 <span asp-validation-for="PhoneNumner" class="text-danger"></span>
                             </div>
 
-                            <!-- select -->
                             <div class="form-group">
-                                <label>Категория</label>
-                                <select class="custom-select">
+                                <label asp-for="Category">Категория</label>
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                                <select class="custom-select" name="Category" id="Category">
                                     <option>Пицария</option>
                                     <option>Рибен</option>
                                     <option>Fast Food</option>
@@ -136,23 +140,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputFile">Лого</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                                        <label class="custom-file-label" for="exampleInputFile">Избери файл</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Качи</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label asp-for="Description">Описание на ресторанта</label>
-                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Въведи ..."></textarea>
-                                    <span asp-validation-for="Description" class="text-danger"></span>
-
-                                </div>
+                                <label asp-for="Description">Описание на ресторанта</label>
+                                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Въведи ..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -165,41 +155,4 @@
     </section>
 </form>
 
-@*
-<h1>Create</h1>
-<h4>Restaurant</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Url" class="control-label"></label>
-                <input asp-for="Url" class="form-control" />
-                <span asp-validation-for="Url" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
