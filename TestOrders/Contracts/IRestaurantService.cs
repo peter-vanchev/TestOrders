@@ -4,7 +4,7 @@ namespace TestOrders.Contracts
 {
     public interface IRestaurantService
     {
-        public Task<IEnumerable<ObjectViewModel>> GetAll();
+        public Task<IEnumerable<RestaurantViewModel>> GetAll();
 
         public Task<(bool created, string error)> Create(RestaurantViewModel model);
 

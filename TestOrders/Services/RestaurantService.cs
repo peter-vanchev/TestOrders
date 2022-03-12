@@ -78,16 +78,24 @@ namespace TestOrders.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ObjectViewModel>> GetAll()
+        public async Task<IEnumerable<RestaurantViewModel>> GetAll()
         {
-            var restaurant = await repo.All<Restaurant>()
-                .Select(p => new ObjectViewModel()
+            var restaurant = await repo.All<ApplicationUser>()
+                .Include(r => r.Restaurant)
+                .ThenInclude(a => a.Address)
+                .Where(x => x.RestaurantId != null)
+                .Select(r => new RestaurantViewModel()
                 {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Category = p.Category,
-                    Description = p.Description,
-                    Url = p.Url                    
+                   Id = r.RestaurantId,
+                   Name = r.Restaurant.Name,
+                   UserEmail = r.Email,
+                   Town = r.Restaurant.Address.Town,
+                   Street = r.Restaurant.Address.Street,
+                   Number = r.Restaurant.Address.Number,
+                   PhoneNumner = r.Restaurant.PhoneNumner,
+                   Category = r.Restaurant.Category,
+                   Description = r.Restaurant.Description,
+                   Url = r.Restaurant.Url
                 })
                 .ToListAsync();
             return restaurant;

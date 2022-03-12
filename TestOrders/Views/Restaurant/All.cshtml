@@ -1,35 +1,132 @@
-﻿@model List<ObjectViewModel>
+﻿@model List<RestaurantViewModel>
 @{
     ViewData["Title"] = "Restaurants";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section>
-        @{
-            var test = Model
-                .Select(x => x.Category).ToHashSet();
-            foreach (var category in test)
-            {
-                <div class="text-center">
-                    <h1>@category</h1>
-                </div>
-
-                <div class="text-center container-fluid">
-                @foreach (var item in Model.Where(x => x.Category == category))
-                {
-                        <a class="btn btn-primary" asp-controller="Restaurant" asp-action="Index" asp-route-Id="@item.Id">
-                            <h3>@item.Name</h3>
-                            <img src="@item.Url"
-                         class="w-100 shadow-1-strong rounded mb-4"
-                         alt="@item.Name"
-                         height="300" />
-                            <div class="caption">
-                                <p>@item.Description</p>
-                            </div>
-                        </a>                    
-                }
-                </div>
-            }
-        }
-
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Управление на ресторантите</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Ресторанти</a></li>
+                    <li class="breadcrumb-item active">Всички</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
 </section>
 
+<!-----------------------------------------------------list restaurants--------------------------------------------------------->
+<!-- Main content -->
+<form class="form-horizontal">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="body-wrapper">
+                        <div class="bodywrapper__inner">
+                            <div class="col-lg-6 col-sm-6">
+                                <h6 class="page-title">Всички ресторанти</h6>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 text-sm-right mt-sm-0 mt-3 right-part">
+                                <form action="/search" method="GET" class="form-inline float-sm-right bg--white">
+                                    <div class="input-group has_append">
+                                        <input type="text" name="search" class="form-control" placeholder="Име, телефон или имейл"
+                                               value="">
+                                        <div class="input-group-append">
+                                            <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card b-radius--10">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive--md  table-responsive">
+                                            <table class="table table--light style--two">
+                                                <thead>
+                                                    <tr style="color: #fff; background-color:#17a2b8;">
+                                                        <th>Снимка</th>
+                                                        <th>Ресторант</th>
+                                                        <th>Телефон</th>
+                                                        <th>Категория</th>
+                                                        <th>Адрес</th>
+                                                        <th>Създаден на</th>
+                                                        <th>Активен</th>
+                                                        <th>Редакция</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!------>
+                                                    @{
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                  <img src="@item.Url" class="rounded" alt="@item.Name" width="20"> 
+
+                                                                </td>
+                                                                <td>
+                                                                    <span class="font-weight-bold">@item.Name</span>
+                                                                    <br>
+                                                                    <span class="small">
+                                                                        <a asp-controller="Restaurant" asp-action="Index" asp-route-Id="@item.Id"><span></span>@item.UserEmail</a>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    @item.Name<br>@item.PhoneNumner
+                                                                </td>
+                                                                <td>
+                                                                    @item.Category
+                                                                </td>
+                                                                <td>
+                                                                    <span class="font-weight-bold">@item.Town</span><br>@item.Street, @item.Number
+                                                                </td>
+
+                                                                <td>
+                                                                    2021-09-28 02:26 AM <br> 5 months ago
+                                                                </td>
+
+                                                                <td data-label="Featured">
+                                                                    <i class="far fa-thumbs-up"></i>
+                                                                </td>
+
+                                                                <td data-label="Action">
+                                                                    <a href="###" class="text--primary" data-toggle="tooltip" title="" data-original-title="Details">
+                                                                        <span class="badge badge-warning">Детайли</span>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table><!-- table end -->
+                                        </div>
+                                    </div>
+                                    <div class="card-footer py-4">
+                                        <nav aria-label="...">
+                                            <ul class="pagination justify-content-end mb-0">
+                                                <li>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- bodywrapper__inner end -->
+                </div><!-- body-wrapper end -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+</form>
+<!-- /.content -->

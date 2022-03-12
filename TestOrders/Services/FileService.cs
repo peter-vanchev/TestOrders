@@ -9,9 +9,9 @@ namespace TestOrders.Services
             string error = null;
             var saved = false;
 
-            string folderName = @"D:\C#\Test\TestOrders\TestOrders\wwwroot\Image";
+            string folderName = Path.GetFullPath(@"./wwwroot/Image");
             var pathString = Path.Combine(folderName, folder);
-
+                                                                                        
             char[] separators = new char[] { ' ', ';', ',', '"' };
             string[] temp = fileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             var name = String.Join("", temp);             
