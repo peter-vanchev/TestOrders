@@ -22,6 +22,8 @@ namespace TestOrders.Data.Models
 
         public string PhoneNumner { get; set; }
 
+        public DateTime Created { get; set; }
+
         public string AddressId { get; set; }
 
         [ForeignKey(nameof(AddressId))]

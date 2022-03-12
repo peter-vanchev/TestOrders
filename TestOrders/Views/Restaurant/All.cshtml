@@ -71,14 +71,14 @@
                                                         {
                                                             <tr>
                                                                 <td>
-                                                                  <img src="@item.Url" class="rounded" alt="@item.Name" width="20"> 
+                                                                    <img src="@item.Url" class="rounded" alt="@item.Name" width="50">
 
                                                                 </td>
                                                                 <td>
                                                                     <span class="font-weight-bold">@item.Name</span>
                                                                     <br>
                                                                     <span class="small">
-                                                                        <a asp-controller="Restaurant" asp-action="Index" asp-route-Id="@item.Id"><span></span>@item.UserEmail</a>
+                                                                        <a asp-action="Details" asp-route-id="@item.Id"><span></span>@item.UserEmail</a>
                                                                     </span>
                                                                 </td>
                                                                 <td>
@@ -92,20 +92,19 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    2021-09-28 02:26 AM <br> 5 months ago
+                                                                    @item.Created <br> 5 months ago
                                                                 </td>
 
                                                                 <td data-label="Featured">
                                                                     <i class="far fa-thumbs-up"></i>
                                                                 </td>
-
                                                                 <td data-label="Action">
-                                                                    <a href="###" class="text--primary" data-toggle="tooltip" title="" data-original-title="Details">
-                                                                        <span class="badge badge-warning">Детайли</span>
+                                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="text--primary" data-toggle="tooltip" title="" data-original-title="Edit">
+                                                                        <span class="badge badge-warning">Промени</span>
                                                                     </a>
                                                                 </td>
                                                             </tr>
-                                                        }
+                                                    }
                                                     }
                                                 </tbody>
 

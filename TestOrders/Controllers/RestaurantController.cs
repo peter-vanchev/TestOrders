@@ -61,6 +61,19 @@ namespace TestOrders.Controllers
             return Redirect("/Restaurant/All");
         }
 
+        public async Task<IActionResult> Details(string Id)
+        {
+            var restaurant = await restaurantService.GetRestaurantById(Id);
+            return View(restaurant);
+        }
+
+        public async Task<IActionResult> Edit(string Id)
+        {
+            var restaurant = await restaurantService.GetRestaurantById(Id);
+            return View(restaurant);
+        }
+
+
         public IActionResult RemoveRestaurant(string restaurantId)
         {
             var (delete, error) = restaurantService.Delete(restaurantId);
@@ -72,8 +85,6 @@ namespace TestOrders.Controllers
             }
 
             return Redirect("/Restaurant");
-        }
-
-        public IActionResult Edit() => View();
+        }        
     }
 }

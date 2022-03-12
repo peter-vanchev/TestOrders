@@ -11,6 +11,8 @@
 
         public string Category { get; set; }
 
+        public string Created { get; set; }
+
         public string PhoneNumner { get; set; }
 
         public string Town { get; set; }

@@ -41,7 +41,8 @@ namespace TestOrders.Services
                 Category = model.Category,
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
-                Url = model.Url,     
+                Url = model.Url,
+                Created = DateTime.Now
             };
 
             var user = new ApplicationUser
@@ -80,25 +81,26 @@ namespace TestOrders.Services
 
         public async Task<IEnumerable<RestaurantViewModel>> GetAll()
         {
-            var restaurant = await repo.All<ApplicationUser>()
+            var restaurants = await repo.All<ApplicationUser>()
                 .Include(r => r.Restaurant)
                 .ThenInclude(a => a.Address)
                 .Where(x => x.RestaurantId != null)
                 .Select(r => new RestaurantViewModel()
                 {
-                   Id = r.RestaurantId,
-                   Name = r.Restaurant.Name,
-                   UserEmail = r.Email,
-                   Town = r.Restaurant.Address.Town,
-                   Street = r.Restaurant.Address.Street,
-                   Number = r.Restaurant.Address.Number,
-                   PhoneNumner = r.Restaurant.PhoneNumner,
-                   Category = r.Restaurant.Category,
-                   Description = r.Restaurant.Description,
-                   Url = r.Restaurant.Url
+                    Id = r.RestaurantId,
+                    Name = r.Restaurant.Name,
+                    UserEmail = r.Email,
+                    Town = r.Restaurant.Address.Town,
+                    Street = r.Restaurant.Address.Street,
+                    Number = r.Restaurant.Address.Number,
+                    PhoneNumner = r.Restaurant.PhoneNumner,
+                    Category = r.Restaurant.Category,
+                    Description = r.Restaurant.Description,
+                    Url = r.Restaurant.Url,
+                    Created = r.Restaurant.Created.ToString("MM/dd/yyyy")
                 })
                 .ToListAsync();
-            return restaurant;
+            return restaurants;
         }
 
         public IEnumerable<ProductViewModel> GetMenu(string restorantId)
@@ -116,7 +118,32 @@ namespace TestOrders.Services
 
             return restaurant;
         }
+
+        public async Task<RestaurantViewModel> GetRestaurantById(string restaurantId)
+        {
+            var restaurant = await repo.All<ApplicationUser>()
+                .Include(r => r.Restaurant)
+                .ThenInclude(a => a.Address)
+                .Where(x => x.RestaurantId == restaurantId)
+                .Select(r => new RestaurantViewModel()
+                {
+                    Id = r.RestaurantId,
+                    Name = r.Restaurant.Name,
+                    UserEmail = r.Email,
+                    Town = r.Restaurant.Address.Town,
+                    Street = r.Restaurant.Address.Street,
+                    Number = r.Restaurant.Address.Number,
+                    PhoneNumner = r.Restaurant.PhoneNumner,
+                    Category = r.Restaurant.Category,
+                    Description = r.Restaurant.Description,
+                    Url = r.Restaurant.Url,
+                    Created = r.Restaurant.Created.ToString("MM/dd/yyyy")
+                })
+                .FirstOrDefaultAsync();
+            return restaurant;
+        }
     }
 }
+
 
 

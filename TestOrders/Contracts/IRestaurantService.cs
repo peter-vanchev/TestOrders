@@ -9,5 +9,7 @@ namespace TestOrders.Contracts
         public Task<(bool created, string error)> Create(RestaurantViewModel model);
 
         public (bool created, string error) Delete(string restaurantId);
+        public Task<RestaurantViewModel> GetRestaurantById(string restaurantId);
+
     }
 }
