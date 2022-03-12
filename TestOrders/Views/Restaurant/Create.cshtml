@@ -31,50 +31,6 @@
             <div class="row">
                 <!-- left column -->
                 <div class="col-md-6">
-                    <!---------------------------------lentoff form create owner---------------------------------------->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Данни на управител</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label asp-for="UserEmail" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" placeholder="Email" asp-for="UserEmail">
-                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label asp-for="UserPassword" class="col-sm-2 col-form-label">Парола</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" placeholder="Password" asp-for="UserPassword">
-                                    <span asp-validation-for="UserPassword" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label asp-for="ConfirmPassword" class="col-sm-2 col-form-label">Повторно парола</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" asp-for="ConfirmPassword">
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type="submit" lass="btn btn-info">Създай</button>
-                        </div>
-                        <!-- /.card-footer -->
-
-                    </div>
-                    <!-- /.card -->
-                </div>
-                <!--/.col (left) -->
-                <!---------------------------------lentoff form create restaurant---------------------------------------->
-                <!-- right column -->
-                <div class="col-md-6">
                     <!-- Form Element sizes -->
                     <div class="card card-success">
                         <div class="card-header">
@@ -147,8 +103,53 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info float-sm-right">Създай</button>
+                    </div>
                 </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                    <!---------------------------------lentoff form create owner---------------------------------------->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Данни на управител</h3>
+                        </div>
+                        <!-- /.card-header -->
+
+                        <!-- form start -->
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label asp-for="UserEmail" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" placeholder="Email" asp-for="UserEmail">
+                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="UserPassword" class="col-sm-2 col-form-label">Парола</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" placeholder="Password" asp-for="UserPassword">
+                                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="ConfirmPassword" class="col-sm-2 col-form-label">Повторно парола</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" asp-for="ConfirmPassword">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+
+                    <!-- /.card -->
+                </div>
+
                 <!--/.col (right) -->
+                <!-- /.card-footer -->
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->

@@ -19,6 +19,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
@@ -26,12 +27,14 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(1, new DateTimeModelBinderProvider(FormatingConstant.NormalDateFormat));
         options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
     });
+
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IDriverServices, DriverServices>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.Configure<IdentityOptions>(options =>
