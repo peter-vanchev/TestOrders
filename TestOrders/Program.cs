@@ -1,24 +1,12 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Orders.Core.Constants;
-using TestOrders.Contracts;
-using TestOrders.Data;
-using TestOrders.Data.Common;
-using TestOrders.Data.Models;
 using TestOrders.ModelBinders;
-using TestOrders.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddApplicationContexts(builder.Configuration);
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddApplicationIdentity();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
@@ -28,26 +16,7 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
     });
 
-builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IRestaurantService, RestaurantService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IRestaurantService, RestaurantService>();
-builder.Services.AddScoped<IDriverServices, DriverServices>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IRepository, Repository>();
-
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
-    //options.Password.RequiredUniqueChars = 1;
-});
-
-
+builder.Services.AddApplicationServices(); 
 
 var app = builder.Build();
 
