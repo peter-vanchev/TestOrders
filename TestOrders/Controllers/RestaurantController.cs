@@ -40,6 +40,11 @@ namespace TestOrders.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RestaurantViewModel model, IFormFile file)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var result = await fileService.SaveFile("Restaurants", model.Name, file);
 
             if (!result.saved)

@@ -60,7 +60,7 @@ namespace TestOrders.Migrations
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Category = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    PhoneNumner = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    PhoneNumner = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DataCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
