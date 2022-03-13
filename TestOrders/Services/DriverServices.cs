@@ -29,7 +29,7 @@ namespace TestOrders.Services
                 {
                     Name = p.UserName,
                     Email = p.Email,
-                    OrderId = p.Driver.OrderId,
+                    OrderId = (Guid)p.Driver.OrderId,
                     Status = p.Driver.Status
                 })
                 .ToListAsync();

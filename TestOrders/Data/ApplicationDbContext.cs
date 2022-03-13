@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TestOrders.Data.Models;
-using TestOrders.Models;
 
 namespace TestOrders.Data
 {
@@ -15,10 +13,29 @@ namespace TestOrders.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
             base.OnModelCreating(builder);
 
             builder.Entity<ProductOrder>()
-                .HasKey(t => new { t.RestaurantId, t.ProductId });
+                .HasKey(t => new { t.OrderId, t.ProductId });
+
+            //builder.Entity<ProductOrder>()
+            //    .HasOne(p => p.Product)
+            //    .WithMany(o => o.ProductOrder)
+            //    .HasForeignKey(p => p.ProductId);
+            //builder.Entity<ProductOrder>()
+            //    .HasOne(p => p.Order)
+            //    .WithMany(o => o.ProductOrder)
+            //    .HasForeignKey(p => p.OrderId);
+
+            //builder.Entity<Order>()
+            //    .HasOne(e => e.Restaurant)
+            //    .WithMany(e => e.Orders)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Address> Addresses { get; set; }
@@ -31,12 +48,12 @@ namespace TestOrders.Data
 
         public DbSet<ProductOrder> ProductOrders { get; set; }
 
-        public DbSet<OrderData> OrderStatuses { get; set; }
+        public DbSet<OrderData> OrderDatas { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
-        public Driver Drivers { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
 
-        public DbSet<TestOrders.Models.RestaurantViewModel> RestaurantViewModel { get; set; }
+        public DbSet<Car> Cars { get; set; }
     }
 }

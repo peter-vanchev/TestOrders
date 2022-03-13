@@ -44,7 +44,7 @@ namespace TestOrders.Services
 
             var products = repo.All<Product>()
                 .Include(x => x.Restaurant)
-                .Where(x => x.RestaurantId == restourantId)
+                .Where(x => x.RestaurantId.ToString() == restourantId)
                 .ToList();
 
             var menu = new List <ProductViewModel>();

@@ -1,32 +1,36 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestOrders.Data.Models
 {
     public class OrderData
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
         public Status Status { get; set; }
 
         public DateTime Create { get; set; }
 
         public DateTime LastUpdate { get; set; }
 
-        public string OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         [ForeignKey(nameof(OrderId))]
         public Order Order { get; set; }
 
-        public string DriverId { get; set; }
+        public Guid? DriverId { get; set; }
 
         [ForeignKey(nameof(DriverId))]
         public Driver Driver { get; set; }
 
-        public string RestaurantId { get; set; }
+        public Guid? RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]
         public Restaurant Restaurant { get; set; }
 
+        [Required]
         public string ApplicationUserId { get; set; }
 
         [ForeignKey(nameof(ApplicationUserId))]

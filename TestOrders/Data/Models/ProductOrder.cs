@@ -4,14 +4,15 @@ namespace TestOrders.Data.Models
 {
     public class ProductOrder
     {
-        public string RestaurantId { get; set; }
+        public Guid OrderId { get; set; }
 
-        [ForeignKey(nameof(RestaurantId))]
-        public Restaurant Restaurant { get; set; }
+        [ForeignKey(nameof(OrderId))]
+        public Order Order { get; set; }
 
-        public string ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
+
     }
 }

@@ -4,7 +4,7 @@ namespace TestOrders.Models
 {
     public class DriverViewModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -14,7 +14,7 @@ namespace TestOrders.Models
 
         public string ConfirmPassword { get; set; }
 
-        public string OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         public Status Status { get; set; }
 

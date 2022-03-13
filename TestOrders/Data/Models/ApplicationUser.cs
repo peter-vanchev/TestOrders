@@ -10,12 +10,12 @@ namespace TestOrders.Data.Models
             this.Orders = new HashSet<Order>();
         }
 
-        public string RestaurantId { get; set; }
+        public Guid? RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]
         public Restaurant Restaurant { get; set; }
 
-        public string DriverId { get; set; }
+        public Guid? DriverId { get; set; }
 
         [ForeignKey(nameof(DriverId))]
         public Driver Driver { get; set; }

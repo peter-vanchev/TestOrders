@@ -25,7 +25,7 @@ namespace TestOrders.Services
         [Authorize]
         public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
         {
-            var user = userManager.Users.Where(x => x.Id == userId).FirstOrDefault();
+            var user = userManager.Users.Where(x => x.Id == userId.ToString()).FirstOrDefault();
 
                 var orders = await repo.All<OrderData>()
                     .Include(x => x.Order)
@@ -78,7 +78,7 @@ namespace TestOrders.Services
                 Price = model.Price,
                 AddressId = address.Id,
                 Address = address,
-                RestaurantId = user.RestaurantId,
+                RestaurantId = (Guid)user.RestaurantId,
                 Restaurant = rest,
                 User = user,
                 UserId = userId
@@ -113,7 +113,7 @@ namespace TestOrders.Services
         public async Task<OrderViewModel> GetOrderById(string orderId)
         {
             var order = await repo.All<OrderData>()
-                .Where(x => x.Id == orderId)
+                .Where(x => x.Id == Guid.Parse(orderId))
                 .Include(x => x.Order)
                 .ThenInclude(r => r.Address)
                 .Select(o => new OrderViewModel
@@ -127,9 +127,9 @@ namespace TestOrders.Services
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
                     DeliveryPrice = o.Order.DeliveryPrice,
-                    RestaurantId = o.Order.RestaurantId,
+                    RestaurantId = (Guid)o.Order.RestaurantId,
                     RestaurantName = o.Order.Restaurant.Name,
-                    UserId = o.Order.UserId,
+                    UserId = o.Order.UserId.ToString(),
                     UserName = o.Order.User.UserName,
                     Status = o.Status,
                     LastStatusTime = o.Create,
@@ -199,7 +199,7 @@ namespace TestOrders.Services
                 .Include(u => u.Driver)                
                 .Where(x => x.Driver.Status == Status.Свободен)                               
                 .Select(x => new DriverViewModel {
-                    Id = x.Id,
+                    Id = (Guid)x.DriverId,
                     Email = x.Email,
                     Status = x.Driver.Status
                 })

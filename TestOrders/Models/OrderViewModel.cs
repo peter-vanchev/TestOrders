@@ -5,7 +5,7 @@ namespace TestOrders.Models
 {
     public class OrderViewModel
     {
-        public string Id { get; set; } 
+        public Guid Id { get; set; } 
 
         public string Town { get; set; }
 
@@ -23,7 +23,13 @@ namespace TestOrders.Models
 
         public decimal DeliveryPrice { get; set; }
         
-        public string RestaurantId { get; set; }
+        public Status Status { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime LastStatusTime { get; set; }
+
+        public Guid RestaurantId { get; set; }
 
         public string RestaurantName { get; set; }
 
@@ -31,17 +37,11 @@ namespace TestOrders.Models
 
         public string UserName { get; set; }
 
-        public Status Status { get; set; }
-
-        public string Description { get; set; }
-
-        public DateTime LastStatusTime { get; set; }
-
-        public string DriverId { get; set; }
+        public Guid DriverId { get; set; }
 
         public Driver Driver { get; set; }
 
-        public string OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         public Order Order { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestOrders.Data.Models
 {
@@ -10,21 +11,31 @@ namespace TestOrders.Data.Models
             this.Orders = new HashSet<Order>();
         }
 
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
 
+        [Required]
+        [MaxLength(200)]
         public string Description { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string Url { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         public string Category { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         public string PhoneNumner { get; set; }
 
-        public DateTime Created { get; set; }
+        public DateTime DataCreated { get; set; }
 
-        public string AddressId { get; set; }
+        public Guid AddressId { get; set; }
 
         [ForeignKey(nameof(AddressId))]
         public Address Address { get; set; }

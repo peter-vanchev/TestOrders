@@ -42,7 +42,7 @@ namespace TestOrders.Services
                 Description = model.Description,
                 PhoneNumner = model.PhoneNumner,
                 Url = model.Url,
-                Created = DateTime.Now
+                DataCreated = DateTime.Now
             };
 
             var user = new ApplicationUser
@@ -87,7 +87,7 @@ namespace TestOrders.Services
                 .Where(x => x.RestaurantId != null)
                 .Select(r => new RestaurantViewModel()
                 {
-                    Id = r.RestaurantId,
+                    Id = (Guid)r.RestaurantId,
                     Name = r.Restaurant.Name,
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
@@ -97,7 +97,7 @@ namespace TestOrders.Services
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.Created.ToString("MM/dd/yyyy")
+                    Created = r.Restaurant.DataCreated.ToString("MM/dd/yyyy")
                 })
                 .ToListAsync();
             return restaurants;
@@ -124,10 +124,10 @@ namespace TestOrders.Services
             var restaurant = await repo.All<ApplicationUser>()
                 .Include(r => r.Restaurant)
                 .ThenInclude(a => a.Address)
-                .Where(x => x.RestaurantId == restaurantId)
+                .Where(x => x.RestaurantId.ToString() == restaurantId)
                 .Select(r => new RestaurantViewModel()
                 {
-                    Id = r.RestaurantId,
+                    Id = (Guid)r.RestaurantId,
                     Name = r.Restaurant.Name,
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
@@ -137,7 +137,7 @@ namespace TestOrders.Services
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.Created.ToString("MM/dd/yyyy")
+                    Created = r.Restaurant.DataCreated.ToString("MM/dd/yyyy")
                 })
                 .FirstOrDefaultAsync();
             return restaurant;
