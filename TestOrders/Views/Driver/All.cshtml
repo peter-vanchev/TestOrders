@@ -14,27 +14,33 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>OrderId</th>
-                <th>Status</th>
+                <th>Снимка</th>
+                <th>Име</th>
+                <th>Телефон</th>
+                <th>Кола / Номер</th>
+                <th>Тип кола</th>
+                <th>Статус</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var driver in Model)
             {
-            <tr>
-                <td>@driver.Name</td>
-                <td>@driver.Email</td>
-                <td>@driver.OrderId</td>
-                <td>@driver.Status</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@driver.Id">Details</a> 
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@driver.Id">Edit</a> 
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <img src="@driver.CarUrl" class="rounded" alt="@driver.Name" width="50">
+                    </td>
+                    <td>@driver.Name</td>
+                    <td>@driver.PhoneNumber</td>
+                    <td>@driver.CarModel / @driver.CarNumber</td>
+                    <td>@driver.CarType</td>
+                    <td>@driver.Status</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@driver.Id">Details</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@driver.Id">Edit</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Data\Migration\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\Image\Drivers\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,20 +22,6 @@ namespace TestOrders.Data
 
             builder.Entity<ProductOrder>()
                 .HasKey(t => new { t.OrderId, t.ProductId });
-
-            //builder.Entity<ProductOrder>()
-            //    .HasOne(p => p.Product)
-            //    .WithMany(o => o.ProductOrder)
-            //    .HasForeignKey(p => p.ProductId);
-            //builder.Entity<ProductOrder>()
-            //    .HasOne(p => p.Order)
-            //    .WithMany(o => o.ProductOrder)
-            //    .HasForeignKey(p => p.OrderId);
-
-            //builder.Entity<Order>()
-            //    .HasOne(e => e.Restaurant)
-            //    .WithMany(e => e.Orders)
-            //    .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Address> Addresses { get; set; }

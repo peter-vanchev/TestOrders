@@ -9,6 +9,13 @@ namespace TestOrders.Data.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
+        [MaxLength(30)]
+        public string Name { get; set; }
+
+        [MaxLength(100)]
+        public string Url { get; set; }
+
+        [Required]
         public Status Status { get; set; }
 
         public DateTime DataCreated { get; set; }

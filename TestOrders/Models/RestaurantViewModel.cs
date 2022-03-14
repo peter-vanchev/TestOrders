@@ -44,6 +44,7 @@ namespace TestOrders.Models
         public string UserName { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public string UserPassword { get; set; }
 
         [Required]

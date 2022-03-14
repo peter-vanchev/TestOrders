@@ -47,7 +47,7 @@ namespace TestOrders.Controllers
                 return View();
             }
 
-            var result = await fileService.SaveFile("Restaurants", model.Name, file);
+            var result = await fileService.SaveFile("Drivers", (model.CarModel + model.CarNumber), file);
 
             if (!result.saved)
             {
@@ -55,6 +55,7 @@ namespace TestOrders.Controllers
                 return View();
             }
 
+            model.CarUrl = "/Image/Drivers/" + result.fileName;
             var (created, error) = await driverServices.Create(model);
 
             if (!created)

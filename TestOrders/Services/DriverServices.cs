@@ -24,18 +24,21 @@ namespace TestOrders.Services
         {
             var drivers = await repo.All<ApplicationUser>()
                 .Include(x => x.Driver)
+                .ThenInclude(x => x.Car)
                 .Where(x => x.Driver != null)
-                .Select(p => new DriverViewModel()
-                {
-                    Name = p.UserName,
-                    Email = p.Email,
-                    OrderId = (Guid)p.Driver.OrderId,
-                    Status = p.Driver.Status
-                })
-                .ToListAsync();
+                 .Select(x => new DriverViewModel()
+                 { 
+                     Name = x.Driver.Name,
+                     PhoneNumber = x.PhoneNumber,
+                     CarModel = x.Driver.Car.Model,
+                     CarNumber = x.Driver.Car.Number,
+                     CarType = x.Driver.Car.Type, 
+                     CarUrl = x.Driver.Car.Url,
+                     Status = x.Driver.Status                        
+                 }).ToListAsync();
 
             return drivers;
-        }
+        }          
 
         public async Task<(bool created, string error)> Create(DriverViewModel model)
         {
@@ -48,11 +51,16 @@ namespace TestOrders.Services
                 Model = model.CarModel,
                 Number = model.CarNumber,
                 Type = model.CarType,
+                Url = model.CarUrl 
             };
 
             var driver = new Driver()
             {
-                Status = Status.Свободен
+                Name = model.Name,
+                DataCreated = DateTime.Now,
+                Status = Status.Свободен,
+                Car = car,
+                CarId = car.Id                
             };
 
             var user = new ApplicationUser
@@ -63,16 +71,18 @@ namespace TestOrders.Services
                 NormalizedUserName = model.Email.ToUpper(),
                 EmailConfirmed = true,
                 Driver = driver,
-                DriverId = driver.Id
+                DriverId = driver.Id,
+                PhoneNumber = model.PhoneNumber,                
             };
 
             try
             {
-                await userManager.CreateAsync(user, model.Password);
+                var test = await userManager.CreateAsync(user, model.Password);
                 created = true;
             }
             catch (Exception)
             {
+                created = false; 
                 error = "Could not Create Driver";
             }
 
@@ -82,6 +92,7 @@ namespace TestOrders.Services
             }
             catch (Exception)
             {
+                created = false;
                 error = "Could not Create \"Restaurant\" role for User";
             }
 
