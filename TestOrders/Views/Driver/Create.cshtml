@@ -1,13 +1,119 @@
 ﻿@model TestOrders.Models.DriverViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Driver";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Създаване на шофьор</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form class="form-horizontal" asp-action="Create" method="post" enctype="multipart/form-data">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="fluid col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header" style="color: rgb(0, 0, 0); background-color:#ffc107;">
+                            <h3 class="card-title">Данни на шофьор</h3>
+                        </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" asp-for="Email" autocomplete="username" placeholder="Email">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword3" class="col-sm-2 col-form-label">Парола</label>
+                                <div class="col-sm-10">
+                                    <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword3" class="col-sm-2 col-form-label">Повторно парола</label>
+                                <div class="col-sm-10">
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" 
+                                    autocomplete="new-password" aria-required="true">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input asp-for="Name" class="form-control" placeholder="Име и фамилия">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Телефон">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                </div>
+                                <input asp-for="CarModel" class="form-control" placeholder="Марка автомобил">
+                                <span asp-validation-for="CarModel" class="text-danger"></span>
+                                <input asp-for="CarNumber" class="form-control" placeholder="Номер на МПС">
+                                <span asp-validation-for="CarNumber" class="text-danger"></span>
+                            </div>
 
-<h4>DriverViewModel</h4>
+                            <!-- radio -->
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" id="customRadio1" value="Фирмен автомобил" name="CarType">
+                                    <label for="customRadio1" class="custom-control-label">Фирмен автомобил</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" id="customRadio2" value="Личен автомобил" name="CarType" checked>
+                                    <label for="customRadio2" class="custom-control-label">Личен автомобил</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CarUrl">Снимка</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input asp-for="CarUrl" type="file" name="file" class="custom-file-input">
+                                        <label class="custom-file-label" asp-for="CarUrl">Избери файл</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-body -->
+                            <div class="card-footer" style="background-color: transparent">
+                                <button type="submit" class="btn btn-info" style="color: rgb(0, 0, 0); background-color:#ffc107;">
+                                    Създай
+                                </button>
+
+                            </div>
+                            <!-- /.card-footer -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!--/.col (left) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+    </section>
+</form>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,23 +121,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true"/>
+                <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" class="form-control" autocomplete="new-password" aria-required="true"/>
-                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>
@@ -41,5 +140,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

@@ -11,14 +11,20 @@ namespace TestOrders.Data.Models
         [StringLength(10)]
         public string Number { get; set; }
 
-
         [Required]
         [StringLength(20)]
         public string Brand { get; set; }
 
-
         [Required]
         [StringLength(20)]
         public string Model { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string Type { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Url { get; set; }
     }
 }

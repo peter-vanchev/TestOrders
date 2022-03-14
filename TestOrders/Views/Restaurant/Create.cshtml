@@ -48,11 +48,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputFile">Лого</label>
+                                <label asp-for="Url">Лого</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" name="file" class="custom-file-input">
-                                        <label class="custom-file-label" for="exampleInputFile">Избери файл</label>
+                                        <input asp-for="Url" type="file" name="file" class="custom-file-input">
+                                        <label class="custom-file-label" asp-for="Url">Избери файл</label>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                             <div class="form-group">
                                 <label asp-for="Category">Категория</label>
                                 <span asp-validation-for="Category" class="text-danger"></span>
-                                <select class="custom-select" name="Category" id="Category">
+                                <select class="custom-select" name="Category">
                                     <option>Пицария</option>
                                     <option>Рибен</option>
                                     <option>Fast Food</option>
@@ -139,7 +139,7 @@
                             <div class="form-group row">
                                 <label asp-for="ConfirmPassword" class="col-sm-2 col-form-label">Повторно парола</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" asp-for="ConfirmPassword">
+                                    <input type="password" class="form-control" placeholder="Password" asp-for="ConfirmPassword">
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
                             </div>

@@ -42,6 +42,14 @@ namespace TestOrders.Services
             bool created = true;
             string error = null;
 
+            var car = new Car()
+            {
+                Brand = model.CarModel,
+                Model = model.CarModel,
+                Number = model.CarNumber,
+                Type = model.CarType,
+            };
+
             var driver = new Driver()
             {
                 Status = Status.Свободен

@@ -12,7 +12,6 @@ namespace TestOrders.Controllers
         private readonly IFileService fileService;
         private readonly IRestaurantService restaurantService;
 
-
         public RestaurantController(
             IFileService _fileService,
             IOrderService _orderService,
