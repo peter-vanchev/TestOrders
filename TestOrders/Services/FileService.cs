@@ -6,9 +6,14 @@ namespace TestOrders.Services
     {
         public async Task<(string error, string fileName, bool saved)> SaveFile(string folder, string fileName, IFormFile file)
         {
-
             string error = null;
             var saved = false;
+
+            if (file == null)
+            {
+                error = "Missing File. Pls add picture"; 
+                return (error, fileName, saved);
+            }
 
             string folderName = Path.GetFullPath(@"./wwwroot/Image");
             var pathString = Path.Combine(folderName, folder);

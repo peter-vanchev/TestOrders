@@ -93,7 +93,7 @@ namespace TestOrders.Services
             catch (Exception)
             {
                 created = false;
-                error = "Could not Create \"Restaurant\" role for User";
+                error = "Could not Create \"Driver\" role for User";
             }
 
             return (created, error);

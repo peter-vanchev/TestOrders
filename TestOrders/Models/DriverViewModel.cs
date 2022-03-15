@@ -27,6 +27,8 @@ namespace TestOrders.Models
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
 
+        public string DriverUrl { get; set; }
+
         public string CarModel { get; set; }
 
         public string CarNumber { get; set; }
