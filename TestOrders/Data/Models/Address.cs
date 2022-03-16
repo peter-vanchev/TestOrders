@@ -7,15 +7,18 @@ namespace TestOrders.Data.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
         [MaxLength(20)]
         public string Town { get; set; } = "София";
 
-        [Required]
         [MaxLength(50)]
-        public string Street { get; set; }
+        public string Area { get; set; }
 
         [Required]
         [MaxLength(20)]
-        public string Number { get; set; }
+        public string StreetNumber { get; set; }
+
+        [MaxLength(20)]
+        public string Other { get; set; }
     }
 }

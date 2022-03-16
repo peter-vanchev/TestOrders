@@ -29,8 +29,9 @@ namespace TestOrders.Services
             var address = new Address()
             {
                 Town = "София",
-                Number = model.Number,
-                Street = model.Street
+                StreetNumber = model.Street,
+                Area = model.Area,
+                Other = ""
             };
 
             var restaurant = new Restaurant()
@@ -91,13 +92,13 @@ namespace TestOrders.Services
                     Name = r.Restaurant.Name,
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
-                    Street = r.Restaurant.Address.Street,
-                    Number = r.Restaurant.Address.Number,
+                    Area = r.Restaurant.Address.Area,
+                    Street = r.Restaurant.Address.StreetNumber,
                     PhoneNumner = r.Restaurant.PhoneNumner,
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.DataCreated.ToString("MM/dd/yyyy")
+                    Created = r.Restaurant.DataCreated
                 })
                 .ToListAsync();
             return restaurants;
@@ -131,13 +132,13 @@ namespace TestOrders.Services
                     Name = r.Restaurant.Name,
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
-                    Street = r.Restaurant.Address.Street,
-                    Number = r.Restaurant.Address.Number,
+                    Area = r.Restaurant.Address.Area,
+                    Street = r.Restaurant.Address.StreetNumber,
                     PhoneNumner = r.Restaurant.PhoneNumner,
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.DataCreated.ToString("MM/dd/yyyy")
+                    Created = r.Restaurant.DataCreated
                 })
                 .FirstOrDefaultAsync();
             return restaurant;

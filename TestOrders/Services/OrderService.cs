@@ -35,16 +35,16 @@ namespace TestOrders.Services
                     {
                         Id = o.Id,
                         Town = o.Order.Address.Town,
-                        Street = o.Order.Address.Street,
-                        Number = o.Order.Address.Number,
-                        Email = o.Order.Email,
+                        Aria = o.Order.Address.Area.ToString(),
+                        Street = o.Order.Address.StreetNumber,
+                        UserName = o.Order.UserName,
                         PhoneNumner = o.Order.PhoneNumner,
                         PaymentType = o.Order.PaymentType,
                         Price = o.Order.Price,
                         DeliveryPrice = o.Order.DeliveryPrice,
                         RestaurantName = o.Order.Restaurant.Name,
                         UserId = userId,
-                        UserName = user.UserName,
+                        UserCreatedName = user.UserName,
                         Status = o.Status,
                         LastStatusTime = o.Create
                     }).ToListAsync();
@@ -60,27 +60,28 @@ namespace TestOrders.Services
             var address = new Address()
             {
                 Town = "София",
-                Number = model.Number,
-                Street = model.Street
+                Area = model.Aria,
+                StreetNumber = model.Street + ", " + model.Number,                
+                Other = model.AddressOther
             };
 
             var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
             var rest = await repo.All<Restaurant>()
-                .Where(x => x.Id == user.RestaurantId)
+                .Where(x => x.Id == model.RestaurantId)
                 .FirstOrDefaultAsync();
 
             var order = new Order()
             {
-                Email = model.Email,
+                UserName = model.UserName,
                 PhoneNumner = model.PhoneNumner,
                 PaymentType = model.PaymentType,
                 DeliveryPrice = model.DeliveryPrice,
                 Price = model.Price,
                 AddressId = address.Id,
                 Address = address,
-                RestaurantId = (Guid)user.RestaurantId,
+                RestaurantId = rest.Id,
                 Restaurant = rest,
-                User = user,
+                UserCreated = user,
                 UserId = userId
             };
 
@@ -90,12 +91,16 @@ namespace TestOrders.Services
                 Order = order,
                 OrderId = order.Id,
                 Create = DateTime.Now,
-                Status = Status.Нова
+                Status = Status.Нова,
+                ApplicationUserId = userId,
+                User = user,
+                RestaurantId = rest.Id,
+                Restaurant = rest,
+                LastUpdate = DateTime.Now,                
             };
 
             try
             {
-                repo.Add(order);
                 repo.Add(orderData);
 
                 repo.SaveChanges();
@@ -120,9 +125,9 @@ namespace TestOrders.Services
                 {
                     Id = o.Id,
                     Town = o.Order.Address.Town,
-                    Street = o.Order.Address.Street,
-                    Number = o.Order.Address.Number,
-                    Email = o.Order.Email,
+                    Aria = o.Order.Address.Area.ToString(),
+                    Street = o.Order.Address.StreetNumber,
+                    UserName = o.Order.UserName,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
@@ -130,11 +135,8 @@ namespace TestOrders.Services
                     RestaurantId = (Guid)o.Order.RestaurantId,
                     RestaurantName = o.Order.Restaurant.Name,
                     UserId = o.Order.UserId.ToString(),
-                    UserName = o.Order.User.UserName,
                     Status = o.Status,
                     LastStatusTime = o.Create,
-                    Order = o.Order,
-                    OrderId = o.OrderId
                 }).FirstOrDefaultAsync();
 
           return order;
@@ -146,7 +148,7 @@ namespace TestOrders.Services
             string error = null;
 
             var order = await repo.All<Order>()
-                .Where(x => x.Id == model.OrderId)
+                .Where(x => x.Id == model.Id)
                 .FirstOrDefaultAsync();
 
             var restaurant = await repo.All<Restaurant>()

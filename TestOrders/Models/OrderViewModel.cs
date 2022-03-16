@@ -1,26 +1,50 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using TestOrders.Data.Models;
 
 namespace TestOrders.Models
 {
     public class OrderViewModel
     {
-        public Guid Id { get; set; } 
+        public Guid Id { get; set; }
 
+        [MaxLength(20)]
         public string Town { get; set; }
 
+        [MaxLength(50)]
+        public string Aria { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string Street { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string Number { get; set; }
 
-        public string Email { get; set; }
+        [MaxLength(50)]
+        public string AddressOther { get; set; }
 
+        [Required]
+        [MaxLength(20)]
+        public string UserName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
         public string PhoneNumner { get; set; }
 
+        [Required]
+        [MaxLength(10)]
         public string PaymentType { get; set; }
 
+        [Required]
+        [Range(0, 1000)]
+        public int TimeForDelivery { get; set; }
+
+        [Required]
         public decimal Price { get; set; }
 
+        [Required]
         public decimal DeliveryPrice { get; set; }
         
         public Status Status { get; set; }
@@ -35,14 +59,10 @@ namespace TestOrders.Models
 
         public string UserId { get; set; }
 
-        public string UserName { get; set; }
+        public string UserCreatedName { get; set; }
 
         public Guid DriverId { get; set; }
 
-        public Driver Driver { get; set; }
-
-        public Guid OrderId { get; set; }
-
-        public Order Order { get; set; }
+        public string DriverName { get; set; }
     }
 }

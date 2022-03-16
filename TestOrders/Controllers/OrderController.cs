@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TestOrders.Contracts;
 using TestOrders.Data.Models;
 using TestOrders.Models;
@@ -41,15 +42,27 @@ namespace TestOrders.Controllers
             return this.View(orders);
         }
 
- 
-        public IActionResult Create()
+
+        public async Task<IActionResult> Create()
         {
+            var test = await restaurantService.GetAll();
+            ViewData["restaurants"] = test.ToList();
+            
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                var test = await restaurantService.GetAll();
+                ViewData["restaurants"] = test.ToList();
+                return View();
+            }
+
             var userId = userManager.GetUserId(User);
             
             var (created, error) = await orderService.Create(model, userId);

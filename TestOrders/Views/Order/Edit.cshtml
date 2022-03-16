@@ -7,60 +7,62 @@
 
 <div class="container-fluid">
     <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrderId" class="control-label"></label>
-                <input asp-for="OrderId" class="form-control" />
-                <span asp-validation-for="OrderId" class="text-danger"></span>
-            </div>
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="PhoneNumner" class="control-label"></label>
-                <input asp-for="PhoneNumner" class="form-control" />
-                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeliveryPrice" class="control-label"></label>
-                <input asp-for="DeliveryPrice" class="form-control" />
-                <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="PaymentType" asp-for="PaymentType" class="control-label"></label>
-                <select name="PaymentType">
-                    <option value="В брой">В брой</option>
-                    <option value="Card">Card</option>
-                </select>
-            </div>
-             <div class="form-group">
-                <label for="Driver" asp-for="Driver" class="control-label"></label>
-                <select name="DriverId" >
-                @foreach (var driver in ViewBag.drivers)
-                {
-                    <option value="@driver.Id">@driver.Email</option>
-                }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="RestaurantName" asp-for="RestaurantName" class="control-label"></label>
-                <select name="RestaurantId" >
-                @foreach (var rest in ViewBag.restorants)
-                {
-                    <option value="@rest.Id">@rest.Name</option>
-                }
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="PhoneNumner" class="control-label"></label>
+                    <input asp-for="PhoneNumner" class="form-control" />
+                    <span asp-validation-for="PhoneNumner" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeliveryPrice" class="control-label"></label>
+                    <input asp-for="DeliveryPrice" class="form-control" />
+                    <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="PaymentType" asp-for="PaymentType" class="control-label"></label>
+                    <select name="PaymentType">
+                        <option value="В брой">В брой</option>
+                        <option value="Card">Card</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="DriverId" asp-for="DriverId" class="control-label"></label>
+                    <select name="DriverId">
+                        @foreach (var driver in ViewBag.drivers)
+                        {
+                            <option value="@driver.Id">@driver.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="RestaurantName" asp-for="RestaurantName" class="control-label"></label>
+                    <select name="RestaurantId">
+                        @foreach (var rest in ViewBag.restorants)
+                        {
+                            <option value="@rest.Id">@rest.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
 <div>
     <a asp-action="All">Back to List</a>

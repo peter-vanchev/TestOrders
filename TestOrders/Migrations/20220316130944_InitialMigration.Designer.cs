@@ -12,8 +12,8 @@ using TestOrders.Data;
 namespace TestOrders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220314203939_AddNameToDriver1")]
-    partial class AddNameToDriver1
+    [Migration("20220316130944_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,17 +167,21 @@ namespace TestOrders.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Number")
+                    b.Property<string>("Area")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Other")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("StreetNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Town")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -352,11 +356,6 @@ namespace TestOrders.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<string>("PaymentType")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -376,9 +375,17 @@ namespace TestOrders.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("TimeForDelivery")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -632,7 +639,7 @@ namespace TestOrders.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TestOrders.Data.Models.ApplicationUser", "User")
+                    b.HasOne("TestOrders.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -642,7 +649,7 @@ namespace TestOrders.Migrations
 
                     b.Navigation("Restaurant");
 
-                    b.Navigation("User");
+                    b.Navigation("UserCreated");
                 });
 
             modelBuilder.Entity("TestOrders.Data.Models.OrderData", b =>

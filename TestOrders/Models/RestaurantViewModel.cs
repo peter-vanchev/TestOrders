@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestOrders.Models
 {
@@ -18,7 +19,7 @@ namespace TestOrders.Models
 
         public string Category { get; set; }
 
-        public string Created { get; set; }
+        public DateTime Created { get; set; }
 
         [Required]
         [MaxLength(20)]
@@ -30,12 +31,14 @@ namespace TestOrders.Models
 
         [Required]
         [MaxLength(20)]
-        public string Street { get; set; }
+        public string Area { get; set; }
 
         [Required]
-        [MaxLength(10)]
-        public string Number { get; set; }
+        [MaxLength(20)]
+        public string Street { get; set; }
 
+        [MaxLength(20)]
+        public string AddressOther { get; set; }
 
         [Required]
         [MaxLength(100)]

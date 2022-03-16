@@ -15,8 +15,8 @@ namespace TestOrders.Data.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(10)]
-        public string Email { get; set; }
+        [MaxLength(20)]
+        public string UserName { get; set; }
 
         [Required]
         [MaxLength(20)]
@@ -31,6 +31,10 @@ namespace TestOrders.Data.Models
 
         [Column(TypeName = "money")]
         public decimal DeliveryPrice { get; set; }
+
+        [Required]
+        [Range(0, 1000)]
+        public int TimeForDelivery { get; set; }
 
         [Required]
         public Status Status { get; set; }
@@ -54,7 +58,7 @@ namespace TestOrders.Data.Models
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser UserCreated { get; set; }
 
         public ICollection<ProductOrder> ProductOrder { get; set; }
     }

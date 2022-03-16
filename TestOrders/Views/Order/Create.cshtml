@@ -19,40 +19,60 @@
                     <form class="form-horizontal" asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="RestaurantId" class="control-label">Обект</label>
+                                <select class="custom-select" name="RestaurantId" id="RestaurantId">
+                                    @foreach (var item in ViewData["restaurants"] as List<RestaurantViewModel>)
+                                    {
+                                        <option value=@item.Id>@item.Name</option>
+                                    }
+                                </select>
+                            </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-
+                                <input asp-for="UserName" class="form-control" placeholder="Име и фамили ..." />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-check"></i></span>
                                 </div>
-                                <input asp-for="Street" class="form-control" />
+                                <input asp-for="Street " class="form-control" placeholder="ул. ..." />
                                 <span asp-validation-for="Street" class="text-danger"></span>
+
+                                <input asp-for="Number" class="form-control" placeholder="Номер ..." />
+                                <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <input asp-for="AddressOther" class="form-control" placeholder="Допълнителна информация ..." />
+                                <span asp-validation-for="AddressOther" class="text-danger"></span>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <span class="form-control col-2">+359</span>
+                                <input asp-for="PhoneNumner" class="form-control col-3" placeholder="999999999" />
+                                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">
                                 <label>Сума</label>
-                            </div>
-                            <div class="input-group">
-                                <input asp-for="Price" class="form-control" />
-                                <span asp-validation-for="Price" class="text-danger"></span>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">лв</span>
+                                <div class="input-group">
+                                    <input asp-for="Price" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">лв</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -67,17 +87,15 @@
                                 </select>
                             </div>
 
-                            @*  
-                                <div class="form-group">
-                                <label asp-for="DeliveryPrice" class="control-label">Цена на доставка</label>
-                                <input asp-for="DeliveryPrice" class="form-control" />
-                                <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
-                                <select name="DeliveryPrice" id="DeliveryPrice">
-                                <option value=30>30 мин.</option>
-                                <option value=45>45 мин.</option>
-                                <option value=90>90 мин.</option>
+                            <div class="form-group">
+                                <label asp-for="TimeForDelivery" class="control-label">Време за доставка</label>
+                                <span asp-validation-for="TimeForDelivery" class="text-danger"></span>
+                                <select class="custom-select" name="DeliveryPrice" id="TimeForDelivery">
+                                    <option value=30>30 мин.</option>
+                                    <option value=45>45 мин.</option>
+                                    <option value=90>90 мин.</option>
                                 </select>
-                                </div>*@
+                            </div>
 
                             <!-- checkbox -->
 
@@ -106,6 +124,8 @@
 
                     <!-- /.row -->
                 </div><!-- /.container-fluid -->
+            </div>
+
             </div>
         </div>
     </div>

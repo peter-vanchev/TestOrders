@@ -14,9 +14,10 @@ namespace TestOrders.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Town = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Area = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    StreetNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Other = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +45,9 @@ namespace TestOrders.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Model = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -225,11 +228,12 @@ namespace TestOrders.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PhoneNumner = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PaymentType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Price = table.Column<decimal>(type: "money", nullable: false),
                     DeliveryPrice = table.Column<decimal>(type: "money", nullable: false),
+                    TimeForDelivery = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     DataCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -265,6 +269,8 @@ namespace TestOrders.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DataCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
