@@ -37,11 +37,17 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
-            var orders = await orderService.GetAll(userManager.GetUserId(User));
+            var orders = await orderService.GetAll();
 
             return this.View(orders);
         }
 
+        public async Task<IActionResult> NewOrders()
+        {
+            var orders = await orderService.GetAll();
+
+            return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
+        }
 
         public async Task<IActionResult> Create()
         {
@@ -68,10 +74,10 @@ namespace TestOrders.Controllers
         {
             var userId = userManager.GetUserId(User);
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.PaymentType == "false")
             {
-                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+               
                 if (this.User.IsInRole("Admin"))
                 {
                     var restaurants = await restaurantService.GetAll();
@@ -87,7 +93,6 @@ namespace TestOrders.Controllers
                 }
                 return View();
             }
-
             
             var (created, error) = await orderService.Create(model, userId);
             if (!created)

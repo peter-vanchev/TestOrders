@@ -9,11 +9,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Управление на поръчките</h1>
+                <h1>Нови поръчки</h1>
             </div>
         </div>
     </div>
 </section>
+
 <form class="form-horizontal">
     <section class="content">
         <div class="container-fluid">
@@ -30,7 +31,6 @@
                                     <th scope="col">Статус</th>
                                     <th class="table-web" scope="col">Клиент</th>
                                     <th class="table-web" scope="col">Адрес</th>
-                                    <th class="table-web" scope="col">Шофьор</th>
                                     <th class="table-web" scope="col">Цена</th>
                                     <th class="table-web" scope="col">Доставка</th>
                                     <th scope="col">Действие</th>
@@ -64,9 +64,6 @@
                                                 <p>@order.Street, @order.Number</p>
                                                 <p>@order.Town</p>
                                             </td>
-                                            <td class="table-web">
-                                                @order.DriverName
-                                            </td>
                                             <td>@order.Price.ToString("F2")</td>
                                             <td>@order.DeliveryPrice.ToString("F2")</td>
 
@@ -74,14 +71,12 @@
                                                 <button type="button" class="btn btn-info btn-sm order-action"
                                                     onclick="(setSelectedOrderId(586))" data-toggle="modal"
                                                     data-target="#modal-asign-driver">
-                                                    Насочи към шофьор
+                                                    Приеми
+                                                </button> <button type="button" class="btn btn-info btn-sm order-action"
+                                                    onclick="(setSelectedOrderId(586))" data-toggle="modal"
+                                                    data-target="#modal-asign-driver">
+                                                    Откажи
                                                 </button>
-                                            </td>
-                                            <td>
-                                                <a asp-action="Details" asp-route-id="@order.Id">Details</a>
-                                            </td>
-                                            <td>
-                                                <a asp-action="Edit" asp-route-id="@order.Id">Edit</a>
                                             </td>
                                         </tr>
                                     }

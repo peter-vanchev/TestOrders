@@ -51,6 +51,8 @@ namespace TestOrders.Models
 
         public string Description { get; set; }
 
+        public DateTime DataCreated { get; set; }
+
         public DateTime LastStatusTime { get; set; }
 
         public Guid RestaurantId { get; set; }

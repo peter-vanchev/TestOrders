@@ -23,32 +23,32 @@ namespace TestOrders.Services
         }
 
         [Authorize]
-        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
+        public async Task<IEnumerable<OrderViewModel>> GetAll()
         {
-            var user = userManager.Users.Where(x => x.Id == userId.ToString()).FirstOrDefault();
+            var orders = await repo.All<OrderData>()
+                .Include(x => x.Order)
+                .ThenInclude(r => r.Address)
+                .OrderByDescending(d => d.Create)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.OrderId,
+                    Town = o.Order.Address.Town,
+                    Aria = o.Order.Address.Area,
+                    Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
+                    UserName = o.Order.UserName,
+                    PhoneNumner = o.Order.PhoneNumner,
+                    PaymentType = o.Order.PaymentType,
+                    Price = o.Order.Price,
+                    DeliveryPrice = o.Order.DeliveryPrice,
+                    RestaurantName = o.Order.Restaurant.Name,
+                    UserId = o.User.Id,
+                    UserCreatedName = o.User.UserName,
+                    Status = o.Status,
+                    DataCreated = o.Create,
+                    LastStatusTime = o.LastUpdate,
+                    DriverName = o.Driver.Name
+                }).ToListAsync();
 
-                var orders = await repo.All<OrderData>()
-                    .Include(x => x.Order)
-                    .ThenInclude(r => r.Address)
-                    .OrderByDescending(d => d.Create)
-                    .Select(o => new OrderViewModel
-                    {
-                        Id = o.Id,
-                        Town = o.Order.Address.Town,
-                        Aria = o.Order.Address.Area,
-                        Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
-                        UserName = o.Order.UserName,
-                        PhoneNumner = o.Order.PhoneNumner,
-                        PaymentType = o.Order.PaymentType,
-                        Price = o.Order.Price,
-                        DeliveryPrice = o.Order.DeliveryPrice,
-                        RestaurantName = o.Order.Restaurant.Name,
-                        UserId = userId,
-                        UserCreatedName = user.UserName,
-                        Status = o.Status,
-                        LastStatusTime = o.Create
-                    }).ToListAsync();
-            
             return orders;
         }
 
@@ -62,7 +62,7 @@ namespace TestOrders.Services
                 Town = "София",
                 Area = model.Aria,
                 Street = model.Street,
-                Number = model.Number,                
+                Number = model.Number,
                 Other = model.AddressOther
             };
 
@@ -77,13 +77,16 @@ namespace TestOrders.Services
                 PhoneNumner = model.PhoneNumner,
                 PaymentType = model.PaymentType,
                 DeliveryPrice = model.DeliveryPrice,
+                TimeForDelivery = model.TimeForDelivery,
                 Price = model.Price,
                 AddressId = address.Id,
                 Address = address,
                 RestaurantId = rest.Id,
                 Restaurant = rest,
                 UserCreated = user,
-                UserId = userId
+                UserId = userId,
+                Description = model.Description,
+                Status = model.Status
             };
 
 
@@ -97,7 +100,7 @@ namespace TestOrders.Services
                 User = user,
                 RestaurantId = rest.Id,
                 Restaurant = rest,
-                LastUpdate = DateTime.Now,                
+                LastUpdate = DateTime.Now,
             };
 
             try
@@ -119,28 +122,30 @@ namespace TestOrders.Services
         public async Task<OrderViewModel> GetOrderById(string orderId)
         {
             var order = await repo.All<OrderData>()
-                .Where(x => x.Id == Guid.Parse(orderId))
+                .Where(x => x.OrderId == Guid.Parse(orderId))
                 .Include(x => x.Order)
                 .ThenInclude(r => r.Address)
                 .Select(o => new OrderViewModel
                 {
-                    Id = o.Id,
+                    Id = o.OrderId,
                     Town = o.Order.Address.Town,
-                    Aria = o.Order.Address.Area.ToString(),
+                    Aria = o.Order.Address.Area,
                     Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
                     UserName = o.Order.UserName,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
                     DeliveryPrice = o.Order.DeliveryPrice,
-                    RestaurantId = (Guid)o.Order.RestaurantId,
                     RestaurantName = o.Order.Restaurant.Name,
-                    UserId = o.Order.UserId.ToString(),
+                    UserId = o.User.Id,
+                    UserCreatedName = o.User.UserName,
                     Status = o.Status,
-                    LastStatusTime = o.Create,
+                    DataCreated = o.Create,
+                    LastStatusTime = o.LastUpdate,
+                    DriverName = o.Driver.Name
                 }).FirstOrDefaultAsync();
 
-          return order;
+            return order;
         }
 
         public async Task<(bool created, string error)> AsignDriver(OrderViewModel model)
@@ -175,7 +180,7 @@ namespace TestOrders.Services
                 DriverId = model.DriverId,
                 Driver = driver,
                 Order = order,
-                OrderId = model.Id,            
+                OrderId = model.Id,
                 Status = Status.Изпратена
             };
 
@@ -199,9 +204,10 @@ namespace TestOrders.Services
         public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()
         {
             var drivers = await repo.All<ApplicationUser>()
-                .Include(u => u.Driver)                
-                .Where(x => x.Driver.Status == Status.Свободен)                               
-                .Select(x => new DriverViewModel {
+                .Include(u => u.Driver)
+                .Where(x => x.Driver.Status == Status.Свободен)
+                .Select(x => new DriverViewModel
+                {
                     Id = (Guid)x.DriverId,
                     Email = x.Email,
                     Status = x.Driver.Status

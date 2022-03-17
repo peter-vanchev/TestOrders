@@ -42,8 +42,6 @@ namespace TestOrders.Data.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
-        public DateTime DataCreated { get; set; }
-
         public Guid RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]

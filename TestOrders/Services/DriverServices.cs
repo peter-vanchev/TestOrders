@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TestOrders.Contracts;
 using TestOrders.Data.Common;
 using TestOrders.Data.Models;
@@ -46,7 +47,7 @@ namespace TestOrders.Services
         public async Task<(bool created, string error)> Create(DriverViewModel model)
         {
             bool created = true;
-            string error = null;
+            var error = new List<string>();
 
             var car = new Car()
             {
@@ -80,28 +81,35 @@ namespace TestOrders.Services
                 PhoneNumber = model.PhoneNumber,                
             };
 
-            try
-            {
-                var test = await userManager.CreateAsync(user, model.Password);
-                created = true;
-            }
-            catch (Exception)
-            {
-                created = false; 
-                error = "Could not Create Driver";
-            }
+            var addUser = await userManager.CreateAsync(user, model.Password);
 
-            try
-            {
-                await userManager.AddToRoleAsync(user, "Driver");
-            }
-            catch (Exception)
-            {
+            if (!addUser.Succeeded)
+            {                   
+                var result  = addUser.Errors.ToList();
+                foreach (var err in result)
+                {
+                    error.Add(err.Description);
+                }
+
                 created = false;
-                error = "Could not Create \"Driver\" role for User";
+                return (created, String.Join(", ", error));
+            }
+            
+            var addRole = await userManager.AddToRoleAsync(user, "Driver");
+            if (!addRole.Succeeded)
+            {
+                var result = addUser.Errors.ToList();
+
+                foreach (var err in result)
+                {
+                    error.Add(err.Description);
+                }
+
+                created = false;
+                return (created, String.Join(", ", error));
             }
 
-            return (created, error);
+            return (created, null);
         }
     }
 }
