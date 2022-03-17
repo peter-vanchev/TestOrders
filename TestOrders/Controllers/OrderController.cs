@@ -49,6 +49,11 @@ namespace TestOrders.Controllers
             return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
         }
 
+        public IActionResult Action(string Id, bool accepted) 
+        {
+            return Redirect("/Order/NewOrders");
+        }
+
         public async Task<IActionResult> Create()
         {
             if (this.User.IsInRole("Admin"))

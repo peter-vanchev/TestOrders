@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow">
-                       
+
                         <div class="table-responsive">
                             <table class="table align-items-center">
                                 <tr style="color: #fff; background-color: #dc3545;">
@@ -33,6 +33,7 @@
                                     <th class="table-web" scope="col">Адрес</th>
                                     <th class="table-web" scope="col">Цена</th>
                                     <th class="table-web" scope="col">Доставка</th>
+                                    <th class="table-web" scope="col">Вид плащане</th>
                                     <th scope="col">Действие</th>
                                 </tr>
 
@@ -66,17 +67,12 @@
                                             </td>
                                             <td>@order.Price.ToString("F2")</td>
                                             <td>@order.DeliveryPrice.ToString("F2")</td>
-
+                                            <td>@order.PaymentType</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm order-action"
-                                                    onclick="(setSelectedOrderId(586))" data-toggle="modal"
-                                                    data-target="#modal-asign-driver">
-                                                    Приеми
-                                                </button> <button type="button" class="btn btn-info btn-sm order-action"
-                                                    onclick="(setSelectedOrderId(586))" data-toggle="modal"
-                                                    data-target="#modal-asign-driver">
-                                                    Откажи
-                                                </button>
+                                                <a class="btn btn-info btn-sm order-action" 
+                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true" >Приемит</a>
+                                                <a class="btn btn-info btn-sm order-action" 
+                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false" >Откажи</a>                                               
                                             </td>
                                         </tr>
                                     }
