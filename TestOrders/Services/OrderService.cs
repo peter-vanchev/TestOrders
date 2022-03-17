@@ -36,7 +36,7 @@ namespace TestOrders.Services
                         Id = o.Id,
                         Town = o.Order.Address.Town,
                         Aria = o.Order.Address.Area.ToString(),
-                        Street = o.Order.Address.StreetNumber,
+                        Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
                         UserName = o.Order.UserName,
                         PhoneNumner = o.Order.PhoneNumner,
                         PaymentType = o.Order.PaymentType,
@@ -61,7 +61,8 @@ namespace TestOrders.Services
             {
                 Town = "София",
                 Area = model.Aria,
-                StreetNumber = model.Street + ", " + model.Number,                
+                Street = model.Street,
+                Number = model.Number,                
                 Other = model.AddressOther
             };
 
@@ -126,7 +127,7 @@ namespace TestOrders.Services
                     Id = o.Id,
                     Town = o.Order.Address.Town,
                     Aria = o.Order.Address.Area.ToString(),
-                    Street = o.Order.Address.StreetNumber,
+                    Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
                     UserName = o.Order.UserName,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,

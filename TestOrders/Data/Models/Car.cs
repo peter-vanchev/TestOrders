@@ -23,7 +23,6 @@ namespace TestOrders.Data.Models
         [StringLength(20)]
         public string Type { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public string Url { get; set; }
     }

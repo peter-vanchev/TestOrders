@@ -37,6 +37,10 @@ namespace TestOrders.Models
         [MaxLength(20)]
         public string Street { get; set; }
 
+        [Required]
+        [MaxLength(20)]
+        public string Number { get; set; }
+
         [MaxLength(20)]
         public string AddressOther { get; set; }
 

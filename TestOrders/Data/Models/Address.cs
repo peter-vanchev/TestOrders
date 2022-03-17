@@ -16,7 +16,11 @@ namespace TestOrders.Data.Models
 
         [Required]
         [MaxLength(20)]
-        public string StreetNumber { get; set; }
+        public string Street { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Number { get; set; }
 
         [MaxLength(20)]
         public string Other { get; set; }

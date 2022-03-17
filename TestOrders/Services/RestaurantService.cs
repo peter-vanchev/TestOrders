@@ -29,9 +29,10 @@ namespace TestOrders.Services
             var address = new Address()
             {
                 Town = "София",
-                StreetNumber = model.Street,
                 Area = model.Area,
-                Other = ""
+                Street = model.Street,
+                Number = model.Number,
+                Other = model.AddressOther
             };
 
             var restaurant = new Restaurant()
@@ -93,7 +94,8 @@ namespace TestOrders.Services
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
                     Area = r.Restaurant.Address.Area,
-                    Street = r.Restaurant.Address.StreetNumber,
+                    Street = r.Restaurant.Address.Street,
+                    Number = r.Restaurant.Address.Number,
                     PhoneNumner = r.Restaurant.PhoneNumner,
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
@@ -133,7 +135,8 @@ namespace TestOrders.Services
                     UserEmail = r.Email,
                     Town = r.Restaurant.Address.Town,
                     Area = r.Restaurant.Address.Area,
-                    Street = r.Restaurant.Address.StreetNumber,
+                    Street = r.Restaurant.Address.Street,
+                    Number = r.Restaurant.Address.Number,
                     PhoneNumner = r.Restaurant.PhoneNumner,
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
