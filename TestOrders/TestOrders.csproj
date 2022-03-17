@@ -22,6 +22,7 @@
     <Folder Include="Data\Migration\" />
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Image\Drivers\" />
+    <Folder Include="wwwroot\Image\Cars\" />
   </ItemGroup>
 
   <ItemGroup>

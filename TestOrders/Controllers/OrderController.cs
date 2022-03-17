@@ -45,9 +45,20 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var test = await restaurantService.GetAll();
-            ViewData["restaurants"] = test.ToList();
-            
+            if (this.User.IsInRole("Admin"))
+            {
+                var restaurants = await restaurantService.GetAll();
+                ViewData["restaurants"] = restaurants.ToList();
+            }
+            else
+            {
+                var userId = userManager.GetUserId(User);
+                var user = await userManager.FindByIdAsync(userId);
+                var restaurant = await restaurantService.GetRestaurantById(user.RestaurantId.ToString());
+                var restaurants = new List<RestaurantViewModel>();
+                restaurants.Add(restaurant);
+                ViewData["restaurants"] = restaurants;
+            }                
 
             return View();
         }
@@ -55,15 +66,28 @@ namespace TestOrders.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
+            var userId = userManager.GetUserId(User);
+
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                var test = await restaurantService.GetAll();
-                ViewData["restaurants"] = test.ToList();
+
+                if (this.User.IsInRole("Admin"))
+                {
+                    var restaurants = await restaurantService.GetAll();
+                    ViewData["restaurants"] = restaurants.ToList();
+                }
+                else
+                {
+                    var user = await userManager.FindByIdAsync(userId);
+                    var restaurant = await restaurantService.GetRestaurantById(user.RestaurantId.ToString());
+                    var restaurants = new List<RestaurantViewModel>();
+                    restaurants.Add(restaurant);
+                    ViewData["restaurants"] = restaurants;
+                }
                 return View();
             }
 
-            var userId = userManager.GetUserId(User);
             
             var (created, error) = await orderService.Create(model, userId);
             if (!created)

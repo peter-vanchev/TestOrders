@@ -28,8 +28,11 @@ namespace TestOrders.Services
                 .Where(x => x.Driver != null)
                  .Select(x => new DriverViewModel()
                  { 
+                     Id = x.Driver.Id,
                      Name = x.Driver.Name,
                      PhoneNumber = x.PhoneNumber,
+                     Email = x.Email,
+                     DriverUrl = x.Driver.Url,
                      CarModel = x.Driver.Car.Model,
                      CarNumber = x.Driver.Car.Number,
                      CarType = x.Driver.Car.Type, 
@@ -59,8 +62,10 @@ namespace TestOrders.Services
                 Name = model.Name,
                 DataCreated = DateTime.Now,
                 Status = Status.Свободен,
+                Url = model.DriverUrl,
                 Car = car,
-                CarId = car.Id                
+                CarId = car.Id   
+                
             };
 
             var user = new ApplicationUser

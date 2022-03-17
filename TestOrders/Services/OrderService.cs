@@ -35,7 +35,7 @@ namespace TestOrders.Services
                     {
                         Id = o.Id,
                         Town = o.Order.Address.Town,
-                        Aria = o.Order.Address.Area.ToString(),
+                        Aria = o.Order.Address.Area,
                         Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
                         UserName = o.Order.UserName,
                         PhoneNumner = o.Order.PhoneNumner,

@@ -1,4 +1,6 @@
-﻿@model TestOrders.Models.OrderViewModel
+﻿@using Microsoft.EntityFrameworkCore;
+
+@model TestOrders.Models.OrderViewModel
 
 @{
     ViewData["Title"] = "Създаване на нова поръчка";
@@ -68,8 +70,8 @@
                             <div class="form-group">
                                 <label>Сума</label>
                                 <div class="input-group">
-                                    <input asp-for="Price" class="form-control" />
-                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
                                     <div class="input-group-append">
                                         <span class="input-group-text">лв</span>
                                     </div>
@@ -100,9 +102,10 @@
                             <!-- checkbox -->
 
                             <div class="form-group">
+                                <span asp-validation-for="PaymentType" class="text-danger"></span>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" asp-for="PaymentType" type="checkbox" id="PaymentType">
-                                    <label for="PaymentType" class="custom-control-label">В брой</label>
+                                    <input class="custom-control-input" asp-for="PaymentType" type="checkbox" id="PaymentType" checked>
+                                    <label for="PaymentType" class="custom-control-label active">В брой</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox">
@@ -125,8 +128,7 @@
                     <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
-
-            </div>
+            
         </div>
     </div>
 </section>

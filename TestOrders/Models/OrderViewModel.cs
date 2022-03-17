@@ -38,10 +38,10 @@ namespace TestOrders.Models
         public string PaymentType { get; set; }
 
         [Required]
-        [Range(0, 1000)]
         public int TimeForDelivery { get; set; }
 
         [Required]
+        [Range(1, 10000)]
         public decimal Price { get; set; }
 
         [Required]

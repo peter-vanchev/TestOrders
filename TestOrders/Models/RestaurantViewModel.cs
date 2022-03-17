@@ -29,7 +29,6 @@ namespace TestOrders.Models
         [MaxLength(20)]
         public string Town { get; set; }
 
-        [Required]
         [MaxLength(20)]
         public string Area { get; set; }
 
