@@ -6,8 +6,9 @@ namespace TestOrders.Data.Common
     {
         void Add<T>(T entity) where T : class;
 
-
         IQueryable<T> All<T>() where T : class;
+
+        Task<IQueryable<T>> AllAsync<T>() where T : class;
 
         int SaveChanges();
 

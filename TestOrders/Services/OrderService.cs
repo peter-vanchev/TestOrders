@@ -49,6 +49,20 @@ namespace TestOrders.Services
                     DriverName = o.Driver.Name
                 }).ToListAsync();
 
+
+            //var maxValue = table.Max(x => x.Status)
+            //var result = table.First(x => x.Status == maxValue);
+
+            var order1 = await repo.All<Order>()
+               .Include(x => x.OrderData)
+               .Select(o => new OrderViewModel
+               {
+                   Id = o.Id,
+                   LastStatusTime = o.OrderData.Select(x => x.LastUpdate).FirstOrDefault(),
+               })
+               .ToListAsync();
+
+
             return orders;
         }
 
@@ -217,6 +231,55 @@ namespace TestOrders.Services
             return drivers;
         }
 
+        public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action) 
+        {
+            var error = "";
+            var order = await repo.All<Order>()
+                .Where(x => x.Id == Guid.Parse(orderId))
+                .FirstOrDefaultAsync();
+
+            var user = await repo.All<ApplicationUser>()
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync();
+
+            if (!action)
+            {
+                order.Status = Status.Отказана;
+            }
+            else
+            {
+                order.Status = Status.Приета;
+            }
+
+            var orderData = new OrderData() {
+                OrderId = Guid.Parse(orderId),
+                Order = order,
+                Create = DateTime.Now,
+                ApplicationUserId = userId,
+                User = user,
+                LastUpdate = DateTime.Now,
+                Status = order.Status,
+                Restaurant = order.Restaurant,
+                RestaurantId = order.RestaurantId
+            };
+
+            action = false;
+            try
+            {
+                repo.Update(order);
+                repo.Add(orderData);
+
+                repo.SaveChanges();
+                action = true;
+            }
+
+            catch (Exception)
+            {
+                error = "Could not save Order";
+            }
+
+            return (action, error);
+        }
     }
 
 }

@@ -8,6 +8,7 @@ namespace TestOrders.Data.Models
         public Order()
         {
             this.ProductOrder = new HashSet<ProductOrder>();
+            this.OrderData = new HashSet<OrderData>();
             this.Status = Status.Нова;
         }
 
@@ -59,5 +60,7 @@ namespace TestOrders.Data.Models
         public ApplicationUser UserCreated { get; set; }
 
         public ICollection<ProductOrder> ProductOrder { get; set; }
+
+        public ICollection<OrderData> OrderData { get; set; }
     }
 }

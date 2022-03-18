@@ -21,6 +21,12 @@ namespace TestOrders.Data.Common
             return DbSet<T>().AsQueryable();
         }
 
+        public async Task<IQueryable<T>> AllAsync<T>() where T : class
+        {
+            var set = await DbSet<T>().ToListAsync();
+            return set.AsQueryable();
+        }
+
         public int SaveChanges()
         {
             return dbContext.SaveChanges();

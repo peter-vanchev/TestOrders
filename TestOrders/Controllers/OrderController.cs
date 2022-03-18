@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Security.Claims;
 using TestOrders.Contracts;
 using TestOrders.Data.Models;
 using TestOrders.Models;
@@ -39,7 +40,19 @@ namespace TestOrders.Controllers
         {
             var orders = await orderService.GetAll();
 
-            return this.View(orders);
+            return this.View(orders.ToList());
+        }
+
+        public async Task<IActionResult> Action(string id, bool accepted)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await orderService.AcceptOrder(userId, id, accepted);
+
+            if (result.Item1)
+            {
+                return Redirect("/Order/NewOrders");
+            }
+            return View();
         }
 
         public async Task<IActionResult> NewOrders()
@@ -47,11 +60,6 @@ namespace TestOrders.Controllers
             var orders = await orderService.GetAll();
 
             return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
-        }
-
-        public IActionResult Action(string Id, bool accepted) 
-        {
-            return Redirect("/Order/NewOrders");
         }
 
         public async Task<IActionResult> Create()
