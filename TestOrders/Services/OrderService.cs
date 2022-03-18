@@ -28,42 +28,48 @@ namespace TestOrders.Services
             var orders = await repo.All<OrderData>()
                 .Include(x => x.Order)
                 .ThenInclude(r => r.Address)
-                .OrderByDescending(d => d.Create)
+                .OrderByDescending(d => d.Order.Create)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.OrderId,
                     Town = o.Order.Address.Town,
                     Aria = o.Order.Address.Area,
                     Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
+                    UserId = o.Order.UserCreated.Id,
                     UserName = o.Order.UserName,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
                     DeliveryPrice = o.Order.DeliveryPrice,
                     RestaurantName = o.Order.Restaurant.Name,
-                    UserId = o.User.Id,
-                    UserCreatedName = o.User.UserName,
                     Status = o.Status,
-                    DataCreated = o.Create,
+                    DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
                     DriverName = o.Driver.Name
                 }).ToListAsync();
 
-
-            //var maxValue = table.Max(x => x.Status)
-            //var result = table.First(x => x.Status == maxValue);
-
             var order1 = await repo.All<Order>()
-               .Include(x => x.OrderData)
-               .Select(o => new OrderViewModel
-               {
-                   Id = o.Id,
-                   LastStatusTime = o.OrderData.Select(x => x.LastUpdate).FirstOrDefault(),
+              .Include(x => x.OrderData)
+              .Select(o => new OrderViewModel
+              {
+                  Id = o.Id,
+                  Town = o.Address.Town,
+                  Aria = o.Address.Area,
+                  Street = o.Address.Street + ", " + o.Address.Number,
+                  UserName = o.UserName,
+                  PhoneNumner = o.PhoneNumner,
+                  PaymentType = o.PaymentType,
+                  Price = o.Price,
+                  DeliveryPrice = o.DeliveryPrice,
+                  RestaurantName = o.Restaurant.Name,
+                  Status = o.Status,
+                  DataCreated = o.Create,
+                  DriverName = o.Driver.Name
                })
-               .ToListAsync();
+              .ToListAsync();
 
 
-            return orders;
+            return order1;
         }
 
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
@@ -100,6 +106,7 @@ namespace TestOrders.Services
                 UserCreated = user,
                 UserId = userId,
                 Description = model.Description,
+                Create = DateTime.Now,
                 Status = model.Status
             };
 
@@ -108,12 +115,7 @@ namespace TestOrders.Services
             {
                 Order = order,
                 OrderId = order.Id,
-                Create = DateTime.Now,
                 Status = Status.Нова,
-                ApplicationUserId = userId,
-                User = user,
-                RestaurantId = rest.Id,
-                Restaurant = rest,
                 LastUpdate = DateTime.Now,
             };
 
@@ -151,10 +153,10 @@ namespace TestOrders.Services
                     Price = o.Order.Price,
                     DeliveryPrice = o.Order.DeliveryPrice,
                     RestaurantName = o.Order.Restaurant.Name,
-                    UserId = o.User.Id,
-                    UserCreatedName = o.User.UserName,
+                    UserId = o.Order.UserCreated.Id,
+                    UserCreatedName = o.Order.UserName,
                     Status = o.Status,
-                    DataCreated = o.Create,
+                    DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
                     DriverName = o.Driver.Name
                 }).FirstOrDefaultAsync();
@@ -190,7 +192,6 @@ namespace TestOrders.Services
 
             var orderStatus = new OrderData
             {
-                Create = DateTime.Now,
                 DriverId = model.DriverId,
                 Driver = driver,
                 Order = order,
@@ -254,13 +255,8 @@ namespace TestOrders.Services
             var orderData = new OrderData() {
                 OrderId = Guid.Parse(orderId),
                 Order = order,
-                Create = DateTime.Now,
-                ApplicationUserId = userId,
-                User = user,
                 LastUpdate = DateTime.Now,
                 Status = order.Status,
-                Restaurant = order.Restaurant,
-                RestaurantId = order.RestaurantId
             };
 
             action = false;

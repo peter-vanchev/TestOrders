@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using TestOrders.Contracts;
 using TestOrders.Data.Models;
@@ -32,7 +31,6 @@ namespace TestOrders.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 
@@ -40,7 +38,7 @@ namespace TestOrders.Controllers
         {
             var orders = await orderService.GetAll();
 
-            return this.View(orders.ToList());
+            return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
         }
 
         public async Task<IActionResult> Action(string id, bool accepted)

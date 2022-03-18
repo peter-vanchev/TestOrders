@@ -11,8 +11,6 @@ namespace TestOrders.Data.Models
         [Required]
         public Status Status { get; set; }
 
-        public DateTime Create { get; set; }
-
         public DateTime LastUpdate { get; set; }
 
         public Guid OrderId { get; set; }
@@ -24,16 +22,5 @@ namespace TestOrders.Data.Models
 
         [ForeignKey(nameof(DriverId))]
         public Driver Driver { get; set; }
-
-        public Guid? RestaurantId { get; set; }
-
-        [ForeignKey(nameof(RestaurantId))]
-        public Restaurant Restaurant { get; set; }
-
-        [Required]
-        public string ApplicationUserId { get; set; }
-
-        [ForeignKey(nameof(ApplicationUserId))]
-        public ApplicationUser User { get; set; }
     }
 }

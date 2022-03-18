@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestOrders.Data;
 
@@ -11,9 +12,10 @@ using TestOrders.Data;
 namespace TestOrders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220318092146_AddDataCreateToOrder")]
+    partial class AddDataCreateToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,8 +360,8 @@ namespace TestOrders.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid?>("DriverId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
@@ -396,8 +398,6 @@ namespace TestOrders.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("DriverId");
-
                     b.HasIndex("RestaurantId");
 
                     b.HasIndex("UserId");
@@ -411,6 +411,10 @@ namespace TestOrders.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid?>("DriverId")
                         .HasColumnType("uniqueidentifier");
 
@@ -420,14 +424,21 @@ namespace TestOrders.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("DriverId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("OrderDatas");
                 });
@@ -626,11 +637,6 @@ namespace TestOrders.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TestOrders.Data.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("TestOrders.Data.Models.Restaurant", "Restaurant")
                         .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
@@ -645,8 +651,6 @@ namespace TestOrders.Migrations
 
                     b.Navigation("Address");
 
-                    b.Navigation("Driver");
-
                     b.Navigation("Restaurant");
 
                     b.Navigation("UserCreated");
@@ -654,6 +658,12 @@ namespace TestOrders.Migrations
 
             modelBuilder.Entity("TestOrders.Data.Models.OrderData", b =>
                 {
+                    b.HasOne("TestOrders.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TestOrders.Data.Models.Driver", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId")
@@ -665,9 +675,18 @@ namespace TestOrders.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TestOrders.Data.Models.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Driver");
 
                     b.Navigation("Order");
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TestOrders.Data.Models.Product", b =>

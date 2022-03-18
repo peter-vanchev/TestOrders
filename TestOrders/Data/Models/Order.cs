@@ -15,6 +15,8 @@ namespace TestOrders.Data.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public DateTime Create { get; set; }
+
         [Required]
         [MaxLength(20)]
         public string UserName { get; set; }
@@ -43,15 +45,20 @@ namespace TestOrders.Data.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
+        public Guid AddressId { get; set; }
+
+        [ForeignKey(nameof(AddressId))]
+        public Address Address { get; set; }
+
         public Guid RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]
         public Restaurant Restaurant { get; set; }
 
-        public Guid AddressId { get; set; }
+        public Guid? DriverId { get; set; }
 
-        [ForeignKey(nameof(AddressId))]
-        public Address Address { get; set; }
+        [ForeignKey(nameof(DriverId))]
+        public Driver Driver { get; set; }
 
         [Required]
         public string UserId { get; set; }
