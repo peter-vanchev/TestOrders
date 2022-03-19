@@ -35,10 +35,13 @@ namespace Orders.Infrastructure.Data.Models
 
         public DateTime DataCreated { get; set; }
 
+        [Required]
         public Guid AddressId { get; set; }
 
         [ForeignKey(nameof(AddressId))]
         public Address Address { get; set; }
+
+        public ApplicationUser User { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 

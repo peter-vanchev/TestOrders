@@ -45,11 +45,13 @@ namespace Orders.Infrastructure.Data.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
+        [Required]
         public Guid AddressId { get; set; }
 
         [ForeignKey(nameof(AddressId))]
         public Address Address { get; set; }
 
+        [Required]
         public Guid RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]

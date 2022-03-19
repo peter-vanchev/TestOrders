@@ -24,6 +24,6 @@ namespace Orders.Infrastructure.Data.Models
         public string Type { get; set; }
 
         [MaxLength(100)]
-        public string Url { get; set; }
+        public string? Url { get; set; }
     }
 }

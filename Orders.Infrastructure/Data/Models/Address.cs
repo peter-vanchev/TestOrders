@@ -12,17 +12,17 @@ namespace Orders.Infrastructure.Data.Models
         public string Town { get; set; } = "София";
 
         [MaxLength(50)]
-        public string Area { get; set; }
+        public string? Area { get; set; }
 
         [Required]
         [MaxLength(20)]
-        public string Street { get; set; }
+        public string? Street { get; set; }
 
         [Required]
         [MaxLength(20)]
-        public string Number { get; set; }
+        public string? Number { get; set; }
 
         [MaxLength(20)]
-        public string Other { get; set; }
+        public string? Other { get; set; }
     }
 }

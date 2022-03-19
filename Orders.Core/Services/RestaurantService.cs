@@ -24,7 +24,7 @@ namespace Orders.Core.Services
         public async Task<(bool created, string error)> Create(RestaurantViewModel model)
         {
             bool created = false;
-            string error = null;
+            string error = "";
 
             var address = new Address()
             {

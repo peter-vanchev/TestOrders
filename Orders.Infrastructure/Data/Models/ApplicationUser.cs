@@ -13,12 +13,12 @@ namespace Orders.Infrastructure.Data.Models
         public Guid? RestaurantId { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]
-        public Restaurant? Restaurant { get; set; }
+        public Restaurant Restaurant { get; set; }
 
         public Guid? DriverId { get; set; }
 
         [ForeignKey(nameof(DriverId))]
-        public Driver? Driver { get; set; }
+        public Driver Driver { get; set; }
 
         public ICollection<Order> Orders { get; set; }
     }

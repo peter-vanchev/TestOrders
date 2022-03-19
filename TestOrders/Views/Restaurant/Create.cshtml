@@ -26,7 +26,6 @@
 <!---------------------------------------------------------------------------------------------------------------------------->
 <!-- Main content -->
 <form class="form-horizontal" asp-action="Create" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -34,6 +33,7 @@
                 <div class="col-md-6">
                     <!-- Form Element sizes -->
                     <div class="card card-success">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="card-header">
                             <h3 class="card-title">Данни на ресторант</h3>
                         </div>
@@ -111,6 +111,7 @@
                 <!--/.col (left) -->
                 <!-- right column -->
                 <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <!---------------------------------lentoff form create owner---------------------------------------->
                     <div class="card card-info">

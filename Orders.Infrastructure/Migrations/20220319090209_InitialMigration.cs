@@ -15,10 +15,10 @@ namespace Orders.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Town = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Area = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Area = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Street = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Number = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Other = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Other = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace Orders.Infrastructure.Migrations
                     Brand = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,8 +151,8 @@ namespace Orders.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -404,12 +404,14 @@ namespace Orders.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_DriverId",
                 table: "AspNetUsers",
-                column: "DriverId");
+                column: "DriverId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_RestaurantId",
                 table: "AspNetUsers",
-                column: "RestaurantId");
+                column: "RestaurantId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

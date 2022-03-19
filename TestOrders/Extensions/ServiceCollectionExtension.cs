@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddTransient<IApplicatioDbRepository, ApplicatioDbRepository>();
+            services.AddScoped<IApplicatioDbRepository, ApplicatioDbRepository>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IOrderService, OrderService>();

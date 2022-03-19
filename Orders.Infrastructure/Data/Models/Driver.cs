@@ -31,5 +31,7 @@ namespace Orders.Infrastructure.Data.Models
         public Car Car { get; set; }
 
         public ICollection<Order> Orders { get; set; }
+
+        public ApplicationUser User { get; set; }
     }
 }

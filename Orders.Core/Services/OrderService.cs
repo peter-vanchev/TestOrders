@@ -162,7 +162,7 @@ namespace Orders.Core.Services
         public async Task<(bool created, string error)> AsignDriver(OrderViewModel model)
         {
             bool created = true;
-            string error = null;
+            string error = "";
 
             var order = await repo.All<Order>()
                 .Where(x => x.Id == model.Id)

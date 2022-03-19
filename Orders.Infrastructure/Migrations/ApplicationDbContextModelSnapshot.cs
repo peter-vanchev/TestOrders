@@ -166,7 +166,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Area")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -176,7 +175,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Other")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -208,6 +206,7 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("DriverId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -241,6 +240,7 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("RestaurantId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SecurityStamp")
@@ -255,7 +255,8 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
+                    b.HasIndex("DriverId")
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -265,7 +266,8 @@ namespace Orders.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -297,7 +299,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -590,14 +591,16 @@ namespace Orders.Infrastructure.Migrations
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Orders.Infrastructure.Data.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("User")
+                        .HasForeignKey("Orders.Infrastructure.Data.Models.ApplicationUser", "DriverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Orders.Infrastructure.Data.Models.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("User")
+                        .HasForeignKey("Orders.Infrastructure.Data.Models.ApplicationUser", "RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Driver");
 
@@ -718,6 +721,9 @@ namespace Orders.Infrastructure.Migrations
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Driver", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Order", b =>
@@ -737,6 +743,9 @@ namespace Orders.Infrastructure.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Products");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
