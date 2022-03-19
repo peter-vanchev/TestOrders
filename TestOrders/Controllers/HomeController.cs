@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Orders.Core.Models;
 using System.Diagnostics;
-using TestOrders.Contracts;
-using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {

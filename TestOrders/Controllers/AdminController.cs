@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TestOrders.Contracts;
-using TestOrders.Models;
+using Orders.Core.Contracts;
+using Orders.Core.Models;
 
 namespace TestOrders.Controllers
 {

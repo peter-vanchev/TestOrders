@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TestOrders.Contracts;
-using TestOrders.Models;
+using Orders.Core.Contracts;
+using Orders.Core.Models;
 
 namespace TestOrders.Controllers
 {
@@ -22,9 +22,9 @@ namespace TestOrders.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel model)
+        public async Task<IActionResult> Create(ProductViewModel model)
         {
-            var (created, error) = productService.Create(model);
+            var (created, error) = await productService.Create(model);
             if (!created)
             {
                 return View(error, "/Error");

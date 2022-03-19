@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orders.Core.Contracts;
+using Orders.Core.Models;
+using Orders.Infrastructure.Data.Models;
 using System.Security.Claims;
-using TestOrders.Contracts;
-using TestOrders.Data.Models;
-using TestOrders.Models;
 
 namespace TestOrders.Controllers
 {

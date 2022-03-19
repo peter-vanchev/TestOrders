@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TestOrders.Contracts;
-using TestOrders.Data;
-using TestOrders.Data.Common;
-using TestOrders.Data.Models;
-using TestOrders.Services;
+using Orders.Core.Contracts;
+using Orders.Core.Services;
+using Orders.Infrastructure.Data;
+using Orders.Infrastructure.Data.Models;
+using Orders.Infrastructure.Data.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -12,19 +12,18 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddTransient<IApplicatioDbRepository, ApplicatioDbRepository>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IDriverServices, DriverServices>();
             services.AddScoped<IFileService, FileService>();
-            services.AddScoped<IRepository, Repository>();
 
             return services;
         }
-     
-        public static IServiceCollection AddApplicationContexts(this IServiceCollection services, IConfiguration config)
+
+        public static IServiceCollection AddApplicationDbContexts(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>

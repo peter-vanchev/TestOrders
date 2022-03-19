@@ -4,8 +4,7 @@ using TestOrders.ModelBinders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddApplicationContexts(builder.Configuration);
-
+builder.Services.AddApplicationDbContexts(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 
 builder.Services.AddControllersWithViews()

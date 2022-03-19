@@ -5,8 +5,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Orders.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
-using TestOrders.Data.Models;
 
 namespace TestOrders.Areas.Identity.Pages.Account
 {
