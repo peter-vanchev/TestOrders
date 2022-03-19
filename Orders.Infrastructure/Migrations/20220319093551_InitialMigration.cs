@@ -109,7 +109,7 @@ namespace Orders.Infrastructure.Migrations
                     Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DataCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,8 +151,8 @@ namespace Orders.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -286,7 +286,7 @@ namespace Orders.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -326,7 +326,7 @@ namespace Orders.Infrastructure.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -405,13 +405,15 @@ namespace Orders.Infrastructure.Migrations
                 name: "IX_AspNetUsers_DriverId",
                 table: "AspNetUsers",
                 column: "DriverId",
-                unique: true);
+                unique: true,
+                filter: "[DriverId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_RestaurantId",
                 table: "AspNetUsers",
                 column: "RestaurantId",
-                unique: true);
+                unique: true,
+                filter: "[RestaurantId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

@@ -14,5 +14,8 @@ namespace Orders.Core.Contracts
         public Task<List<ManageUserRolesViewModel>> AddRoleToUser(string userId);
 
         public Task<(bool, List<ManageUserRolesViewModel>)> ManageRole(List<ManageUserRolesViewModel> model, string userId);
+
+        Task<bool> Seed();
+
     }
 }

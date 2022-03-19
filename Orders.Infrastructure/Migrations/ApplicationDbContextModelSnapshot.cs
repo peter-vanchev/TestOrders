@@ -206,7 +206,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("DriverId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -240,7 +239,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("RestaurantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SecurityStamp")
@@ -256,7 +254,8 @@ namespace Orders.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DriverId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[DriverId] IS NOT NULL");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -267,7 +266,8 @@ namespace Orders.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("RestaurantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[RestaurantId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -314,7 +314,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCreated")
@@ -361,7 +360,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<Guid?>("DriverId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PaymentType")
@@ -415,7 +413,6 @@ namespace Orders.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("DriverId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdate")
@@ -593,14 +590,12 @@ namespace Orders.Infrastructure.Migrations
                     b.HasOne("Orders.Infrastructure.Data.Models.Driver", "Driver")
                         .WithOne("User")
                         .HasForeignKey("Orders.Infrastructure.Data.Models.ApplicationUser", "DriverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Orders.Infrastructure.Data.Models.Restaurant", "Restaurant")
                         .WithOne("User")
                         .HasForeignKey("Orders.Infrastructure.Data.Models.ApplicationUser", "RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Driver");
 
@@ -612,8 +607,7 @@ namespace Orders.Infrastructure.Migrations
                     b.HasOne("Orders.Infrastructure.Data.Models.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Car");
                 });
@@ -629,8 +623,7 @@ namespace Orders.Infrastructure.Migrations
                     b.HasOne("Orders.Infrastructure.Data.Models.Driver", "Driver")
                         .WithMany("Orders")
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Orders.Infrastructure.Data.Models.Restaurant", "Restaurant")
                         .WithMany("Orders")
@@ -658,8 +651,7 @@ namespace Orders.Infrastructure.Migrations
                     b.HasOne("Orders.Infrastructure.Data.Models.Driver", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Orders.Infrastructure.Data.Models.Order", "Order")
                         .WithMany("OrderData")

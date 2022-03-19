@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Models;
+using Orders.Infrastructure.Data.Models;
 using System.Diagnostics;
 
 namespace TestOrders.Controllers
@@ -14,7 +16,7 @@ namespace TestOrders.Controllers
         }
 
         public IActionResult Index()
-        {
+        {               
             if (User.IsInRole("Admin"))
             {
                 return Redirect("/Admin");
@@ -24,7 +26,7 @@ namespace TestOrders.Controllers
                 return Redirect("/Restaurant");
             }
 
-            return Redirect("Restaurant/All");
+            return View();
         }
 
         public IActionResult Privacy()

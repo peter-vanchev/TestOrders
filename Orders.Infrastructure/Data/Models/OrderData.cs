@@ -21,6 +21,6 @@ namespace Orders.Infrastructure.Data.Models
         public Guid? DriverId { get; set; }
 
         [ForeignKey(nameof(DriverId))]
-        public Driver Driver { get; set; }
+        public Driver? Driver { get; set; }
     }
 }

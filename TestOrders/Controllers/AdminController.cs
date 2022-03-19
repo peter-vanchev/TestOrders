@@ -12,12 +12,17 @@ namespace TestOrders.Controllers
         private readonly IAdminService adminService;
 
         public AdminController(IAdminService _adminService)
-        {               
+        {
             adminService = _adminService;
         }
 
-        public IActionResult Index() => View();
-       
+        public async Task<IActionResult> Index()
+        {
+            //var result = await adminService.Seed();
+
+            return View();
+        }
+
 
         public async Task<IActionResult> Role()
         {

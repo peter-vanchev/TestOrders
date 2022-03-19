@@ -140,5 +140,31 @@ namespace Orders.Core.Services
         {
             return new List<string>(await userManager.GetRolesAsync(user));
         }
+
+        public async Task<bool> Seed() 
+        {
+            var usersNumber = userManager.Users;
+            if (usersNumber.Count() <= 1)
+            {
+                var admin = await roleManager.CreateAsync(new IdentityRole("Admin"));
+                var manager = await roleManager.CreateAsync(new IdentityRole("Manager"));
+                var restaurant = await roleManager.CreateAsync(new IdentityRole("Restaurant"));
+                var driver = await roleManager.CreateAsync(new IdentityRole("Driver"));
+
+                var user = new ApplicationUser
+                {
+                    Email = "Admin@abv.bg",
+                    NormalizedEmail = "ADMIN@ABV.BG",
+                    UserName = "ADMIN",
+                    NormalizedUserName = "ADMIN",
+                    EmailConfirmed = true,
+                };
+
+                admin = await userManager.CreateAsync(user, "Admin1");
+                admin = await userManager.AddToRoleAsync(user, "Admin");
+            };
+
+            return true;
+        }
     }
 }

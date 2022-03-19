@@ -28,7 +28,7 @@ namespace Orders.Infrastructure.Data.Models
         public Guid? CarId { get; set; }
 
         [ForeignKey(nameof(CarId))]
-        public Car Car { get; set; }
+        public Car? Car { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 
