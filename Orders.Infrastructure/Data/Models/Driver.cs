@@ -13,12 +13,8 @@ namespace Orders.Infrastructure.Data.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
-        [MaxLength(30)]
-        public string Name { get; set; }
-
         [MaxLength(100)]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
         [Required]
         public Status Status { get; set; }

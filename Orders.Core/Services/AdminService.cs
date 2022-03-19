@@ -151,20 +151,18 @@ namespace Orders.Core.Services
                 var restaurant = await roleManager.CreateAsync(new IdentityRole("Restaurant"));
                 var driver = await roleManager.CreateAsync(new IdentityRole("Driver"));
 
-                var user = new ApplicationUser
+                var userAdmin = await userManager.Users
+                .Where(x => x.Email == "Ravinabg@abv.bg")
+                .FirstOrDefaultAsync();
+                var result = userManager.AddToRoleAsync(userAdmin, "Admin");
+
+                if ((admin.Succeeded && manager.Succeeded && restaurant.Succeeded && driver.Succeeded && restaurant.Succeeded))
                 {
-                    Email = "Admin@abv.bg",
-                    NormalizedEmail = "ADMIN@ABV.BG",
-                    UserName = "ADMIN",
-                    NormalizedUserName = "ADMIN",
-                    EmailConfirmed = true,
-                };
+                    return true;
+                }                  
+            };                              
 
-                admin = await userManager.CreateAsync(user, "Admin1");
-                admin = await userManager.AddToRoleAsync(user, "Admin");
-            };
-
-            return true;
+            return false;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Orders.Core.Services
                     Status = o.Status,
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
-                    DriverName = o.Driver.Name
+                    DriverName = o.Driver.User.FirstName +  " " + o.Driver.User.FirstName
                 }).ToListAsync();
 
             var order1 = await repo.All<Order>()
@@ -61,8 +61,8 @@ namespace Orders.Core.Services
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
                   DataCreated = o.Create,
-                  DriverName = o.Driver.Name
-               })
+                  DriverName = o.Driver.User.FirstName + " " + o.Driver.User.FirstName
+              })
               .ToListAsync();
 
             return order1;
@@ -153,7 +153,7 @@ namespace Orders.Core.Services
                     Status = o.Status,
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
-                    DriverName = o.Driver.Name
+                    DriverName = o.Driver.User.FirstName + " " + o.Driver.User.FirstName
                 }).FirstOrDefaultAsync();
 
             return order;

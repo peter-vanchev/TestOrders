@@ -20,6 +20,11 @@ namespace TestOrders.Controllers
         {
             //var result = await adminService.Seed();
 
+            //if (result)
+            //{
+            //    SignOut();
+            //}
+
             return View();
         }
 

@@ -29,7 +29,7 @@ namespace Orders.Core.Services
                  .Select(x => new DriverViewModel()
                  { 
                      Id = x.Driver.Id,
-                     Name = x.Driver.Name,
+                     Name = x.FirstName + " " + x.LastName,
                      PhoneNumber = x.PhoneNumber,
                      Email = x.Email,
                      DriverUrl = x.Driver.Url,
@@ -59,7 +59,6 @@ namespace Orders.Core.Services
 
             var driver = new Driver()
             {
-                Name = model.Name,
                 DataCreated = DateTime.Now,
                 Status = Status.Свободен,
                 Url = model.DriverUrl,
@@ -77,7 +76,8 @@ namespace Orders.Core.Services
                 EmailConfirmed = true,
                 Driver = driver,
                 DriverId = driver.Id,
-                PhoneNumber = model.PhoneNumber,                
+                PhoneNumber = model.PhoneNumber,
+                
             };
 
             var addUser = await userManager.CreateAsync(user, model.Password);

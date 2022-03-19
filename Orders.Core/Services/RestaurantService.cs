@@ -52,7 +52,9 @@ namespace Orders.Core.Services
                 Email = model.UserEmail,
                 NormalizedEmail = model.UserEmail.ToUpper(),
                 UserName = model.UserEmail,
-                NormalizedUserName = model.UserEmail.ToUpper(),
+                NormalizedUserName = model.UserEmail.ToUpper(),                
+                FirstName = model.FirsName,
+                LastName = model.FirsName,
                 EmailConfirmed = true,
                 Restaurant = restaurant,
                 RestaurantId = restaurant.Id
