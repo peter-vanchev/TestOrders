@@ -108,7 +108,7 @@ namespace Orders.Core.Services
                 return (created, String.Join(", ", error));
             }
 
-            return (created, null);
+            return (created, "");
         }
     }
 }

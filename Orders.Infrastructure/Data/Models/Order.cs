@@ -43,7 +43,7 @@ namespace Orders.Infrastructure.Data.Models
         public Status Status { get; set; }
 
         [MaxLength(200)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         public Guid AddressId { get; set; }

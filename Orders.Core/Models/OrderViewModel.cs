@@ -8,7 +8,7 @@ namespace Orders.Core.Models
         public Guid Id { get; set; }
 
         [MaxLength(20)]
-        public string Town { get; set; }
+        public string? Town { get; set; }
 
         [MaxLength(50)]
         public string? Aria { get; set; }
@@ -22,7 +22,7 @@ namespace Orders.Core.Models
         public string Number { get; set; }
 
         [MaxLength(50)]
-        public string AddressOther { get; set; }
+        public string? AddressOther { get; set; }
 
         [Required]
         [MaxLength(20)]
@@ -48,22 +48,22 @@ namespace Orders.Core.Models
         
         public Status Status { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public DateTime DataCreated { get; set; }
 
         public DateTime LastStatusTime { get; set; }
 
-        public Guid RestaurantId { get; set; }
+        public Guid? RestaurantId { get; set; }
 
-        public string RestaurantName { get; set; }
+        public string? RestaurantName { get; set; }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
-        public string UserCreatedName { get; set; }
+        public string? UserCreatedName { get; set; }
 
-        public Guid DriverId { get; set; }
+        public Guid? DriverId { get; set; }
 
-        public string DriverName { get; set; }
+        public string? DriverName { get; set; }
     }
 }

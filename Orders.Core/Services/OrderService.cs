@@ -71,7 +71,7 @@ namespace Orders.Core.Services
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
         {
             bool created = true;
-            string error = null;
+            string error = "";
 
             var address = new Address()
             {
@@ -103,7 +103,7 @@ namespace Orders.Core.Services
                 UserId = userId,
                 Description = model.Description,
                 Create = DateTime.Now,
-                Status = model.Status
+                Status = Status.Нова
             };
 
 
@@ -121,7 +121,6 @@ namespace Orders.Core.Services
                 repo.SaveChanges();
                 created = true;
             }
-
             catch (Exception)
             {
                 error = "Could not save Order";
@@ -179,7 +178,7 @@ namespace Orders.Core.Services
             order.PaymentType = model.PaymentType;
             order.Price = model.Price;
             order.DeliveryPrice = model.DeliveryPrice;
-            order.RestaurantId = model.RestaurantId;
+            order.RestaurantId = (Guid)model.RestaurantId;
             order.Restaurant = restaurant;
             order.PhoneNumner = model.PhoneNumner;
             order.Status = Status.Изпратена;

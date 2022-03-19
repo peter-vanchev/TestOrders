@@ -27,15 +27,15 @@ namespace Orders.Core.Models
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
 
-        public string DriverUrl { get; set; }
+        public string? DriverUrl { get; set; }
 
         public string? CarModel { get; set; }
 
-        public string CarNumber { get; set; }
+        public string? CarNumber { get; set; }
 
-        public string CarType { get; set; }
+        public string? CarType { get; set; }
 
-        public string CarUrl { get; set; }
+        public string? CarUrl { get; set; }
 
         public Guid OrderId { get; set; }
 

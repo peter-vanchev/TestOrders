@@ -86,9 +86,7 @@ namespace TestOrders.Controllers
             var userId = userManager.GetUserId(User);
 
             if (!ModelState.IsValid || model.PaymentType == "false")
-            {
-                var allErrors = ModelState.Values.SelectMany(v => v.Errors).ToList();
-               
+            {               
                 if (this.User.IsInRole("Admin"))
                 {
                     var restaurants = await restaurantService.GetAll();
@@ -102,16 +100,18 @@ namespace TestOrders.Controllers
                     restaurants.Add(restaurant);
                     ViewData["restaurants"] = restaurants;
                 }
+
                 return View();
             }
             
             var (created, error) = await orderService.Create(model, userId);
             if (!created)
             {
-                return View(error, "/Error");
+                ModelState.AddModelError("", error);
+                return View();
             }
 
-            return Redirect("/Order/All");
+            return Redirect("/Order/NewOrders");
         }
 
         public async Task<IActionResult> Details(string Id)

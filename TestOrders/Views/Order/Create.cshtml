@@ -104,14 +104,12 @@
 
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" asp-for="PaymentType" type="checkbox" id="PaymentType" value="В брой" checked>
-                                    <span asp-validation-for="PaymentType" class="text-danger"></span>
-                                    <label for="PaymentType" class="custom-control-label active">В брой</label>
+                                    <input class="custom-control-input" name="PaymentType" type="checkbox" id="PaymentType" value="В брой">
+                                    <label for="PaymentType" class="custom-control-label">В брой</label>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input custom-control-input-danger" asp-for="PaymentType" type="checkbox" id="PaymentType2" value="С карта">
+                                    <input class="custom-control-input custom-control-input-danger" mane="PaymentType" type="checkbox" id="PaymentType2" value="С карта">
                                     <label for="PaymentType2" class="custom-control-label">С карта</label>
-                                    <span asp-validation-for="PaymentType" class="text-danger"></span>
                                 </div>
                             </div>
                             <!-- /.card-body -->
