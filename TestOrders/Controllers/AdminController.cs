@@ -21,7 +21,7 @@ namespace TestOrders.Controllers
             orderService = _orderService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //var result = await adminService.Seed();
 

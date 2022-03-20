@@ -1,4 +1,5 @@
 ﻿@using Orders.Core.Models
+@using Orders.Infrastructure.Data.Models
 @model List<OrderViewModel>
 
 @{
@@ -58,10 +59,10 @@
                                                 <p>@order.DataCreated</p>
                                             </td>
                                             <td class="table-web">
-                                                10:30 - 11:00
+                                                <span class="badge badge-pill" style="background-color: #ffc107">@order.Status</span>
                                             </td>
                                             <td>
-                                                <span class="badge badge-pill" style="background-color: #ffc107">@order.Status</span>
+                                                <p>@order.UserName
                                             </td>
                                             <td class="table-web">
                                                 <p>@order.Street, @order.Number</p>
@@ -75,17 +76,24 @@
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm order-action"
-                                            onclick="(setSelectedOrderId(586))" data-toggle="modal"
-                                            data-target="#modal-asign-driver">
-                                                    Насочи към шофьор
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <a asp-action="Details" asp-route-id="@order.Id">Details</a>
-                                            </td>
-                                            <td>
-                                                <a asp-action="Edit" asp-route-id="@order.Id">Edit</a>
+                                                @if (@order.Status == Status.Приета)
+                                                {
+                                                    <div class="card card-primary collapsed-card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Насочи към шофьор</h3>
+                                                            <div class="card-tools">
+                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body" style="display: none;">
+                                                            <a class="btn btn-block btn-outline-white btn-sm" asp-action="Edit" asp-route-id="@order.Id">
+                                                                <p>Role Manager</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                }
                                             </td>
                                         </tr>
                                     }

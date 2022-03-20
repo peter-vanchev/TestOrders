@@ -54,18 +54,17 @@
                                                 </div>
                                             </td>
                                             <td class="table-web">
-                                                <p>@order.Town,</p>
+                                                <p>@order.Town ,</p>
                                                 <p>@order.DataCreated</p>
                                             </td>
                                             <td class="table-web">
-                                                10:30 - 11:00
-                                            </td>
-                                            <td>
                                                 <span class="badge badge-pill" style="background-color: #ffc107">@order.Status</span>
                                             </td>
+                                            <td>
+                                                <p>@order.UserName</p>
+                                            </td>
                                             <td class="table-web">
-                                                <p>@order.Street @order.Number</p>
-                                                <p>@order.Town</p>
+                                                <p>@order.Street, @order.Number</p>
                                             </td>
                                             <td>@order.Price.ToString("F2") лв.</td>
                                             <td>@order.DeliveryPrice.ToString("F2") лв.</td>

@@ -28,7 +28,7 @@ namespace Orders.Core.Services
                  .Select(x => new DriverViewModel()
                  { 
                      Id = x.Driver.Id,
-                     FirsName = x.FirstName,
+                     FirstName = x.FirstName,
                      LastName = x.LastName,
                      PhoneNumber = x.PhoneNumber,
                      Email = x.Email,
@@ -76,7 +76,7 @@ namespace Orders.Core.Services
                 Driver = driver,
                 DriverId = driver.Id,
                 PhoneNumber = model.PhoneNumber,
-                FirstName = model.FirsName,
+                FirstName = model.FirstName,
                 LastName = model.LastName
             };
 
@@ -172,7 +172,9 @@ namespace Orders.Core.Services
                 {
                     Id = (Guid)x.DriverId,
                     Email = x.Email,
-                    Status = x.Driver.Status
+                    Status = x.Driver.Status,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName
                 })
                 .ToListAsync();
 

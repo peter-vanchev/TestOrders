@@ -9,7 +9,7 @@ namespace Orders.Core.Models
 
         [Required]
         [MaxLength(30)]
-        public string FirsName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [MaxLength(30)]

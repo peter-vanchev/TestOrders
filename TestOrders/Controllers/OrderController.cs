@@ -14,19 +14,22 @@ namespace TestOrders.Controllers
         private readonly IOrderService orderService;
         private readonly IAdminService adminService;
         private readonly IRestaurantService restaurantService;
+        private readonly IDriverServices driverServices;
 
         public OrderController(
             ILogger<HomeController> _logger,
             IOrderService _orderService,
             UserManager<ApplicationUser> _userManager,
             IAdminService _adminService,
-            IRestaurantService _restaurantService)
+            IRestaurantService _restaurantService,
+            IDriverServices _driverServices)
         {
             orderService = _orderService;
             logger = _logger;
             userManager = _userManager;
             adminService = _adminService;
             restaurantService = _restaurantService;
+            driverServices = _driverServices;
         }
 
         public IActionResult Index()
@@ -122,17 +125,16 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> Edit(string Id)
         {
-            ViewBag.drivers = await orderService.GetFreeDrivers();
+            var drivers = await driverServices.GetFreeDrivers();
+
+            ViewBag.drivers = drivers;
             var order = await orderService.GetOrderById(Id);
-            var restorants = await restaurantService.GetAll();
-            ViewBag.restorants = restorants;
             return View(order);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(OrderViewModel model)
+        public async Task<IActionResult> AsignOrder(OrderViewModel model)
         {
-            var (asign, error) = await orderService.AsignDriver(model);
+            var (asign, error) = await driverServices.AsignDriver(model);
 
             if (!asign)
             {

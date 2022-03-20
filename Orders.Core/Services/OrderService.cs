@@ -37,6 +37,7 @@ namespace Orders.Core.Services
                   Price = o.Price,
                   DeliveryPrice = o.DeliveryPrice,
                   TimeForDelivery = o.TimeForDelivery,
+                  RestaurantId = o.RestaurantId,
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
                   DataCreated = o.Create,
