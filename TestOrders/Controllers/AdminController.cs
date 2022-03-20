@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
+using Orders.Infrastructure.Data.Models;
 
 namespace TestOrders.Controllers
 {
@@ -10,10 +11,14 @@ namespace TestOrders.Controllers
     public class AdminController : BaseController
     {
         private readonly IAdminService adminService;
+        private readonly IOrderService orderService;
 
-        public AdminController(IAdminService _adminService)
+        public AdminController(
+            IAdminService _adminService,
+            IOrderService _orderService)
         {
             adminService = _adminService;
+            orderService = _orderService;
         }
 
         public async Task<IActionResult> Index()

@@ -1,4 +1,5 @@
-﻿<nav class="mt-2">
+﻿@using Orders.Infrastructure.Data.Models
+<nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
@@ -63,7 +64,6 @@
                 <p>
                     Шофьори
                     <i class="fas fa-angle-left right"></i>
-
                 </p>
             </a>
             <ul class="nav nav-treeview">
@@ -83,16 +83,6 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Order" asp-action="NewOrders">
-                <i class="nav-icon far fa-plus-square"></i>
-                <p>
-                    Нови поръчки
-                    <span class="badge badge-info right">4</span>
-                </p>
-            </a>
-        </li>
-
-        <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>
@@ -102,9 +92,9 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Order" asp-action="Create">
+                    <a class="nav-link" asp-controller="Order" asp-action="NewOrders">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Създай</p>
+                        <p>Нови поръчки</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -113,18 +103,26 @@
                         <p>Всички</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Order" asp-action="Create">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Създай</p>
+                    </a>
+                </li>
             </ul>
         </li>
+    </ul>
+    </li>
 
 
 
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                    Отчети
-                </p>
-            </a>
-        </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>
+                Отчети
+            </p>
+        </a>
+    </li>
     </ul>
 </nav>

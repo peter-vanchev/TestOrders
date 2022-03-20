@@ -1,4 +1,5 @@
 ﻿using Orders.Core.Models;
+using Orders.Infrastructure.Data.Models;
 
 namespace Orders.Core.Contracts
 {
@@ -15,5 +16,6 @@ namespace Orders.Core.Contracts
         Task<(bool created, string error)> AsignDriver(OrderViewModel model);
 
         Task<IEnumerable<DriverViewModel>> GetFreeDrivers();
+
     }
 }
