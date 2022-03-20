@@ -19,7 +19,7 @@ namespace Orders.Core.Services
             roleManager = _roleManager;
         }
 
-        public async Task<List<IdentityRole>> GetRole()                                                     
+        public async Task<List<IdentityRole>> GetRole()
         {
             var roles = await roleManager.Roles.ToListAsync();
             return roles;
@@ -80,7 +80,7 @@ namespace Orders.Core.Services
             var user = await userManager.FindByIdAsync(userId);
 
             if (user == null)
-            {                              
+            {
                 return null;
             }
 
@@ -141,7 +141,7 @@ namespace Orders.Core.Services
             return new List<string>(await userManager.GetRolesAsync(user));
         }
 
-        public async Task<bool> Seed() 
+        public async Task<bool> Seed()
         {
             var usersNumber = userManager.Users;
             if (usersNumber.Count() <= 1)
@@ -154,13 +154,13 @@ namespace Orders.Core.Services
                 var userAdmin = await userManager.Users
                 .Where(x => x.Email == "Ravinabg@abv.bg")
                 .FirstOrDefaultAsync();
-                var result = userManager.AddToRoleAsync(userAdmin, "Admin");
+                var result = await userManager.AddToRoleAsync(userAdmin, "Admin");
 
                 if ((admin.Succeeded && manager.Succeeded && restaurant.Succeeded && driver.Succeeded && restaurant.Succeeded))
                 {
                     return true;
-                }                  
-            };                              
+                }
+            };
 
             return false;
         }

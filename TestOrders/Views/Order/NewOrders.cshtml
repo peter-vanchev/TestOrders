@@ -35,6 +35,7 @@
                                     <th class="table-web" scope="col">Цена</th>
                                     <th class="table-web" scope="col">Доставка</th>
                                     <th class="table-web" scope="col">Вид плащане</th>
+                                    <th class="table-web" scope="col">Време за доставка</th>
                                     <th scope="col">Действие</th>
                                 </tr>
 
@@ -63,17 +64,18 @@
                                                 <span class="badge badge-pill" style="background-color: #ffc107">@order.Status</span>
                                             </td>
                                             <td class="table-web">
-                                                <p>@order.Street, @order.Number</p>
+                                                <p>@order.Street @order.Number</p>
                                                 <p>@order.Town</p>
                                             </td>
-                                            <td>@order.Price.ToString("F2")</td>
-                                            <td>@order.DeliveryPrice.ToString("F2")</td>
+                                            <td>@order.Price.ToString("F2") лв.</td>
+                                            <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                             <td>@order.PaymentType</td>
+                                            <td>@order.TimeForDelivery мин.</td>
                                             <td>
-                                                <a class="btn btn-info btn-sm order-action" 
-                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true" >Приеми</a>
-                                                <a class="btn btn-info btn-sm order-action" 
-                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false" >Откажи</a>                                               
+                                                <a class="btn btn-info btn-sm order-action"
+                                               asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
+                                                <a class="btn btn-info btn-sm order-action"
+                                               asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
                                             </td>
                                         </tr>
                                     }

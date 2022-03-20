@@ -29,7 +29,8 @@ namespace Orders.Core.Services
                  .Select(x => new DriverViewModel()
                  { 
                      Id = x.Driver.Id,
-                     Name = x.FirstName + " " + x.LastName,
+                     FirsName = x.FirstName,
+                     LastName = x.LastName,
                      PhoneNumber = x.PhoneNumber,
                      Email = x.Email,
                      DriverUrl = x.Driver.Url,
@@ -63,8 +64,7 @@ namespace Orders.Core.Services
                 Status = Status.Свободен,
                 Url = model.DriverUrl,
                 Car = car,
-                CarId = car.Id   
-                
+                CarId = car.Id,
             };
 
             var user = new ApplicationUser
@@ -77,7 +77,8 @@ namespace Orders.Core.Services
                 Driver = driver,
                 DriverId = driver.Id,
                 PhoneNumber = model.PhoneNumber,
-                
+                FirstName = model.FirsName,
+                LastName = model.LastName
             };
 
             var addUser = await userManager.CreateAsync(user, model.Password);

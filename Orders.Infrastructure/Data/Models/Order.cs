@@ -8,7 +8,7 @@ namespace Orders.Infrastructure.Data.Models
         public Order()
         {
             this.ProductOrder = new HashSet<ProductOrder>();
-            this.OrderData = new HashSet<OrderData>();
+            this.OrderDatas = new HashSet<OrderData>();
             this.Status = Status.Нова;
         }
 
@@ -70,6 +70,6 @@ namespace Orders.Infrastructure.Data.Models
 
         public ICollection<ProductOrder> ProductOrder { get; set; }
 
-        public ICollection<OrderData> OrderData { get; set; }
+        public ICollection<OrderData> OrderDatas { get; set; }
     }
 }

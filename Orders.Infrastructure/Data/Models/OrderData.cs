@@ -11,8 +11,16 @@ namespace Orders.Infrastructure.Data.Models
         [Required]
         public Status Status { get; set; }
 
+        [Required]
         public DateTime LastUpdate { get; set; }
 
+        [Required]
+        public string UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; }
+
+        [Required]
         public Guid OrderId { get; set; }
 
         [ForeignKey(nameof(OrderId))]

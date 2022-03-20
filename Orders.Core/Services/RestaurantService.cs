@@ -64,7 +64,7 @@ namespace Orders.Core.Services
 
             if (!test.Succeeded)
             {
-                error = "Could not Create Restaurant";
+                error = String.Join(", ", test.Errors.Select(x => x.Description));
                 return (created, error);
             }
 

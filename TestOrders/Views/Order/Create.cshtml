@@ -89,17 +89,15 @@
                                     <option value="10.99">10.99 лв.</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
-                                <label asp-for="TimeForDelivery" class="control-label">Време за доставка</label>
+                                <label asp-for="TimeForDelivery" class="control-label">Цена на доставка</label>
                                 <span asp-validation-for="TimeForDelivery" class="text-danger"></span>
-                                <select class="custom-select" name="DeliveryPrice" id="TimeForDelivery">
-                                    <option value=30>30 мин.</option>
-                                    <option value=45>45 мин.</option>
-                                    <option value=90>90 мин.</option>
+                                <select class="custom-select" name="TimeForDelivery" id="TimeForDelivery">
+                                    <option value="30">30 мин.</option>
+                                    <option value="45">45 мин.</option>
+                                    <option value="90">90 мин.</option>
                                 </select>
                             </div>
-
                             <!-- checkbox -->
 
                             <div class="form-group">
@@ -108,7 +106,7 @@
                                     <label for="PaymentType" class="custom-control-label">В брой</label>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input custom-control-input-danger" mane="PaymentType" type="checkbox" id="PaymentType2" value="С карта">
+                                    <input class="custom-control-input custom-control-input-danger" name="PaymentType" type="checkbox" id="PaymentType2" value="С карта">
                                     <label for="PaymentType2" class="custom-control-label">С карта</label>
                                 </div>
                             </div>

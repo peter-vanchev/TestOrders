@@ -47,7 +47,7 @@ namespace TestOrders.Controllers
                 return View();
             }
 
-            var result = await fileService.SaveFile("Drivers", (model.Name + model.CarNumber), file);
+            var result = await fileService.SaveFile("Drivers", (model.LastName + model.CarNumber), file);
 
             if (!result.saved)
             {

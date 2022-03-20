@@ -22,46 +22,25 @@ namespace Orders.Core.Services
 
         public async Task<IEnumerable<OrderViewModel>> GetAll()
         {
-            var orders = await repo.All<OrderData>()
-                .Include(x => x.Order)
-                .ThenInclude(r => r.Address)
-                .OrderByDescending(d => d.Order.Create)
-                .Select(o => new OrderViewModel
-                {
-                    Id = o.OrderId,
-                    Town = o.Order.Address.Town,
-                    Aria = o.Order.Address.Area,
-                    Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
-                    UserId = o.Order.UserCreated.Id,
-                    UserName = o.Order.UserName,
-                    PhoneNumner = o.Order.PhoneNumner,
-                    PaymentType = o.Order.PaymentType,
-                    Price = o.Order.Price,
-                    DeliveryPrice = o.Order.DeliveryPrice,
-                    RestaurantName = o.Order.Restaurant.Name,
-                    Status = o.Status,
-                    DataCreated = o.Order.Create,
-                    LastStatusTime = o.LastUpdate,
-                    DriverName = o.Driver.User.FirstName +  " " + o.Driver.User.FirstName
-                }).ToListAsync();
-
             var order1 = await repo.All<Order>()
-              .Include(x => x.OrderData)
+              .Include(x => x.OrderDatas)
               .Select(o => new OrderViewModel
               {
                   Id = o.Id,
                   Town = o.Address.Town,
                   Aria = o.Address.Area,
-                  Street = o.Address.Street + ", " + o.Address.Number,
+                  Street = o.Address.Street,
+                  Number = o.Address.Number,
                   UserName = o.UserName,
                   PhoneNumner = o.PhoneNumner,
                   PaymentType = o.PaymentType,
                   Price = o.Price,
                   DeliveryPrice = o.DeliveryPrice,
+                  TimeForDelivery = o.TimeForDelivery,
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
                   DataCreated = o.Create,
-                  DriverName = o.Driver.User.FirstName + " " + o.Driver.User.FirstName
+                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
               })
               .ToListAsync();
 
@@ -99,8 +78,8 @@ namespace Orders.Core.Services
                 Address = address,
                 RestaurantId = rest.Id,
                 Restaurant = rest,
-                UserCreated = user,
                 UserId = userId,
+                UserCreated = user,
                 Description = model.Description,
                 Create = DateTime.Now,
                 Status = Status.Нова
@@ -113,6 +92,8 @@ namespace Orders.Core.Services
                 OrderId = order.Id,
                 Status = Status.Нова,
                 LastUpdate = DateTime.Now,
+                User = user,
+                UserId = user.Id
             };
 
             try
@@ -140,7 +121,8 @@ namespace Orders.Core.Services
                     Id = o.OrderId,
                     Town = o.Order.Address.Town,
                     Aria = o.Order.Address.Area,
-                    Street = o.Order.Address.Street + ", " + o.Order.Address.Number,
+                    Street = o.Order.Address.Street,
+                    Number = o.Order.Address.Number,
                     UserName = o.Order.UserName,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,
@@ -152,7 +134,7 @@ namespace Orders.Core.Services
                     Status = o.Status,
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
-                    DriverName = o.Driver.User.FirstName + " " + o.Driver.User.FirstName
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.FirstName)
                 }).FirstOrDefaultAsync();
 
             return order;
@@ -251,6 +233,8 @@ namespace Orders.Core.Services
                 Order = order,
                 LastUpdate = DateTime.Now,
                 Status = order.Status,
+                UserId = userId,
+                User = user                 
             };
 
             action = false;

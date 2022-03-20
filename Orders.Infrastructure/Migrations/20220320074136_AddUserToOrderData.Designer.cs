@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orders.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Orders.Infrastructure.Data;
 namespace Orders.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220320074136_AddUserToOrderData")]
+    partial class AddUserToOrderData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,7 +192,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.ApplicationUser", b =>
@@ -312,7 +314,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Driver", b =>
@@ -338,7 +340,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("Drivers", (string)null);
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Order", b =>
@@ -404,7 +406,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.OrderData", b =>
@@ -437,7 +439,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrderDatas", (string)null);
+                    b.ToTable("OrderDatas");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Product", b =>
@@ -479,7 +481,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.ProductOrder", b =>
@@ -494,7 +496,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductOrders", (string)null);
+                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Orders.Infrastructure.Data.Models.Restaurant", b =>
@@ -537,7 +539,7 @@ namespace Orders.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Restaurants", (string)null);
+                    b.ToTable("Restaurants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
