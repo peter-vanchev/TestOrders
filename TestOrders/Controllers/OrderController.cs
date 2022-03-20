@@ -10,8 +10,8 @@ namespace TestOrders.Controllers
     public class OrderController : BaseController
     {
         private readonly ILogger<HomeController> logger;
-        private readonly IOrderService orderService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IOrderService orderService;
         private readonly IAdminService adminService;
         private readonly IRestaurantService restaurantService;
 

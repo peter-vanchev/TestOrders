@@ -19,7 +19,6 @@ namespace Orders.Core.Services
             userManager = _userManager;
         }
 
-
         public async Task<IEnumerable<DriverViewModel>> GetAll()
         {
             var drivers = await repo.All<ApplicationUser>()
@@ -110,6 +109,74 @@ namespace Orders.Core.Services
             }
 
             return (created, "");
+        }
+
+        public async Task<(bool created, string error)> AsignDriver(OrderViewModel model)
+        {
+            bool created = true;
+            string error = "";
+
+            var order = await repo.All<Order>()
+                .Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            var restaurant = await repo.All<Restaurant>()
+                .Where(x => x.Id == model.RestaurantId)
+                .FirstOrDefaultAsync();
+
+            var driver = await repo.All<Driver>()
+                .Where(x => x.Id == model.DriverId)
+                .FirstOrDefaultAsync();
+
+            order.PaymentType = model.PaymentType;
+            order.Price = model.Price;
+            order.DeliveryPrice = model.DeliveryPrice;
+            order.RestaurantId = (Guid)model.RestaurantId;
+            order.Restaurant = restaurant;
+            order.PhoneNumner = model.PhoneNumner;
+            order.Status = Status.Изпратена;
+
+            var orderStatus = new OrderData
+            {
+                DriverId = model.DriverId,
+                Driver = driver,
+                Order = order,
+                OrderId = model.Id,
+                Status = Status.Изпратена,
+                LastUpdate = DateTime.Now,
+            };
+
+            try
+            {
+                repo.Update(order);
+                await repo.AddAsync(orderStatus);
+
+                repo.SaveChanges();
+                created = true;
+            }
+
+            catch (Exception)
+            {
+                error = "Could not save Order";
+            }
+
+            return (created, error);
+        }
+
+        public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()
+        {
+            var drivers = await repo.All<ApplicationUser>()
+                .Include(u => u.Driver)
+                .Where(x => x.Driver.Status == Status.Свободен)
+                .Select(x => new DriverViewModel
+                {
+                    Id = (Guid)x.DriverId,
+                    Email = x.Email,
+                    Status = x.Driver.Status
+                })
+                .ToListAsync();
+
+            return drivers;
         }
     }
 }

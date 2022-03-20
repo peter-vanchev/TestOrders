@@ -8,5 +8,8 @@ namespace Orders.Core.Contracts
 
         public Task<(bool created, string error)> Create(DriverViewModel model);
 
+        Task<(bool created, string error)> AsignDriver(OrderViewModel model);
+
+        Task<IEnumerable<DriverViewModel>> GetFreeDrivers();
     }
 }
