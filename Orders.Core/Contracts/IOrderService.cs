@@ -5,7 +5,7 @@ namespace Orders.Core.Contracts
 {
     public interface IOrderService
     {
-        Task<IEnumerable<OrderViewModel>> GetAll();
+        Task<IEnumerable<OrderViewModel>> GetAll(string userId);
 
         Task<(bool created, string error)> Create(OrderViewModel model, string userId);
 

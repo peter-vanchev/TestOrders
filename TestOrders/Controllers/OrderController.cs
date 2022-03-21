@@ -41,8 +41,8 @@ namespace TestOrders.Controllers
         {
             var drivers = await driverServices.GetFreeDrivers();
             ViewBag.drivers = drivers;
-            var orders = await orderService.GetAll();
 
+            var orders = await orderService.GetAll(userManager.GetUserId(User));
             return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
         }
 
@@ -60,7 +60,7 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> NewOrders()
         {
-            var orders = await orderService.GetAll();
+            var orders = await orderService.GetAll(userManager.GetUserId(User));
 
             return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
         }

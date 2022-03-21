@@ -25,19 +25,21 @@
 
                         <div class="table-responsive">
                             <table class="table align-items-center">
-                                <tr style="color: #fff; background-color: #dc3545;">
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Ресторант</th>
-                                    <th class="table-web" scope="col">Създадена</th>
-                                    <th scope="col">Статус</th>
-                                    <th class="table-web" scope="col">Клиент</th>
-                                    <th class="table-web" scope="col">Адрес</th>
-                                    <th class="table-web" scope="col">Цена</th>
-                                    <th class="table-web" scope="col">Доставка</th>
-                                    <th class="table-web" scope="col">Вид плащане</th>
-                                    <th class="table-web" scope="col">Време за доставка</th>
-                                    <th scope="col">Действие</th>
-                                </tr>
+                                <thead>
+                                    <tr style="color: #fff; background-color: #dc3545;">
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Ресторант</th>
+                                        <th class="table-web" scope="col">Създадена</th>
+                                        <th scope="col">Статус</th>
+                                        <th class="table-web" scope="col">Клиент</th>
+                                        <th class="table-web" scope="col">Адрес</th>
+                                        <th class="table-web" scope="col">Цена</th>
+                                        <th class="table-web" scope="col">Доставка</th>
+                                        <th class="table-web" scope="col">Вид плащане</th>
+                                        <th class="table-web" scope="col">Време за доставка</th>
+                                        <th scope="col">Действие</th>
+                                    </tr>
+                                </thead>
 
                                 <tbody>
                                     @foreach (var order in Model)
@@ -70,15 +72,34 @@
                                             <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
-                                            <td>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                               <td>
                                                 <a class="btn btn-info btn-sm order-action"
                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
                                                 <a class="btn btn-info btn-sm order-action"
                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
-                                            </td>
+                                            </td> 
+                                            }                                            
                                         </tr>
                                     }
                                 </tbody>
+
+                                <tfoot>
+                                    <tr style="color: #fff; background-color: #dc3545;">
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col">@Model.Sum(x => x.Price).ToString("F2") лв.</th>
+                                        <th class="table-web" scope="col">@Model.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

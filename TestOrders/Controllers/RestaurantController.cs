@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
 
@@ -32,8 +33,10 @@ namespace TestOrders.Controllers
             return View(restaurants);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View();
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(RestaurantViewModel model, IFormFile file)
         {
@@ -69,13 +72,14 @@ namespace TestOrders.Controllers
             return View(restaurant);
         }
 
+        [Authorize(Roles = "Admin, Restaurant")]
         public async Task<IActionResult> Edit(string Id)
         {
             var restaurant = await restaurantService.GetRestaurantById(Id);
             return View(restaurant);
         }
 
-
+        [Authorize(Roles = "Admin, Restaurant")]
         public IActionResult RemoveRestaurant(string restaurantId)
         {
             var (delete, error) = restaurantService.Delete(restaurantId);

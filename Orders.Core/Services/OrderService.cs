@@ -20,33 +20,62 @@ namespace Orders.Core.Services
             userManager = _userManager;
         }
 
-        public async Task<IEnumerable<OrderViewModel>> GetAll()
+        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
         {
-            var order1 = await repo.All<Order>()
-              .Include(x => x.OrderDatas)              
-              .Select(o => new OrderViewModel
-              {
-                  Id = o.Id,
-                  Town = o.Address.Town,
-                  Aria = o.Address.Area,
-                  Street = o.Address.Street,
-                  Number = o.Address.Number,
-                  UserName = o.UserName,
-                  PhoneNumner = o.PhoneNumner,
-                  PaymentType = o.PaymentType,
-                  Price = o.Price,
-                  DeliveryPrice = o.DeliveryPrice,
-                  TimeForDelivery = o.TimeForDelivery,
-                  RestaurantId = o.RestaurantId,
-                  RestaurantName = o.Restaurant.Name,
-                  Status = o.Status,
-                  DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-              })
-              .OrderByDescending(x => x.DataCreated)
-              .ToListAsync();
+            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
 
-            return order1;
+            if (await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return await repo.All<Order>()
+                  .Include(x => x.OrderDatas)
+                  .Select(o => new OrderViewModel
+                  {
+                      Id = o.Id,
+                      Town = o.Address.Town,
+                      Aria = o.Address.Area,
+                      Street = o.Address.Street,
+                      Number = o.Address.Number,
+                      UserName = o.UserName,
+                      PhoneNumner = o.PhoneNumner,
+                      PaymentType = o.PaymentType,
+                      Price = o.Price,
+                      DeliveryPrice = o.DeliveryPrice,
+                      TimeForDelivery = o.TimeForDelivery,
+                      RestaurantId = o.RestaurantId,
+                      RestaurantName = o.Restaurant.Name,
+                      Status = o.Status,
+                      DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                      DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                  })
+                  .OrderByDescending(x => x.DataCreated)
+                  .ToListAsync();
+            }
+
+            var restaurantId = user.RestaurantId;
+            return await repo.All<Order>()
+                .Where(x => x.RestaurantId == restaurantId)
+                .Include(x => x.OrderDatas)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    Town = o.Address.Town,
+                    Aria = o.Address.Area,
+                    Street = o.Address.Street,
+                    Number = o.Address.Number,
+                    UserName = o.UserName,
+                    PhoneNumner = o.PhoneNumner,
+                    PaymentType = o.PaymentType,
+                    Price = o.Price,
+                    DeliveryPrice = o.DeliveryPrice,
+                    TimeForDelivery = o.TimeForDelivery,
+                    RestaurantId = o.RestaurantId,
+                    RestaurantName = o.Restaurant.Name,
+                    Status = o.Status,
+                    DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                })
+                .OrderByDescending(x => x.DataCreated)
+                .ToListAsync();
         }
 
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
@@ -71,7 +100,7 @@ namespace Orders.Core.Services
             var order = new Order()
             {
                 UserName = model.UserName,
-                PhoneNumner = model.PhoneNumner,
+                PhoneNumner = "+359 / " + model.PhoneNumner,
                 PaymentType = model.PaymentType,
                 DeliveryPrice = model.DeliveryPrice,
                 TimeForDelivery = model.TimeForDelivery,
@@ -86,7 +115,6 @@ namespace Orders.Core.Services
                 Create = DateTime.Now,
                 Status = Status.Нова
             };
-
 
             var orderData = new OrderData()
             {

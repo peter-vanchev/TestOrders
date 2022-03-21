@@ -152,7 +152,6 @@ namespace Orders.Core.Services
                 var driver = await roleManager.CreateAsync(new IdentityRole("Driver"));
 
                 var userAdmin = await userManager.Users
-                .Where(x => x.Email == "Ravinabg@abv.bg")
                 .FirstOrDefaultAsync();
                 var result = await userManager.AddToRoleAsync(userAdmin, "Admin");
 

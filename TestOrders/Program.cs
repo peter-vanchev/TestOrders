@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContexts(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 
+
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {

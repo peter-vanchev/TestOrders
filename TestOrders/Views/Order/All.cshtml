@@ -25,21 +25,22 @@
 
                         <div class="table-responsive">
                             <table class="table align-items-center">
-                                <tr style="color: #fff; background-color: #dc3545;">
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Ресторант</th>
-                                    <th class="table-web" scope="col">Създадена</th>
-                                    <th scope="col">Статус</th>
-                                    <th class="table-web" scope="col">Клиент</th>
-                                    <th class="table-web" scope="col">Адрес</th>
-                                    <th class="table-web" scope="col">Шофьор</th>
-                                    <th class="table-web" scope="col">Цена</th>
-                                    <th class="table-web" scope="col">Доставка</th>
-                                    <th class="table-web" scope="col">Вид плащане</th>
-                                    <th class="table-web" scope="col">Време за доставка</th>
-                                    <th scope="col">Действие</th>
-                                </tr>
-
+                                <thead>
+                                    <tr style="color: #fff; background-color: #dc3545;">
+                                        <th class="table-web" scope="col">ID</th>
+                                        <th class="table-web" scope="col">Ресторант</th>
+                                        <th class="table-web" scope="col">Създадена</th>
+                                        <th class="table-web" scope="col">Статус</th>
+                                        <th class="table-web" scope="col">Клиент</th>
+                                        <th class="table-web" scope="col">Адрес</th>
+                                        <th class="table-web" scope="col">Шофьор</th>
+                                        <th class="table-web" scope="col">Цена</th>
+                                        <th class="table-web" scope="col">Доставка</th>
+                                        <th class="table-web" scope="col">Вид плащане</th>
+                                        <th class="table-web" scope="col">Време за доставка</th>
+                                        <th scope="col">Действие</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
@@ -76,7 +77,7 @@
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
                                             <td>
-                                                @if (@order.Status == Status.Приета)
+                                                @if (@order.Status == Status.Приета && User.IsInRole("Admin"))
                                                 {
                                                     <div class="card card-primary collapsed-card">
                                                         <div class="card-header">
@@ -90,9 +91,9 @@
                                                         <div class="card-body" style="display: none;">
                                                             @foreach (var driver in ViewBag.drivers)
                                                             {
-                                                                <a class="btn btn-block btn-outline-white btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
-                                                                asp-route-orderId="@order.Id">
-                                                                    <p>@driver.FirstName @driver.LastName</p>
+                                                                <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
+                                                       asp-route-orderId="@order.Id">
+                                                                    @driver.FirstName @driver.LastName
                                                                 </a>
                                                             }
                                                         </div>
@@ -102,7 +103,32 @@
                                         </tr>
                                     }
                                 </tbody>
+                                <tfoot>
+                                    <tr style="color: #fff; background-color: #dc3545;">
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col">@Model.Sum(x => x.Price).ToString("F2") лв.</th>
+                                        <th class="table-web" scope="col">@Model.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                        <th class="table-web" scope="col"></th>
+                                    </tr>
+                                </tfoot>
+                                }
+
                             </table>
+                            <div class="card-tools">
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item"><a href="#" class="page-link">«</a></li>
+                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                                    <li class="page-item"><a href="#" class="page-link">»</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div><!-- /.row -->
