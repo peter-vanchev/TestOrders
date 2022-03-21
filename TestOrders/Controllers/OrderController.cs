@@ -39,6 +39,8 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
+            var drivers = await driverServices.GetFreeDrivers();
+            ViewBag.drivers = drivers;
             var orders = await orderService.GetAll();
 
             return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
@@ -125,16 +127,14 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> Edit(string Id)
         {
-            var drivers = await driverServices.GetFreeDrivers();
-
-            ViewBag.drivers = drivers;
             var order = await orderService.GetOrderById(Id);
             return View(order);
         }
 
-        public async Task<IActionResult> AsignOrder(OrderViewModel model)
+        public async Task<IActionResult> AsignOrder(Guid driverId, Guid orderId)
         {
-            var (asign, error) = await driverServices.AsignDriver(model);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var (asign, error) = await driverServices.AsignDriver(driverId, orderId, userId);
 
             if (!asign)
             {

@@ -23,7 +23,7 @@ namespace Orders.Core.Services
         public async Task<IEnumerable<OrderViewModel>> GetAll()
         {
             var order1 = await repo.All<Order>()
-              .Include(x => x.OrderDatas)
+              .Include(x => x.OrderDatas)              
               .Select(o => new OrderViewModel
               {
                   Id = o.Id,
@@ -40,9 +40,10 @@ namespace Orders.Core.Services
                   RestaurantId = o.RestaurantId,
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
-                  DataCreated = o.Create,
+                  DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
                   DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
               })
+              .OrderByDescending(x => x.DataCreated)
               .ToListAsync();
 
             return order1;
@@ -141,7 +142,7 @@ namespace Orders.Core.Services
             return order;
         }
 
-        public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action) 
+        public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action)
         {
             var error = "";
             var order = await repo.All<Order>()
@@ -161,13 +162,14 @@ namespace Orders.Core.Services
                 order.Status = Status.Приета;
             }
 
-            var orderData = new OrderData() {
+            var orderData = new OrderData()
+            {
                 OrderId = Guid.Parse(orderId),
                 Order = order,
                 LastUpdate = DateTime.Now,
                 Status = order.Status,
                 UserId = userId,
-                User = user                 
+                User = user
             };
 
             action = false;

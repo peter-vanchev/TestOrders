@@ -111,44 +111,39 @@ namespace Orders.Core.Services
             return (created, "");
         }
 
-        public async Task<(bool created, string error)> AsignDriver(OrderViewModel model)
+        public async Task<(bool created, string error)> AsignDriver(Guid driverId, Guid orderId, string userId)
         {
             bool created = true;
             string error = "";
 
-            var order = await repo.All<Order>()
-                .Where(x => x.Id == model.Id)
-                .FirstOrDefaultAsync();
-
-            var restaurant = await repo.All<Restaurant>()
-                .Where(x => x.Id == model.RestaurantId)
-                .FirstOrDefaultAsync();
-
             var driver = await repo.All<Driver>()
-                .Where(x => x.Id == model.DriverId)
+                .Where(x => x.Id == driverId)
                 .FirstOrDefaultAsync();
 
-            order.PaymentType = model.PaymentType;
-            order.Price = model.Price;
-            order.DeliveryPrice = model.DeliveryPrice;
-            order.RestaurantId = (Guid)model.RestaurantId;
-            order.Restaurant = restaurant;
-            order.PhoneNumner = model.PhoneNumner;
-            order.Status = Status.Изпратена;
+            Order? order = await repo.All<Order>()
+                .Where(x => x.Id == orderId)
+                .FirstOrDefaultAsync();
+
+            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
 
             var orderStatus = new OrderData
             {
-                DriverId = model.DriverId,
+                DriverId = driverId,
                 Driver = driver,
                 Order = order,
-                OrderId = model.Id,
+                OrderId = orderId,
                 Status = Status.Изпратена,
                 LastUpdate = DateTime.Now,
+                UserId = userId,
+                User = user
             };
+
+            order.Status = Status.Изпратена;
+            order.Driver = driver;
+            order.DriverId = driver.Id;
 
             try
             {
-                repo.Update(order);
                 await repo.AddAsync(orderStatus);
 
                 repo.SaveChanges();

@@ -88,9 +88,13 @@
                                                             </div>
                                                         </div>
                                                         <div class="card-body" style="display: none;">
-                                                            <a class="btn btn-block btn-outline-white btn-sm" asp-action="Edit" asp-route-id="@order.Id">
-                                                                <p>Role Manager</p>
-                                                            </a>
+                                                            @foreach (var driver in ViewBag.drivers)
+                                                            {
+                                                                <a class="btn btn-block btn-outline-white btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
+                                                                asp-route-orderId="@order.Id">
+                                                                    <p>@driver.FirstName @driver.LastName</p>
+                                                                </a>
+                                                            }
                                                         </div>
                                                     </div>
                                                 }
