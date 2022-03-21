@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
@@ -9,7 +10,6 @@ namespace TestOrders.Controllers
 {
     public class OrderController : BaseController
     {
-        private readonly ILogger<HomeController> logger;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IOrderService orderService;
         private readonly IAdminService adminService;
@@ -17,7 +17,6 @@ namespace TestOrders.Controllers
         private readonly IDriverServices driverServices;
 
         public OrderController(
-            ILogger<HomeController> _logger,
             IOrderService _orderService,
             UserManager<ApplicationUser> _userManager,
             IAdminService _adminService,
@@ -25,7 +24,6 @@ namespace TestOrders.Controllers
             IDriverServices _driverServices)
         {
             orderService = _orderService;
-            logger = _logger;
             userManager = _userManager;
             adminService = _adminService;
             restaurantService = _restaurantService;
@@ -46,6 +44,7 @@ namespace TestOrders.Controllers
             return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Action(string id, bool accepted)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -55,6 +54,7 @@ namespace TestOrders.Controllers
             {
                 return Redirect("/Order/NewOrders");
             }
+    
             return View();
         }
 
@@ -65,6 +65,7 @@ namespace TestOrders.Controllers
             return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
         }
 
+        [Authorize(Roles = "Admin, Manager, Restaurant")]
         public async Task<IActionResult> Create()
         {
             if (this.User.IsInRole("Admin"))
@@ -85,6 +86,7 @@ namespace TestOrders.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Manager, Restaurant")]
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
@@ -125,12 +127,14 @@ namespace TestOrders.Controllers
             return View(order);
         }
 
+        [Authorize(Roles = "Admin, Manager, Restaurant")]
         public async Task<IActionResult> Edit(string Id)
         {
             var order = await orderService.GetOrderById(Id);
             return View(order);
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> AsignOrder(Guid driverId, Guid orderId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -20,62 +20,52 @@ namespace Orders.Core.Services
             userManager = _userManager;
         }
 
-        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
+        public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action)
         {
-            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            var error = "";
+            var order = await repo.All<Order>()
+                .Where(x => x.Id == Guid.Parse(orderId))
+                .FirstOrDefaultAsync();
 
-            if (await userManager.IsInRoleAsync(user, "Admin"))
+            var user = await repo.All<ApplicationUser>()
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync();
+
+            if (!action)
             {
-                return await repo.All<Order>()
-                  .Include(x => x.OrderDatas)
-                  .Select(o => new OrderViewModel
-                  {
-                      Id = o.Id,
-                      Town = o.Address.Town,
-                      Aria = o.Address.Area,
-                      Street = o.Address.Street,
-                      Number = o.Address.Number,
-                      UserName = o.UserName,
-                      PhoneNumner = o.PhoneNumner,
-                      PaymentType = o.PaymentType,
-                      Price = o.Price,
-                      DeliveryPrice = o.DeliveryPrice,
-                      TimeForDelivery = o.TimeForDelivery,
-                      RestaurantId = o.RestaurantId,
-                      RestaurantName = o.Restaurant.Name,
-                      Status = o.Status,
-                      DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                      DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-                  })
-                  .OrderByDescending(x => x.DataCreated)
-                  .ToListAsync();
+                order.Status = Status.Отказана;
+            }
+            else
+            {
+                order.Status = Status.Приета;
             }
 
-            var restaurantId = user.RestaurantId;
-            return await repo.All<Order>()
-                .Where(x => x.RestaurantId == restaurantId)
-                .Include(x => x.OrderDatas)
-                .Select(o => new OrderViewModel
-                {
-                    Id = o.Id,
-                    Town = o.Address.Town,
-                    Aria = o.Address.Area,
-                    Street = o.Address.Street,
-                    Number = o.Address.Number,
-                    UserName = o.UserName,
-                    PhoneNumner = o.PhoneNumner,
-                    PaymentType = o.PaymentType,
-                    Price = o.Price,
-                    DeliveryPrice = o.DeliveryPrice,
-                    TimeForDelivery = o.TimeForDelivery,
-                    RestaurantId = o.RestaurantId,
-                    RestaurantName = o.Restaurant.Name,
-                    Status = o.Status,
-                    DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-                })
-                .OrderByDescending(x => x.DataCreated)
-                .ToListAsync();
+            var orderData = new OrderData()
+            {
+                OrderId = Guid.Parse(orderId),
+                Order = order,
+                LastUpdate = DateTime.Now,
+                Status = order.Status,
+                UserId = userId,
+                User = user
+            };
+
+            action = false;
+            try
+            {
+                repo.Update(order);
+                await repo.AddAsync(orderData);
+
+                repo.SaveChanges();
+                action = true;
+            }
+
+            catch (Exception)
+            {
+                error = "Could not save Order";
+            }
+
+            return (action, error);
         }
 
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
@@ -170,53 +160,93 @@ namespace Orders.Core.Services
             return order;
         }
 
-        public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action)
+
+        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
         {
-            var error = "";
-            var order = await repo.All<Order>()
-                .Where(x => x.Id == Guid.Parse(orderId))
-                .FirstOrDefaultAsync();
+            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
 
-            var user = await repo.All<ApplicationUser>()
-                .Where(x => x.Id == userId)
-                .FirstOrDefaultAsync();
-
-            if (!action)
+            if (await userManager.IsInRoleAsync(user, "Admin"))
             {
-                order.Status = Status.Отказана;
+                return await repo.All<Order>()
+                  .Include(x => x.OrderDatas)
+                  .Select(o => new OrderViewModel
+                  {
+                      Id = o.Id,
+                      Town = o.Address.Town,
+                      Aria = o.Address.Area,
+                      Street = o.Address.Street,
+                      Number = o.Address.Number,
+                      UserName = o.UserName,
+                      PhoneNumner = o.PhoneNumner,
+                      PaymentType = o.PaymentType,
+                      Price = o.Price,
+                      DeliveryPrice = o.DeliveryPrice,
+                      TimeForDelivery = o.TimeForDelivery,
+                      RestaurantId = o.RestaurantId,
+                      RestaurantName = o.Restaurant.Name,
+                      Status = o.Status,
+                      DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                      DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                  })
+                  .OrderByDescending(x => x.DataCreated)
+                  .ToListAsync();
             }
-            else
+            else if (await userManager.IsInRoleAsync(user, "Restaurant"))
             {
-                order.Status = Status.Приета;
+                var restaurantId = user.RestaurantId;
+                return await repo.All<Order>()
+                    .Where(x => x.RestaurantId == restaurantId)
+                    .Include(x => x.OrderDatas)
+                    .Select(o => new OrderViewModel
+                    {
+                        Id = o.Id,
+                        Town = o.Address.Town,
+                        Aria = o.Address.Area,
+                        Street = o.Address.Street,
+                        Number = o.Address.Number,
+                        UserName = o.UserName,
+                        PhoneNumner = o.PhoneNumner,
+                        PaymentType = o.PaymentType,
+                        Price = o.Price,
+                        DeliveryPrice = o.DeliveryPrice,
+                        TimeForDelivery = o.TimeForDelivery,
+                        RestaurantId = o.RestaurantId,
+                        RestaurantName = o.Restaurant.Name,
+                        Status = o.Status,
+                        DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                        DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                    })
+                    .OrderByDescending(x => x.DataCreated)
+                    .ToListAsync();
             }
 
-            var orderData = new OrderData()
-            {
-                OrderId = Guid.Parse(orderId),
-                Order = order,
-                LastUpdate = DateTime.Now,
-                Status = order.Status,
-                UserId = userId,
-                User = user
-            };
-
-            action = false;
-            try
-            {
-                repo.Update(order);
-                await repo.AddAsync(orderData);
-
-                repo.SaveChanges();
-                action = true;
-            }
-
-            catch (Exception)
-            {
-                error = "Could not save Order";
-            }
-
-            return (action, error);
+            var driverId = user.DriverId;
+            return await repo.All<Order>()
+                .Where(x => x.DriverId == driverId)
+                .Include(x => x.OrderDatas)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    Town = o.Address.Town,
+                    Aria = o.Address.Area,
+                    Street = o.Address.Street,
+                    Number = o.Address.Number,
+                    UserName = o.UserName,
+                    PhoneNumner = o.PhoneNumner,
+                    PaymentType = o.PaymentType,
+                    Price = o.Price,
+                    DeliveryPrice = o.DeliveryPrice,
+                    TimeForDelivery = o.TimeForDelivery,
+                    RestaurantId = o.RestaurantId,
+                    RestaurantName = o.Restaurant.Name,
+                    Status = o.Status,
+                    DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                })
+                .OrderByDescending(x => x.DataCreated)
+                .ToListAsync();
         }
+
     }
 }
 

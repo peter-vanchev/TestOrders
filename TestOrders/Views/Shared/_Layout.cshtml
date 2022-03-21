@@ -209,6 +209,10 @@
                     {
                         <partial name="_MainMenu - Admin" />
                     }
+                    else if (User.IsInRole("Driver"))
+                    {
+                        <partial name="_MainMenu - Driver" />
+                    }
                     else
                     {
                         <partial name="_MainMenu" />

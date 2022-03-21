@@ -92,12 +92,17 @@
                                                             @foreach (var driver in ViewBag.drivers)
                                                             {
                                                                 <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
-                                                       asp-route-orderId="@order.Id">
+                                                                    asp-route-orderId="@order.Id">
                                                                     @driver.FirstName @driver.LastName
                                                                 </a>
                                                             }
                                                         </div>
                                                     </div>
+                                                }
+                                                else if (User.IsInRole("Driver"))
+                                                {
+                                                    <a class="btn btn-info btn-sm order-action"
+                                                         asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>                                                    
                                                 }
                                             </td>
                                         </tr>
