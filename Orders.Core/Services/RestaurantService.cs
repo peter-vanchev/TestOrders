@@ -78,9 +78,37 @@ namespace Orders.Core.Services
             return (true, error);
         }
 
-        public (bool created, string error) Delete(string restaurantId)
+        public async Task<(bool created, string error)> Edit(EditRestaurantViewModel model)
         {
-            throw new NotImplementedException();
+            bool created = false;
+            string error = "";
+            var tet = model.Id;
+
+            var restaurant = await repo.All<Restaurant>()
+                .Include(x => x.Address)
+                .Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            restaurant.Address.Area = model.Area;
+            restaurant.Address.Street = model.Street;
+            restaurant.Address.Number = model.Number;
+            restaurant.Name = model.Name;
+            restaurant.PhoneNumner = model.PhoneNumner;
+            restaurant.Description = model.Description;
+            restaurant.Category = model.Category;
+
+            try
+            {
+                repo.SaveChanges();
+                created = true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                throw;
+            }
+
+            return (created, error);
         }
 
         public async Task<IEnumerable<RestaurantViewModel>> GetAll()
@@ -106,22 +134,6 @@ namespace Orders.Core.Services
                 })
                 .ToListAsync();
             return restaurants;
-        }
-
-        public IEnumerable<ProductViewModel> GetMenu(string restorantId)
-        {
-            var restaurant = repo.All<Product>()
-
-                .Select(p => new ProductViewModel()
-                {
-                    Name = p.Name,
-                    Category = p.Category,
-                    Description = p.Description,
-                    Url = p.Url
-                })
-                .ToList();
-
-            return restaurant;
         }
 
         public async Task<RestaurantViewModel> GetRestaurantById(string restaurantId)

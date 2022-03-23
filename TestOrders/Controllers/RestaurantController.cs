@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
 
@@ -7,16 +8,13 @@ namespace TestOrders.Controllers
 {
     public class RestaurantController : BaseController
     {
-        private readonly IOrderService orderService;
         private readonly IFileService fileService;
         private readonly IRestaurantService restaurantService;
 
         public RestaurantController(
             IFileService _fileService,
-            IOrderService _orderService,
             IRestaurantService _restaurantService)
         {
-            orderService = _orderService;
             fileService = _fileService;
             restaurantService = _restaurantService;
         }
@@ -76,21 +74,29 @@ namespace TestOrders.Controllers
         public async Task<IActionResult> Edit(string Id)
         {
             var restaurant = await restaurantService.GetRestaurantById(Id);
-            return View(restaurant);
+            var restEdit = JsonConvert.DeserializeObject<EditRestaurantViewModel>(JsonConvert.SerializeObject(restaurant));          
+
+            return View(restEdit);
         }
 
         [Authorize(Roles = "Admin, Restaurant")]
-        public IActionResult RemoveRestaurant(string restaurantId)
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditRestaurantViewModel model)
         {
-            var (delete, error) = restaurantService.Delete(restaurantId);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
 
-            if (!delete)
+            var (edited, error) = await restaurantService.Edit(model);
+
+            if (!edited)
             {
                 ModelState.AddModelError("", error);
                 return View();
             }
 
-            return Redirect("/Restaurant");
-        }        
+            return Redirect("/Restaurant/All");
+        }
     }
 }

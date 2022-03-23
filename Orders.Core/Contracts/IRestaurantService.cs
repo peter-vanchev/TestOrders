@@ -8,8 +8,8 @@ namespace Orders.Core.Contracts
 
         public Task<(bool created, string error)> Create(RestaurantViewModel model);
 
-        public (bool created, string error) Delete(string restaurantId);
         public Task<RestaurantViewModel> GetRestaurantById(string restaurantId);
 
+        public Task<(bool created, string error)> Edit(EditRestaurantViewModel model);
     }
 }
