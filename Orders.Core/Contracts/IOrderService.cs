@@ -12,5 +12,7 @@ namespace Orders.Core.Contracts
         Task<OrderViewModel> GetOrderById(string orderId);
 
         Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action);
+
+        Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId);
     }
 }

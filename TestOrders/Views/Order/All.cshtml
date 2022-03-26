@@ -22,9 +22,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow">
-
                         <div class="table-responsive">
                             <table class="table align-items-center">
+
                                 <thead>
                                     <tr style="color: #fff; background-color: #dc3545;">
                                         <th class="table-web" scope="col">ID</th>
@@ -41,6 +41,7 @@
                                         <th scope="col">Действие</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
@@ -92,22 +93,23 @@
                                                             @foreach (var driver in ViewBag.drivers)
                                                             {
                                                                 <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
-                                                                    asp-route-orderId="@order.Id">
+                                                       asp-route-orderId="@order.Id">
                                                                     @driver.FirstName @driver.LastName
                                                                 </a>
                                                             }
                                                         </div>
                                                     </div>
                                                 }
-                                                else if (User.IsInRole("Driver"))
+                                                else if (@order.Status == Status.Изпратена && User.IsInRole("Driver"))
                                                 {
-                                                    <a class="btn btn-info btn-sm order-action"
-                                                         asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>                                                    
+                                                    <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
+                                                    asp-route-orderId="@order.Id" >Delivery Order</a>
                                                 }
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
+
                                 <tfoot>
                                     <tr style="color: #fff; background-color: #dc3545;">
                                         <th class="table-web" scope="col"></th>
@@ -124,7 +126,6 @@
                                         <th class="table-web" scope="col"></th>
                                     </tr>
                                 </tfoot>
-                                }
 
                             </table>
                             <div class="card-tools">

@@ -25,6 +25,7 @@
 
                         <div class="table-responsive">
                             <table class="table align-items-center">
+
                                 <thead>
                                     <tr style="color: #fff; background-color: #dc3545;">
                                         <th scope="col">ID</th>
@@ -72,7 +73,7 @@
                                             <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
-                                            @if (User.IsInRole("Admin"))
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Driver"))
                                             {
                                                <td>
                                                 <a class="btn btn-info btn-sm order-action"

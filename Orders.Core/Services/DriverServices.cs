@@ -19,6 +19,54 @@ namespace Orders.Core.Services
             userManager = _userManager;
         }
 
+        public async Task<(bool created, string error)> AsignDriver(Guid driverId, Guid orderId, string userId)
+        {
+            bool created = true;
+            string error = "";
+
+            var driver = await repo.All<Driver>()
+                .Where(x => x.Id == driverId)
+                .FirstOrDefaultAsync();
+
+            Order? order = await repo.All<Order>()
+                .Where(x => x.Id == orderId)
+                .FirstOrDefaultAsync();
+
+            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+
+            var orderStatus = new OrderData
+            {
+                DriverId = driverId,
+                Driver = driver,
+                Order = order,
+                OrderId = orderId,
+                Status = Status.Изпратена,
+                LastUpdate = DateTime.Now,
+                UserId = userId,
+                User = user
+            };
+
+            order.Status = Status.Насочена;
+            driver.Status = Status.Зает;
+            order.Driver = driver;
+            order.DriverId = driver.Id;
+
+            try
+            {
+                await repo.AddAsync(orderStatus);
+
+                repo.SaveChanges();
+                created = true;
+            }
+
+            catch (Exception)
+            {
+                error = "Could not save Order";
+            }
+
+            return (created, error);
+        }
+
         public async Task<IEnumerable<DriverViewModel>> GetAll()
         {
             var drivers = await repo.All<ApplicationUser>()
@@ -109,53 +157,6 @@ namespace Orders.Core.Services
             }
 
             return (created, "");
-        }
-
-        public async Task<(bool created, string error)> AsignDriver(Guid driverId, Guid orderId, string userId)
-        {
-            bool created = true;
-            string error = "";
-
-            var driver = await repo.All<Driver>()
-                .Where(x => x.Id == driverId)
-                .FirstOrDefaultAsync();
-
-            Order? order = await repo.All<Order>()
-                .Where(x => x.Id == orderId)
-                .FirstOrDefaultAsync();
-
-            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
-
-            var orderStatus = new OrderData
-            {
-                DriverId = driverId,
-                Driver = driver,
-                Order = order,
-                OrderId = orderId,
-                Status = Status.Изпратена,
-                LastUpdate = DateTime.Now,
-                UserId = userId,
-                User = user
-            };
-
-            order.Status = Status.Изпратена;
-            order.Driver = driver;
-            order.DriverId = driver.Id;
-
-            try
-            {
-                await repo.AddAsync(orderStatus);
-
-                repo.SaveChanges();
-                created = true;
-            }
-
-            catch (Exception)
-            {
-                error = "Could not save Order";
-            }
-
-            return (created, error);
         }
 
         public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()

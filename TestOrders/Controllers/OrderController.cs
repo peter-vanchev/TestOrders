@@ -12,20 +12,17 @@ namespace TestOrders.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IOrderService orderService;
-        private readonly IAdminService adminService;
         private readonly IRestaurantService restaurantService;
         private readonly IDriverServices driverServices;
 
         public OrderController(
             IOrderService _orderService,
             UserManager<ApplicationUser> _userManager,
-            IAdminService _adminService,
             IRestaurantService _restaurantService,
             IDriverServices _driverServices)
         {
             orderService = _orderService;
             userManager = _userManager;
-            adminService = _adminService;
             restaurantService = _restaurantService;
             driverServices = _driverServices;
         }
@@ -41,13 +38,22 @@ namespace TestOrders.Controllers
             ViewBag.drivers = drivers;
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
+
+            if (this.User.IsInRole("Driver"))
+            {
+                return this.View(orders.Where(x => x.Status != Status.Нова 
+                    && x.Status != Status.Насочена)
+                    .ToList());
+            }
+
             return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Driver")]
         public async Task<IActionResult> Action(string id, bool accepted)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             var result = await orderService.AcceptOrder(userId, id, accepted);
 
             if (result.Item1)
@@ -58,11 +64,18 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> NewOrders()
+        [Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> AsignOrder(Guid driverId, Guid orderId)
         {
-            var orders = await orderService.GetAll(userManager.GetUserId(User));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var (asign, error) = await driverServices.AsignDriver(driverId, orderId, userId);
 
-            return this.View(orders.Where(x => x.Status == Status.Нова).ToList());
+            if (!asign)
+            {
+                return View(error, "/Error");
+            }
+
+            return Redirect("/Order/All");
         }
 
         [Authorize(Roles = "Admin, Manager, Restaurant")]
@@ -134,11 +147,11 @@ namespace TestOrders.Controllers
             return View(order);
         }
 
-        [Authorize(Roles = "Admin, Manager")]
-        public async Task<IActionResult> AsignOrder(Guid driverId, Guid orderId)
+        [Authorize(Roles = "Admin, Manager, Driver")]
+        public async Task<IActionResult> Delivery(Guid orderId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var (asign, error) = await driverServices.AsignDriver(driverId, orderId, userId);
+            var (asign, error) = await orderService.DeliveryOrder(orderId, userId);
 
             if (!asign)
             {
@@ -147,5 +160,24 @@ namespace TestOrders.Controllers
 
             return Redirect("/Order/All");
         }
+
+        public async Task<IActionResult> NewOrders()
+        {
+            var orders = await orderService.GetAll(userManager.GetUserId(User));
+
+            if (this.User.IsInRole("Driver"))
+            {
+                orders = orders.Where(
+                 x => x.Status == Status.Насочена)
+                 .ToList();
+                return this.View(orders);
+            }
+
+            orders = orders.Where(
+                x => x.Status == Status.Нова)
+                .ToList();
+            return this.View(orders);
+        }
+
     }
 }

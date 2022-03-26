@@ -23,6 +23,7 @@ namespace Orders.Core.Services
         public async Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action)
         {
             var error = "";
+            var actionResult = false;
             var order = await repo.All<Order>()
                 .Where(x => x.Id == Guid.Parse(orderId))
                 .FirstOrDefaultAsync();
@@ -31,41 +32,53 @@ namespace Orders.Core.Services
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
 
-            if (!action)
+            if (order != null)
             {
-                order.Status = Status.Отказана;
+                if (!action)
+                {
+                    order.Status = Status.Отказана;
+                }
+                else
+                {
+                    var userRole = await userManager.GetRolesAsync(user);
+
+                    if (userRole.Contains("Admin"))
+                    {
+                        order.Status = Status.Приета;
+                    }
+                    else
+                    {
+                        order.Status = Status.Изпратена;
+                    }
+                }
+
+                var orderData = new OrderData()
+                {
+                    OrderId = Guid.Parse(orderId),
+                    Order = order,
+                    LastUpdate = DateTime.Now,
+                    Status = order.Status,
+                    UserId = userId,
+                    User = user
+                };
+
+                actionResult = false;
+
+                try
+                {
+                    await repo.AddAsync(orderData);
+
+                    repo.SaveChanges();
+                    actionResult = true;
+                }
+
+                catch (Exception)
+                {
+                    error = "Could not save Order";
+                }
             }
-            else
-            {
-                order.Status = Status.Приета;
-            }
 
-            var orderData = new OrderData()
-            {
-                OrderId = Guid.Parse(orderId),
-                Order = order,
-                LastUpdate = DateTime.Now,
-                Status = order.Status,
-                UserId = userId,
-                User = user
-            };
-
-            action = false;
-            try
-            {
-                repo.Update(order);
-                await repo.AddAsync(orderData);
-
-                repo.SaveChanges();
-                action = true;
-            }
-
-            catch (Exception)
-            {
-                error = "Could not save Order";
-            }
-
-            return (action, error);
+            return (actionResult, error);
         }
 
         public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
@@ -247,6 +260,49 @@ namespace Orders.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId)
+        {
+            var error = "";
+            var actionResult = false;
+
+            var order = await repo.All<Order>()
+                .Where(x => x.Id == orderId)
+                .FirstOrDefaultAsync();
+
+            order.Status = Status.Доставена;
+
+            var user = await repo.All<ApplicationUser>()
+                  .Include(u => u.Driver)
+                  .Where(x => x.Id == userId)
+                  .FirstOrDefaultAsync();
+
+            user.Driver.Status = Status.Свободен;
+
+            var orderData = new OrderData()
+            {
+                OrderId = orderId,
+                Order = order,
+                LastUpdate = DateTime.Now,
+                Status = order.Status,
+                UserId = userId,
+                User = user
+            };
+
+            try
+            {
+                await repo.AddAsync(orderData);
+
+                repo.SaveChanges();
+                actionResult = true;
+            }
+
+            catch (Exception)
+            {
+                error = "Could not save Order";
+            }
+
+            return (actionResult, error);
+        }
     }
 }
 
