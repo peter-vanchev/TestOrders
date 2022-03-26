@@ -45,44 +45,47 @@
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
-                                        <tr>
-                                            <td>
-                                                <a class="btn badge badge-dark badge-pill" asp-action="Details" asp-route-id="@order.Id">Details</a>
-                                            </td>
-                                            <td>
-                                                <div class="media align-items-center">
-                                                    <div class="media-body">
-                                                        <span class="mb-0 text-sm">@order.RestaurantName</span>
+                                            <tr>
+                                                <td>
+                                                    <a class="btn badge badge-dark badge-pill" asp-action="Details" asp-route-id="@order.Id">Details</a>
+                                                </td>
+                                                <td>
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">@order.RestaurantName</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="table-web">
-                                                <p>@order.Town ,</p>
-                                                <p>@order.DataCreated</p>
-                                            </td>
-                                            <td class="table-web">
-                                                <span class="badge badge-pill" style="background-color: #ffc107">@order.Status</span>
-                                            </td>
-                                            <td>
-                                                <p>@order.UserName</p>
-                                            </td>
-                                            <td class="table-web">
-                                                <p>@order.Street, @order.Number</p>
-                                            </td>
-                                            <td>@order.Price.ToString("F2") лв.</td>
-                                            <td>@order.DeliveryPrice.ToString("F2") лв.</td>
-                                            <td>@order.PaymentType</td>
-                                            <td>@order.TimeForDelivery мин.</td>
+                                                </td>
+                                                <td class="table-web">
+                                                    <p>@order.Town ,</p>
+                                                    <p>@order.DataCreated</p>
+                                                </td>
+                                                <td class="table-web">
+                                              @{
+       int value = (int)@order.Status;
+                                                }
+                                                    <span class="badge badge-pill" id="@value">@order.Status</span>
+                                                </td>
+                                                <td>
+                                                    <p>@order.UserName</p>
+                                                </td>
+                                                <td class="table-web">
+                                                    <p>@order.Street, @order.Number</p>
+                                                </td>
+                                                <td>@order.Price.ToString("F2") лв.</td>
+                                                <td>@order.DeliveryPrice.ToString("F2") лв.</td>
+                                                <td>@order.PaymentType</td>
+                                                <td>@order.TimeForDelivery мин.</td>
                                             @if (User.IsInRole("Admin") || User.IsInRole("Driver"))
                                             {
-                                               <td>
-                                                <a class="btn btn-info btn-sm order-action"
+                                                       <td>
+                                                        <a class="btn btn-info btn-sm order-action"
                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
-                                                <a class="btn btn-info btn-sm order-action"
+                                                        <a class="btn btn-info btn-sm order-action"
                                                asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
-                                            </td> 
+                                                    </td> 
                                             }                                            
-                                        </tr>
+                                            </tr>
                                     }
                                 </tbody>
 

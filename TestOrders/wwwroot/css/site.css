@@ -16,3 +16,30 @@ html {
 body {
     /*  margin-bottom: 60px;*/
 }
+
+#Нова {
+    background-color: aquamarine;
+}
+#Нова {
+    background-color: aquamarine;
+}
+
+#Приета {
+    background-color: lightyellow;
+}
+
+#Насочена {
+    background-color: burlywood !important;
+}
+
+#Изпратена {
+    background-color: sandybrown !important;
+}
+
+#Доставена {
+    background-color: chartreuse !important;
+}
+
+#Отказана {
+    background-color: palevioletred !important;
+}

@@ -36,6 +36,7 @@ namespace Orders.Core.Services
             {
                 if (!action)
                 {
+                    // Driver action here 
                     order.Status = Status.Отказана;
                 }
                 else
@@ -49,6 +50,7 @@ namespace Orders.Core.Services
                     else
                     {
                         order.Status = Status.Изпратена;
+                        user.Driver.Status = Status.Зает;
                     }
                 }
 
