@@ -61,10 +61,7 @@
                                                     <p>@order.DataCreated</p>
                                                 </td>
                                                 <td class="table-web">
-                                              @{
-       int value = (int)@order.Status;
-                                                }
-                                                    <span class="badge badge-pill" id="@value">@order.Status</span>
+                                                    <span class="badge badge-pill" id="@order.Status">@order.Status</span>
                                                 </td>
                                                 <td>
                                                     <p>@order.UserName</p>
@@ -76,15 +73,15 @@
                                                 <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                                 <td>@order.PaymentType</td>
                                                 <td>@order.TimeForDelivery мин.</td>
-                                            @if (User.IsInRole("Admin") || User.IsInRole("Driver"))
-                                            {
-                                                       <td>
-                                                        <a class="btn btn-info btn-sm order-action"
-                                               asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
-                                                        <a class="btn btn-info btn-sm order-action"
-                                               asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
-                                                    </td> 
-                                            }                                            
+                                                @if (User.IsInRole("Admin") || User.IsInRole("Driver"))
+                                                {
+                                                           <td>
+                                                            <a class="btn btn-info btn-sm order-action"
+                                                   asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
+                                                            <a class="btn btn-info btn-sm order-action"
+                                                   asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
+                                                        </td> 
+                                                }                                            
                                             </tr>
                                     }
                                 </tbody>

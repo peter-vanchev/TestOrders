@@ -29,6 +29,7 @@ namespace Orders.Core.Services
                 .FirstOrDefaultAsync();
 
             var user = await repo.All<ApplicationUser>()
+                .Include(x => x.Driver)
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
 
