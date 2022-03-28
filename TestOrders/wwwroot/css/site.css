@@ -20,9 +20,6 @@ body {
 #Нова {
     background-color: aquamarine;
 }
-#Нова {
-    background-color: aquamarine;
-}
 
 #Приета {
     background-color: lightyellow;
@@ -42,4 +39,8 @@ body {
 
 #Отказана {
     background-color: palevioletred !important;
+}
+
+#ОтказанаШофьор {
+    background-color: mediumorchid !important;
 }

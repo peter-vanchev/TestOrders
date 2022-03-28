@@ -34,7 +34,7 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
-            var drivers = await driverServices.GetFreeDrivers();
+            var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));

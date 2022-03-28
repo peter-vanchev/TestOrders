@@ -32,18 +32,22 @@ namespace Orders.Core.Services
                 .Include(x => x.Driver)
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
-
+            var userRole = await userManager.GetRolesAsync(user);
             if (order != null)
             {
                 if (!action)
                 {
-                    // Driver action here 
-                    order.Status = Status.Отказана;
+                    if (userRole.Contains("Driver"))
+                    {
+                        order.Status = Status.ОтказанаШофьор;
+                    }
+                    else
+                    {
+                        order.Status = Status.Отказана;
+                    }                      
                 }
                 else
                 {
-                    var userRole = await userManager.GetRolesAsync(user);
-
                     if (userRole.Contains("Admin"))
                     {
                         order.Status = Status.Приета;
