@@ -24,23 +24,16 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var result = await adminService .Seed();
+            //var result = await adminService.Seed();
 
             //if (result)
             //{
             //    SignOut();
             //}
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var orders = await orderService.GetAll(userId);
-            var totalSells = orders
-                .Select(x => x.DeliveryPrice).Sum();
+            var orders = await orderService.GetDaylyStats(userId);
 
-            ViewBag.Orders = orders.Count();
-            ViewBag.NewOrders = orders.Where(x => x.Status == Status.Нова).Count();
-            ViewBag.EndOrders = orders.Where(x => x.Status == Status.Доставена).Count();
-            ViewBag.TotalSells = totalSells;
-            ViewBag.Proogres = (orders.Where(x => x.Status == Status.Доставена).Count() / (double)orders.Count()) * 100;
-            return View();
+            return View(orders);
         }
 
 

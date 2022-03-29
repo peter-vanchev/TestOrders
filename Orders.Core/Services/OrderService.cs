@@ -180,7 +180,6 @@ namespace Orders.Core.Services
             return order;
         }
 
-
         public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
         {
             var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
@@ -309,6 +308,49 @@ namespace Orders.Core.Services
             }
 
             return (actionResult, error);
+        }
+
+        public async Task<OrderStatsModel> GetDaylyStats(string userId)
+        {
+            var orders = await GetAll(userId);
+
+            var totalSells = orders
+                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
+                .Select(x => x.DeliveryPrice).Sum();
+
+            var ordersCount = orders.Count();
+
+            var newOrdersCount = orders.Where(x => x.Status == Status.Нова).Count();
+            var newOrdersProogres = (orders.Where(x => x.Status == Status.Нова).Count() / (double)orders.Count()) * 100;
+
+            var endOrdersCount = orders.Where(x => x.Status == Status.Доставена).Count();
+            var endOrdersProogres = (orders
+                .Where(x => x.Status == Status.Доставена)
+                .Count() 
+                / (double)orders.Count()) * 100;
+
+            var canceledOrdersCount = orders
+                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
+                .Count();
+            var canceledOrdersProogres = (orders
+                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
+                .Count()
+                / (double)orders.Count())
+                * 100;
+
+            var ordersStats = new OrderStatsModel
+            {
+                OrdersCount = ordersCount,
+                NewOrdersCount = newOrdersCount,
+                NewOrdersProogres = newOrdersProogres,
+                EndOrdersCount = endOrdersCount,
+                EndOrdersProogres = endOrdersProogres,
+                TotalSells = totalSells,
+                CancelledOrdersCount = canceledOrdersCount,
+                CancelledOrdersProogres = canceledOrdersProogres
+            };
+
+            return ordersStats;
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿@{
+﻿@using Orders.Core.Models
+@model OrderStatsModel
+
+@{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="content-header">
@@ -16,75 +20,51 @@
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <dl class="row">
-                            <dt class="col-sm-2">
-                                Нови поръчки
-                            </dt>
-                            <dd class="col-sm-10">
-                                @ViewBag.NewOrders
-                            </dd>
-                            <dt class="col-sm-2">
-                                Поръчки за деня
-                            </dt>
-                            <dd class="col-sm-10">
-                                @ViewBag.Orders
-                            </dd>
-                        </dl>
-
+                        <p class="text-center">
+                            <h3>Поръчки</h3>
+                        </p>
+                        <div class="progress-group">
+                            Нови Поръчки - @Model.NewOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.NewOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.NewOrdersProogres.ToString("F2")%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-group">
+                            Завършени Поръчки - @Model.EndOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.EndOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.EndOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-group">
+                            Отказани Поръчки - @Model.CancelledOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.CancelledOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.CancelledOrdersCount.ToString("F0")%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-group">
+                            <h5>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h5>
+                        </div>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-
-                            <p class="text-center">
-                                <strong>Goal Completion</strong>
-                            </p>
-                            <div class="progress-group">
-                                Завършени Поръчки
-                                <span class="float-right"><b>@ViewBag.EndOrders</b>/@ViewBag.Orders</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-primary" style="width: @ViewBag.Proogres.ToString("F2")%"></div>
-                                </div>
-                            </div>
-
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>@ViewBag.Orders</h3>
-                        <p>Поръчки за деня</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-controller="Order" asp-action="All" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6 col-6">
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>@ViewBag.TotalSells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
+                        <h3>@Model.TotalSells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
                         <p>Дневен оборот</p>
                     </div>
                     <div class="icon">
@@ -98,6 +78,7 @@
             <!-- ./col -->
         </div>
         <!-- /.row -->
+
         <!-- Main row -->
         <div class="row">
             <!-- Left col -->

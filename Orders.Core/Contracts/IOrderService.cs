@@ -14,5 +14,7 @@ namespace Orders.Core.Contracts
         Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action);
 
         Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId);
+
+        Task<OrderStatsModel> GetDaylyStats(string userId);
     }
 }
