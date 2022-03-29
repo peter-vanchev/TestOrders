@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
 using Orders.Infrastructure.Data.Models;
+using System.Security.Claims;
 
 namespace TestOrders.Controllers
 {
@@ -29,7 +30,16 @@ namespace TestOrders.Controllers
             //{
             //    SignOut();
             //}
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var orders = await orderService.GetAll(userId);
+            var totalSells = orders
+                .Select(x => x.DeliveryPrice).Sum();
 
+            ViewBag.Orders = orders.Count();
+            ViewBag.NewOrders = orders.Where(x => x.Status == Status.Нова).Count();
+            ViewBag.EndOrders = orders.Where(x => x.Status == Status.Доставена).Count();
+            ViewBag.TotalSells = totalSells;
+            ViewBag.Proogres = (orders.Where(x => x.Status == Status.Доставена).Count() / (double)orders.Count()) * 100;
             return View();
         }
 

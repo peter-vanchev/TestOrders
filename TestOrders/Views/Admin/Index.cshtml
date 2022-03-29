@@ -7,15 +7,9 @@
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">Табло</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Начало</a></li>
-                    <li class="breadcrumb-item active">Табло</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+            </div>
+        </div>
+    </div>
 </div>
 
 <section class="content">
@@ -24,11 +18,23 @@
         <div class="row">
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>150</h3>
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                Нови поръчки
+                            </dt>
+                            <dd class="col-sm-10">
+                                @ViewBag.NewOrders
+                            </dd>
+                            <dt class="col-sm-2">
+                                Поръчки за деня
+                            </dt>
+                            <dd class="col-sm-10">
+                                @ViewBag.Orders
+                            </dd>
+                        </dl>
 
-                        <p>Нови поръчки</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -36,13 +42,49 @@
                     <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+
+                            <p class="text-center">
+                                <strong>Goal Completion</strong>
+                            </p>
+                            <div class="progress-group">
+                                Завършени Поръчки
+                                <span class="float-right"><b>@ViewBag.EndOrders</b>/@ViewBag.Orders</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-primary" style="width: @ViewBag.Proogres.ToString("F2")%"></div>
+                                </div>
+                            </div>
+
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@ViewBag.Orders</h3>
+                        <p>Поръчки за деня</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>255.35<sup style="font-size: 20px">лв</sup></h3>
-
+                        <h3>@ViewBag.TotalSells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
                         <p>Дневен оборот</p>
                     </div>
                     <div class="icon">
@@ -51,36 +93,8 @@
                     <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>44</h3>
 
-                        <p>Регистрирани потребители</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>65</h3>
 
-                        <p>Уникални посетители</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
             <!-- ./col -->
         </div>
         <!-- /.row -->
@@ -161,7 +175,6 @@
                 <!-- /.card -->
             </section>
             <!-- /.Left col -->
-
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
             <section class="col-lg-5 connectedSortable">
 
