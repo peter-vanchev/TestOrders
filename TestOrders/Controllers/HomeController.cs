@@ -25,6 +25,10 @@ namespace TestOrders.Controllers
             {
                 return Redirect("/Restaurant");
             }
+            else if (User.IsInRole("Driver"))
+            {
+                return Redirect("/Driver");
+            }
 
             return View();
         }

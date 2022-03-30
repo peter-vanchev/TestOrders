@@ -32,10 +32,12 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(DateTime startDate)
         {
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
+
+            var test = @DateTime.Now.ToString("dd-MM-yyyy");
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
 
@@ -178,6 +180,5 @@ namespace TestOrders.Controllers
                 .ToList();
             return this.View(orders);
         }
-
     }
 }

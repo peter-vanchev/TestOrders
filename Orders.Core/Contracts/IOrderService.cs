@@ -5,16 +5,18 @@ namespace Orders.Core.Contracts
 {
     public interface IOrderService
     {
-        Task<IEnumerable<OrderViewModel>> GetAll(string userId);
+        Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action);
 
         Task<(bool created, string error)> Create(OrderViewModel model, string userId);
 
+        Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null);
+
+        Task<IEnumerable<OrderViewModel>> GetAll(string userId, DateTime? startDate = null, DateTime? endDate = null);
+
         Task<OrderViewModel> GetOrderById(string orderId);
 
-        Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action);
+        Task<OrderStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null);
 
         Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId);
-
-        Task<OrderStatsModel> GetDaylyStats(string userId);
     }
 }

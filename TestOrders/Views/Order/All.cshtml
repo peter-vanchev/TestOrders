@@ -16,6 +16,27 @@
         </div>
     </div>
 </section>
+
+    <div class="row">
+            <div class="container-fluid">
+
+        <label for="start">Start date:</label>
+
+        <input type="date" id="startDate" name="trip-start"
+               value="@DateTime.Now.ToString("dd-MM-yyyy")"
+               min="2022-01-01" max="2022-12-31">
+
+        <label for="start">End date:</label>
+
+        <input type="date" id="endDate" name="trip-start"
+               value="@DateTime.Now.ToString("dd-MM-yyyy")"
+               min="2022-01-01" max="2022-12-31">
+
+        <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="All"  asp-for="startDate" asp-route-startDate="startDate">Create Order</a>
+                </div>
+
+    </div>
+
 <form class="form-horizontal">
     <section class="content">
         <div class="container-fluid">
@@ -103,7 +124,7 @@
                                                 else if (@order.Status == Status.Изпратена && User.IsInRole("Driver"))
                                                 {
                                                     <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
-                                                    asp-route-orderId="@order.Id" >Delivery Order</a>
+                                               asp-route-orderId="@order.Id">Delivery Order</a>
                                                 }
                                             </td>
                                         </tr>

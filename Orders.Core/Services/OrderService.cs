@@ -44,7 +44,7 @@ namespace Orders.Core.Services
                     else
                     {
                         order.Status = Status.Отказана;
-                    }                      
+                    }
                 }
                 else
                 {
@@ -150,6 +150,105 @@ namespace Orders.Core.Services
             return (created, error);
         }
 
+        public async Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            (startDate, endDate) = CheckDate(startDate, endDate);
+
+            return await repo.All<Order>()
+              .Where(x => x.Create >= startDate && x.Create <= endDate)
+              .Include(x => x.OrderDatas)
+              .Select(o => new OrderViewModel
+              {
+                  Id = o.Id,
+                  Town = o.Address.Town,
+                  Aria = o.Address.Area,
+                  Street = o.Address.Street,
+                  Number = o.Address.Number,
+                  UserName = o.UserName,
+                  PhoneNumner = o.PhoneNumner,
+                  PaymentType = o.PaymentType,
+                  Price = o.Price,
+                  DeliveryPrice = o.DeliveryPrice,
+                  TimeForDelivery = o.TimeForDelivery,
+                  RestaurantId = o.RestaurantId,
+                  RestaurantName = o.Restaurant.Name,
+                  Status = o.Status,
+                  DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+              })
+              .OrderByDescending(x => x.DataCreated)
+              .ToListAsync();
+        }
+
+        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            (startDate, endDate) = CheckDate(startDate, endDate);
+
+            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+
+            if (await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                var orders = await GetAll(startDate, endDate);
+                return orders;
+            }
+            else if (await userManager.IsInRoleAsync(user, "Restaurant"))
+            {
+                var restaurantId = user.RestaurantId;
+                return await repo.All<Order>()
+                    .Where(x => x.RestaurantId == restaurantId)
+                    .Where(x => x.Create >= startDate && x.Create <= endDate)
+                    .Include(x => x.OrderDatas)
+                    .Select(o => new OrderViewModel
+                    {
+                        Id = o.Id,
+                        Town = o.Address.Town,
+                        Aria = o.Address.Area,
+                        Street = o.Address.Street,
+                        Number = o.Address.Number,
+                        UserName = o.UserName,
+                        PhoneNumner = o.PhoneNumner,
+                        PaymentType = o.PaymentType,
+                        Price = o.Price,
+                        DeliveryPrice = o.DeliveryPrice,
+                        TimeForDelivery = o.TimeForDelivery,
+                        RestaurantId = o.RestaurantId,
+                        RestaurantName = o.Restaurant.Name,
+                        Status = o.Status,
+                        DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                        DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                    })
+                    .OrderByDescending(x => x.DataCreated)
+                    .ToListAsync();
+            }
+
+            var driverId = user.DriverId;
+            return await repo.All<Order>()
+                .Where(x => x.DriverId == driverId)
+                .Where(x => x.Create >= startDate && x.Create <= endDate)
+                .Include(x => x.OrderDatas)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    Town = o.Address.Town,
+                    Aria = o.Address.Area,
+                    Street = o.Address.Street,
+                    Number = o.Address.Number,
+                    UserName = o.UserName,
+                    PhoneNumner = o.PhoneNumner,
+                    PaymentType = o.PaymentType,
+                    Price = o.Price,
+                    DeliveryPrice = o.DeliveryPrice,
+                    TimeForDelivery = o.TimeForDelivery,
+                    RestaurantId = o.RestaurantId,
+                    RestaurantName = o.Restaurant.Name,
+                    Status = o.Status,
+                    DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                })
+                .OrderByDescending(x => x.DataCreated)
+                .ToListAsync();
+        }
+
         public async Task<OrderViewModel> GetOrderById(string orderId)
         {
             var order = await repo.All<OrderData>()
@@ -180,90 +279,49 @@ namespace Orders.Core.Services
             return order;
         }
 
-        public async Task<IEnumerable<OrderViewModel>> GetAll(string userId)
+        public async Task<OrderStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var user = await userManager.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            (startDate, endDate) = CheckDate(startDate, endDate);
 
-            if (await userManager.IsInRoleAsync(user, "Admin"))
-            {
-                return await repo.All<Order>()
-                  .Include(x => x.OrderDatas)
-                  .Select(o => new OrderViewModel
-                  {
-                      Id = o.Id,
-                      Town = o.Address.Town,
-                      Aria = o.Address.Area,
-                      Street = o.Address.Street,
-                      Number = o.Address.Number,
-                      UserName = o.UserName,
-                      PhoneNumner = o.PhoneNumner,
-                      PaymentType = o.PaymentType,
-                      Price = o.Price,
-                      DeliveryPrice = o.DeliveryPrice,
-                      TimeForDelivery = o.TimeForDelivery,
-                      RestaurantId = o.RestaurantId,
-                      RestaurantName = o.Restaurant.Name,
-                      Status = o.Status,
-                      DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                      DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-                  })
-                  .OrderByDescending(x => x.DataCreated)
-                  .ToListAsync();
-            }
-            else if (await userManager.IsInRoleAsync(user, "Restaurant"))
-            {
-                var restaurantId = user.RestaurantId;
-                return await repo.All<Order>()
-                    .Where(x => x.RestaurantId == restaurantId)
-                    .Include(x => x.OrderDatas)
-                    .Select(o => new OrderViewModel
-                    {
-                        Id = o.Id,
-                        Town = o.Address.Town,
-                        Aria = o.Address.Area,
-                        Street = o.Address.Street,
-                        Number = o.Address.Number,
-                        UserName = o.UserName,
-                        PhoneNumner = o.PhoneNumner,
-                        PaymentType = o.PaymentType,
-                        Price = o.Price,
-                        DeliveryPrice = o.DeliveryPrice,
-                        TimeForDelivery = o.TimeForDelivery,
-                        RestaurantId = o.RestaurantId,
-                        RestaurantName = o.Restaurant.Name,
-                        Status = o.Status,
-                        DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                        DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-                    })
-                    .OrderByDescending(x => x.DataCreated)
-                    .ToListAsync();
-            }
+            var orders = await GetAll(userId);
 
-            var driverId = user.DriverId;
-            return await repo.All<Order>()
-                .Where(x => x.DriverId == driverId)
-                .Include(x => x.OrderDatas)
-                .Select(o => new OrderViewModel
-                {
-                    Id = o.Id,
-                    Town = o.Address.Town,
-                    Aria = o.Address.Area,
-                    Street = o.Address.Street,
-                    Number = o.Address.Number,
-                    UserName = o.UserName,
-                    PhoneNumner = o.PhoneNumner,
-                    PaymentType = o.PaymentType,
-                    Price = o.Price,
-                    DeliveryPrice = o.DeliveryPrice,
-                    TimeForDelivery = o.TimeForDelivery,
-                    RestaurantId = o.RestaurantId,
-                    RestaurantName = o.Restaurant.Name,
-                    Status = o.Status,
-                    DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
-                })
-                .OrderByDescending(x => x.DataCreated)
-                .ToListAsync();
+            var totalSells = orders
+                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
+                .Select(x => x.DeliveryPrice).Sum();
+
+            var ordersCount = orders.Count();
+
+            var newOrdersCount = orders.Where(x => x.Status == Status.Нова).Count();
+            var newOrdersProogres = (orders.Where(x => x.Status == Status.Нова).Count() / (double)orders.Count()) * 100;
+
+            var endOrdersCount = orders.Where(x => x.Status == Status.Доставена).Count();
+            var endOrdersProogres = (orders
+                .Where(x => x.Status == Status.Доставена)
+                .Count()
+                / (double)orders.Count()) * 100;
+
+            var canceledOrdersCount = orders
+                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
+                .Count();
+            var canceledOrdersProogres = (orders
+                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
+                .Count()
+                / (double)orders.Count())
+                * 100;
+
+            var ordersStats = new OrderStatsModel
+            {
+                OrdersCount = ordersCount,
+                NewOrdersCount = newOrdersCount,
+                NewOrdersProogres = newOrdersProogres,
+                EndOrdersCount = endOrdersCount,
+                EndOrdersProogres = endOrdersProogres,
+                TotalSells = totalSells,
+                CancelledOrdersCount = canceledOrdersCount,
+                CancelledOrdersProogres = canceledOrdersProogres
+            };
+
+            return ordersStats;
         }
 
         public async Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId)
@@ -310,47 +368,12 @@ namespace Orders.Core.Services
             return (actionResult, error);
         }
 
-        public async Task<OrderStatsModel> GetDaylyStats(string userId)
+        private (DateTime? startDate, DateTime? endDate) CheckDate(DateTime? startDate, DateTime? endDate)
         {
-            var orders = await GetAll(userId);
+            if (!startDate.HasValue) startDate = DateTime.MinValue;
+            if (!endDate.HasValue) endDate = DateTime.Now;
 
-            var totalSells = orders
-                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
-                .Select(x => x.DeliveryPrice).Sum();
-
-            var ordersCount = orders.Count();
-
-            var newOrdersCount = orders.Where(x => x.Status == Status.Нова).Count();
-            var newOrdersProogres = (orders.Where(x => x.Status == Status.Нова).Count() / (double)orders.Count()) * 100;
-
-            var endOrdersCount = orders.Where(x => x.Status == Status.Доставена).Count();
-            var endOrdersProogres = (orders
-                .Where(x => x.Status == Status.Доставена)
-                .Count() 
-                / (double)orders.Count()) * 100;
-
-            var canceledOrdersCount = orders
-                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
-                .Count();
-            var canceledOrdersProogres = (orders
-                .Where(x => x.Status == Status.Отказана || x.Status == Status.ОтказанаШофьор)
-                .Count()
-                / (double)orders.Count())
-                * 100;
-
-            var ordersStats = new OrderStatsModel
-            {
-                OrdersCount = ordersCount,
-                NewOrdersCount = newOrdersCount,
-                NewOrdersProogres = newOrdersProogres,
-                EndOrdersCount = endOrdersCount,
-                EndOrdersProogres = endOrdersProogres,
-                TotalSells = totalSells,
-                CancelledOrdersCount = canceledOrdersCount,
-                CancelledOrdersProogres = canceledOrdersProogres
-            };
-
-            return ordersStats;
+            return (startDate, endDate);
         }
     }
 }

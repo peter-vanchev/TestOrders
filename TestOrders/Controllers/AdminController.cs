@@ -31,7 +31,8 @@ namespace TestOrders.Controllers
             //    SignOut();
             //}
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var orders = await orderService.GetDaylyStats(userId);
+            var orders = await orderService.GetStats(userId, DateTime.Now);
+            var test = await orderService.GetAll();
 
             return View(orders);
         }
