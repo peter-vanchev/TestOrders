@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 }
 
 <div class="content-header">
@@ -58,6 +57,15 @@
                     </div>
                     <a asp-controller="Order" asp-action="All" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
+                <div class="card">
+                    <div class="card-header">
+                        Bar Chart
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                    </div>
+
+                </div>
             </div>
             <div class="col-lg-6 col-6">
 
@@ -100,7 +108,7 @@
 
                         <div class="d-flex justify-content-between align-items-center mb-0">
                             <p class="text-success text-xl">
-                                <i class="fa fa-money"></i>
+                                <i class="fas fa-donate"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
                                 <span class="font-weight-bold">
@@ -111,57 +119,7 @@
                         </div>
 
                     </div>
-
-
                 </div>
-
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="d-flex justify-content-between">
-                            <h3 class="card-title">Online Store Visitors</h3>
-                            <a href="javascript:void(0);">View Report</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <p class="d-flex flex-column">
-                                <span class="text-bold text-lg">820</span>
-                                <span>Visitors Over Time</span>
-                            </p>
-                            <p class="ml-auto d-flex flex-column text-right">
-                                <span class="text-success">
-                                    <i class="fas fa-arrow-up"></i> 12.5%
-                                </span>
-                                <span class="text-muted">Since last week</span>
-                            </p>
-                        </div>
-
-                        <div class="position-relative mb-4">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="visitors-chart" height="200" width="609" style="display: block; width: 609px; height: 200px;" class="chartjs-render-monitor"></canvas>
-                        </div>
-                        <div class="d-flex flex-row justify-content-end">
-                            <span class="mr-2">
-                                <i class="fas fa-square text-primary"></i> This Week
-                            </span>
-                            <span>
-                                <i class="fas fa-square text-gray"></i> Last Week
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- ./col -->
-            <div class="col-lg-6 col-6">
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
@@ -174,8 +132,6 @@
                     <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-
-
             <!-- ./col -->
         </div>
         <!-- /.row -->
@@ -191,5 +147,36 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+    @{var test = string.Join(", ", @Model.MyProperty.Keys);}
+    @{var test1 = string.Join(", ", @Model.MyProperty.Values); }
+    var xValues = @test;
+    var yValues = @test1;
+    var barColors = [
+      "#b91d47",
+      "#00aba9",
+      "#2b5797",
+      "#e8c3b9",
+      "#1e7145"
+    ];
 
-
+      new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "World Wide Wine Production 2018"
+        }
+      }
+    });
+</script>
+@test
+@test1

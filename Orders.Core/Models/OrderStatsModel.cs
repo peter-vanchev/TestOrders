@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Orders.Core.Models
+﻿namespace Orders.Core.Models
 {
     public class OrderStatsModel
     {
+        public OrderStatsModel()
+        {
+            MyProperty = new Dictionary<string, int>();
+            MyProperty.Add("edno", 1);
+            MyProperty.Add("dve", 2);
+        }
         public decimal TotalSells { get; set; }
 
         public decimal DeliverySells { get; set; }
@@ -26,5 +26,6 @@ namespace Orders.Core.Models
 
         public double CancelledOrdersProogres { get; set; }
 
+        public Dictionary<string, int> MyProperty { get; set; } 
     }
 }
