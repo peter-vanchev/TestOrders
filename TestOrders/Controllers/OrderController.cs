@@ -32,12 +32,10 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> All(DateTime startDate)
+        public async Task<IActionResult> All()
         {
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
-
-            var test = @DateTime.Now.ToString("dd-MM-yyyy");
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
 

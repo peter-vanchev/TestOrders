@@ -281,13 +281,15 @@ namespace Orders.Core.Services
 
         public async Task<OrderStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null)
         {
-            (startDate, endDate) = CheckDate(startDate, endDate);
+            var orders = await GetAll(userId, startDate, endDate);
 
-            var orders = await GetAll(userId);
+            var delyverySells = orders
+                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
+                .Select(x => x.DeliveryPrice).Sum();
 
             var totalSells = orders
                 .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
-                .Select(x => x.DeliveryPrice).Sum();
+                .Select(x => x.Price).Sum();
 
             var ordersCount = orders.Count();
 
@@ -317,6 +319,7 @@ namespace Orders.Core.Services
                 EndOrdersCount = endOrdersCount,
                 EndOrdersProogres = endOrdersProogres,
                 TotalSells = totalSells,
+                DeliverySells = delyverySells,
                 CancelledOrdersCount = canceledOrdersCount,
                 CancelledOrdersProogres = canceledOrdersProogres
             };
@@ -370,7 +373,7 @@ namespace Orders.Core.Services
 
         private (DateTime? startDate, DateTime? endDate) CheckDate(DateTime? startDate, DateTime? endDate)
         {
-            if (!startDate.HasValue) startDate = DateTime.MinValue;
+            if (!startDate.HasValue) startDate = DateTime.Today;
             if (!endDate.HasValue) endDate = DateTime.Now;
 
             return (startDate, endDate);

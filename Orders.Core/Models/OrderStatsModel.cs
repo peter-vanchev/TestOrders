@@ -10,6 +10,8 @@ namespace Orders.Core.Models
     {
         public decimal TotalSells { get; set; }
 
+        public decimal DeliverySells { get; set; }
+
         public int OrdersCount { get; set; }
 
         public int NewOrdersCount { get; set; }
