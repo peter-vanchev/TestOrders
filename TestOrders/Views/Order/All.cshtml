@@ -99,7 +99,7 @@
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
                                             <td>
-                                                @if (@order.Status == Status.Приета && User.IsInRole("Admin"))
+                                                @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор ))
                                                 {
                                                     <div class="card card-primary collapsed-card">
                                                         <div class="card-header">

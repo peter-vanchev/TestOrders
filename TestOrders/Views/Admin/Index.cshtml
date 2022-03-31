@@ -24,14 +24,39 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <p class="text-center">
-                            <h3>Поръчки</h3>
-                        </p>
+                        <div class="progress-group">
+                            <h5>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h5>
+                        </div>
+
                         <div class="progress-group">
                             Нови Поръчки - @Model.NewOrdersCount.ToString("F0")
                             <span class="float-right"><b>@Model.NewOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
                             <div class="progress progress-sm">
                                 <div class="progress-bar bg-primary" style="width: @Model.NewOrdersProogres.ToString("F2")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Приети Поръчки - @Model.AcceptedOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.AcceptedOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.AcceptedOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Поръчки в изпълнение- @Model.InProgresOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.InProgresOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.InProgresOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Отказани Поръчки - @Model.CancelledOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.CancelledOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.CancelledOrdersProogres.ToString("F0")%"></div>
                             </div>
                         </div>
                         <div class="progress-group">
@@ -41,16 +66,7 @@
                                 <div class="progress-bar bg-primary" style="width: @Model.EndOrdersProogres.ToString("F0")%"></div>
                             </div>
                         </div>
-                        <div class="progress-group">
-                            Отказани Поръчки - @Model.CancelledOrdersCount.ToString("F0")
-                            <span class="float-right"><b>@Model.CancelledOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
-                            <div class="progress progress-sm">
-                                <div class="progress-bar bg-primary" style="width: @Model.CancelledOrdersCount.ToString("F0")%"></div>
-                            </div>
-                        </div>
-                        <div class="progress-group">
-                            <h5>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h5>
-                        </div>
+
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
@@ -123,7 +139,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>@Model.TotalSells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
+                        <h3>@Model.DeliverySells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
                         <p>Дневен оборот</p>
                     </div>
                     <div class="icon">
@@ -135,7 +151,6 @@
             <!-- ./col -->
         </div>
         <!-- /.row -->
-
     </div><!-- /.container-fluid -->
 </section>
 
@@ -149,10 +164,14 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
-    @{var test = string.Join(", ", @Model.MyProperty.Keys);}
-    @{var test1 = string.Join(", ", @Model.MyProperty.Values); }
-    var xValues = @test;
-    var yValues = @test1;
+    @{
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Keys.ToList());
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Values.ToList());
+    }
+
+    //var xValues = ['as', 'ts', 'sa'];
+    //var yValues = [1, 2, 3];
+
     var barColors = [
       "#b91d47",
       "#00aba9",
@@ -164,19 +183,20 @@
       new Chart("myChart", {
       type: "pie",
       data: {
-        labels: xValues,
+        labels: @Html.Raw(XLabels),
         datasets: [{
           backgroundColor: barColors,
-          data: yValues
+          data: @Html.Raw(YValues)
         }]
       },
       options: {
         title: {
           display: true,
-          text: "World Wide Wine Production 2018"
+          text: "Поръчки"
         }
       }
     });
 </script>
-@test
-@test1
+
+@Html.Raw(YValues)
+@Html.Raw(XLabels)

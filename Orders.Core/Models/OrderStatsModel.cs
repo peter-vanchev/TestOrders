@@ -4,10 +4,9 @@
     {
         public OrderStatsModel()
         {
-            MyProperty = new Dictionary<string, int>();
-            MyProperty.Add("edno", 1);
-            MyProperty.Add("dve", 2);
+            ChartData = new Dictionary<string, int>();
         }
+
         public decimal TotalSells { get; set; }
 
         public decimal DeliverySells { get; set; }
@@ -18,6 +17,14 @@
 
         public double NewOrdersProogres { get; set; }
 
+        public int AcceptedOrdersCount { get; set; }
+
+        public double AcceptedOrdersProogres { get; set; }
+
+        public int InProgresOrdersCount { get; set; }
+
+        public double InProgresOrdersProogres { get; set; }
+
         public int EndOrdersCount { get; set; }
 
         public double EndOrdersProogres { get; set; }
@@ -26,6 +33,6 @@
 
         public double CancelledOrdersProogres { get; set; }
 
-        public Dictionary<string, int> MyProperty { get; set; } 
+        public Dictionary<string, int> ChartData { get; set; } 
     }
 }

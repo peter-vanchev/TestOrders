@@ -39,14 +39,7 @@ namespace TestOrders.Controllers
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
 
-            if (this.User.IsInRole("Driver"))
-            {
-                return this.View(orders.Where(x => x.Status != Status.Нова 
-                    && x.Status != Status.Насочена)
-                    .ToList());
-            }
-
-            return this.View(orders.Where(x => x.Status != Status.Нова).ToList());
+            return this.View(orders);
         }
 
         [Authorize(Roles = "Admin, Manager, Driver")]

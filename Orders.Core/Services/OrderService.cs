@@ -311,6 +311,24 @@ namespace Orders.Core.Services
                 / (double)orders.Count())
                 * 100;
 
+            var acceptedOrdersCount = orders
+                .Where(x => x.Status == Status.Приета)
+                .Count();
+            var acceptedOrdersProogres = (orders
+                .Where(x => x.Status == Status.Приета)
+                .Count()
+                / (double)orders.Count())
+                * 100;
+
+            var inProgresOrdersCount = orders
+                .Where(x => x.Status == Status.Насочена || x.Status == Status.Изпратена)
+                .Count();
+            var inProgresOrdersProogres = (orders
+                .Where(x => x.Status == Status.Насочена || x.Status == Status.Изпратена)
+                .Count()
+                / (double)orders.Count())
+                * 100;
+
             var ordersStats = new OrderStatsModel
             {
                 OrdersCount = ordersCount,
@@ -321,8 +339,18 @@ namespace Orders.Core.Services
                 TotalSells = totalSells,
                 DeliverySells = delyverySells,
                 CancelledOrdersCount = canceledOrdersCount,
-                CancelledOrdersProogres = canceledOrdersProogres
+                CancelledOrdersProogres = canceledOrdersProogres,
+                AcceptedOrdersCount = acceptedOrdersCount,
+                AcceptedOrdersProogres = acceptedOrdersProogres,
+                InProgresOrdersCount = inProgresOrdersCount,
+                InProgresOrdersProogres = inProgresOrdersProogres
             };
+
+            ordersStats.ChartData.Add("New", newOrdersCount);
+            ordersStats.ChartData.Add("End", endOrdersCount);
+            ordersStats.ChartData.Add("Cancelled", canceledOrdersCount);
+            ordersStats.ChartData.Add("Accepted", acceptedOrdersCount);
+            ordersStats.ChartData.Add("InProgres", inProgresOrdersCount);
 
             return ordersStats;
         }
