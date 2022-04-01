@@ -32,28 +32,57 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string sortOrder)
         {
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
 
-            return this.View(orders);
+
+            ViewData["RestName"] = sortOrder == "restName" ? "restName_desc" : "restName";
+            ViewData["UserName"] = sortOrder == "userName" ? "userName_desc" : "userName";
+            ViewData["DriverName"] = sortOrder == "driverName" ? "driverName_desc" : "driverName";
+
+            switch (sortOrder)
+            {
+                case "restName":
+                    orders = orders.OrderBy(s => s.RestaurantName);
+                    break;
+                case "restName_desc":
+                    orders = orders.OrderByDescending(s => s.RestaurantName);
+                    break;
+                case "userName":
+                    orders = orders.OrderBy(s => s.UserName);
+                    break;
+                case "userName_desc":
+                    orders = orders.OrderByDescending(s => s.UserName);
+                    break;
+                case "driverName":
+                    orders = orders.OrderBy(s => s.DriverName);
+                    break;
+                case "driverName_desc":
+                    orders = orders.OrderByDescending(s => s.DriverName);
+                    break;
+                default:
+                    break;
+            }
+
+            return this.View(orders.ToList());
         }
 
         [Authorize(Roles = "Admin, Manager, Driver")]
         public async Task<IActionResult> Action(string id, bool accepted)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+
             var result = await orderService.AcceptOrder(userId, id, accepted);
 
             if (result.Item1)
             {
                 return Redirect("/Order/NewOrders");
             }
-    
+
             return View();
         }
 
@@ -87,7 +116,7 @@ namespace TestOrders.Controllers
                 var restaurants = new List<RestaurantViewModel>();
                 restaurants.Add(restaurant);
                 ViewData["restaurants"] = restaurants;
-            }                
+            }
 
             return View();
         }
@@ -99,7 +128,7 @@ namespace TestOrders.Controllers
             var userId = userManager.GetUserId(User);
 
             if (!ModelState.IsValid || model.PaymentType == "false")
-            {               
+            {
                 if (this.User.IsInRole("Admin"))
                 {
                     var restaurants = await restaurantService.GetAll();
@@ -116,7 +145,7 @@ namespace TestOrders.Controllers
 
                 return View();
             }
-            
+
             var (created, error) = await orderService.Create(model, userId);
             if (!created)
             {

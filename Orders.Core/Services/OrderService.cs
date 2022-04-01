@@ -346,11 +346,11 @@ namespace Orders.Core.Services
                 InProgresOrdersProogres = inProgresOrdersProogres
             };
 
-            ordersStats.ChartData.Add("New", newOrdersCount);
-            ordersStats.ChartData.Add("End", endOrdersCount);
-            ordersStats.ChartData.Add("Cancelled", canceledOrdersCount);
-            ordersStats.ChartData.Add("Accepted", acceptedOrdersCount);
-            ordersStats.ChartData.Add("InProgres", inProgresOrdersCount);
+            ordersStats.ChartData.Add("Нова", newOrdersCount);
+            ordersStats.ChartData.Add("Приключена", endOrdersCount);
+            ordersStats.ChartData.Add("Отказана", canceledOrdersCount);
+            ordersStats.ChartData.Add("Приета", acceptedOrdersCount);
+            ordersStats.ChartData.Add("В изпълнение", inProgresOrdersCount);
 
             return ordersStats;
         }

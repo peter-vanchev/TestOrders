@@ -17,8 +17,8 @@
     </div>
 </section>
 
-    <div class="row">
-            <div class="container-fluid">
+<div class="row">
+    <div class="container-fluid">
 
         <label for="start">Start date:</label>
 
@@ -32,10 +32,10 @@
                value="@DateTime.Now.ToString("dd-MM-yyyy")"
                min="2022-01-01" max="2022-12-31">
 
-        <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="All"  asp-for="startDate" asp-route-startDate="startDate">Create Order</a>
-                </div>
-
+        <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="All" asp-for="startDate" asp-route-startDate="startDate">Create Order</a>
     </div>
+
+</div>
 
 <form class="form-horizontal">
     <section class="content">
@@ -49,12 +49,24 @@
                                 <thead>
                                     <tr style="color: #fff; background-color: #dc3545;">
                                         <th class="table-web" scope="col">ID</th>
-                                        <th class="table-web" scope="col">Ресторант</th>
+                                        <th class="table-web" scope="col">
+                                            <a asp-action="All" asp-route-sortOrder="@ViewData["RestName"]">
+                                                Ресторант
+                                            </a>
+                                        </th>
                                         <th class="table-web" scope="col">Създадена</th>
                                         <th class="table-web" scope="col">Статус</th>
-                                        <th class="table-web" scope="col">Клиент</th>
+                                        <th class="table-web" scope="col">
+                                            <a asp-action="All" asp-route-sortOrder="@ViewData["UserName"]">
+                                                Клиент
+                                            </a>
+                                        </th>
                                         <th class="table-web" scope="col">Адрес</th>
-                                        <th class="table-web" scope="col">Шофьор</th>
+                                        <th class="table-web" scope="col">
+                                            <a asp-action="All" asp-route-sortOrder="@ViewData["DriverName"]">
+                                                Шофьор
+                                            </a>
+                                        </th>
                                         <th class="table-web" scope="col">Цена</th>
                                         <th class="table-web" scope="col">Доставка</th>
                                         <th class="table-web" scope="col">Вид плащане</th>
@@ -99,7 +111,7 @@
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
                                             <td>
-                                                @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор ))
+                                                @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
                                                 {
                                                     <div class="card card-primary collapsed-card">
                                                         <div class="card-header">

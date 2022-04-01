@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
 using Orders.Infrastructure.Data.Models;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace TestOrders.Controllers
@@ -22,7 +23,7 @@ namespace TestOrders.Controllers
             orderService = _orderService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string period)
         {
             //var result = await adminService.Seed();
 
@@ -30,8 +31,12 @@ namespace TestOrders.Controllers
             //{
             //    SignOut();
             //}
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var orders = await orderService.GetStats(userId, DateTime.Today);
+
+            var (startDate, endDate) = CheckPeriod(period);            
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);            
+
+            var orders = await orderService.GetStats(userId, startDate, endDate);
 
             return View(orders);
         }
@@ -84,6 +89,29 @@ namespace TestOrders.Controllers
             }
 
             return RedirectToAction("UserRole");
+        }
+
+        private (DateTime, DateTime) CheckPeriod(string period)
+        {
+            var startDate = DateTime.Today;
+            var endDate = DateTime.Now;
+
+            switch (period)
+            {
+                case "year":
+                    startDate = new DateTime(endDate.Year, 1, 1);
+                    break;
+                case "month":
+                    startDate = new DateTime(endDate.Year, endDate.Month, 1);
+                    break;
+                case "week":
+                    startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
+                    break;
+                default:
+                    break;
+            }
+
+            return (startDate, endDate);
         }
     }
 }

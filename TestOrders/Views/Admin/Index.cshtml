@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-6 col-6">
+            <div class="col-lg-6">
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
@@ -74,20 +74,31 @@
                     <a asp-controller="Order" asp-action="All" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        Bar Chart
-                    </div>
+
                     <div class="card-body">
                         <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
                     </div>
 
                 </div>
             </div>
-            <div class="col-lg-6 col-6">
+            <div class="col-lg-6">
 
                 <div class="card">
                     <div class="card-header border-0">
-                        <h3 class="card-title">Поръчки за деня</h3>
+                        <h3 class="card-title">
+                            <a asp-action="Index" asp-route-period="day" class="btn btn-sm btn-tool">
+                                Поръчки за деня
+                            </a>
+                            <a asp-action="Index" asp-route-period="week" class="btn btn-sm btn-tool">
+                                Поръчки за седмицата
+                            </a>
+                            <a asp-action="Index" asp-route-period="month" class="btn btn-sm btn-tool">
+                                Поръчки за месеца
+                            </a>
+                            <a asp-action="Index" asp-route-period="year" class="btn btn-sm btn-tool">
+                                Поръчки за годината
+                            </a>
+                        </h3>
                         <div class="card-tools">
                             <a href="#" class="btn btn-sm btn-tool">
                                 <i class="fas fa-download"></i>
@@ -197,6 +208,3 @@
       }
     });
 </script>
-
-@Html.Raw(YValues)
-@Html.Raw(XLabels)
