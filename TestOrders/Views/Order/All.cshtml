@@ -7,36 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Управление на поръчките</h1>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="row">
-    <div class="container-fluid">
-
-        <label for="start">Start date:</label>
-
-        <input type="date" id="startDate" name="trip-start"
-               value="@DateTime.Now.ToString("dd-MM-yyyy")"
-               min="2022-01-01" max="2022-12-31">
-
-        <label for="start">End date:</label>
-
-        <input type="date" id="endDate" name="trip-start"
-               value="@DateTime.Now.ToString("dd-MM-yyyy")"
-               min="2022-01-01" max="2022-12-31">
-
-        <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="All" asp-for="startDate" asp-route-startDate="startDate">Create Order</a>
-    </div>
-
-</div>
-
 <form class="form-horizontal">
     <section class="content">
         <div class="container-fluid">
@@ -55,7 +25,6 @@
                                             </a>
                                         </th>
                                         <th class="table-web" scope="col">Създадена</th>
-                                        <th class="table-web" scope="col">Статус</th>
                                         <th class="table-web" scope="col">
                                             <a asp-action="All" asp-route-sortOrder="@ViewData["UserName"]">
                                                 Клиент
@@ -71,6 +40,7 @@
                                         <th class="table-web" scope="col">Доставка</th>
                                         <th class="table-web" scope="col">Вид плащане</th>
                                         <th class="table-web" scope="col">Време за доставка</th>
+                                        <th class="table-web" scope="col">Статус</th>
                                         <th scope="col">Действие</th>
                                     </tr>
                                 </thead>
@@ -90,18 +60,16 @@
                                                 </div>
                                             </td>
                                             <td class="table-web">
-                                                <p>@order.Town,</p>
-                                                <p>@order.DataCreated</p>
+                                                <p class="m-xl-auto">@order.Town,</p>
+                                                <p class="m-xl-auto">@order.DataCreated</p>
                                             </td>
-                                            <td class="table-web">
-                                                <span class="badge badge-pill" id="@order.Status">@order.Status</span>
-                                            </td>
+
                                             <td>
                                                 <p>@order.UserName
                                             </td>
                                             <td class="table-web">
-                                                <p>@order.Street, @order.Number</p>
-                                                <p>@order.Town</p>
+                                                <p class="m-xl-auto">@order.Street, @order.Number</p>
+                                                <p class="m-xl-auto">@order.Town</p>
                                             </td>
                                             <td class="table-web">
                                                 @order.DriverName
@@ -110,17 +78,18 @@
                                             <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                             <td>@order.PaymentType</td>
                                             <td>@order.TimeForDelivery мин.</td>
+                                            <td class="table-web">
+                                                <span class="badge badge-pill" id="@order.Status">@order.Status</span>
+                                            </td>
                                             <td>
                                                 @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
                                                 {
                                                     <div class="card card-primary collapsed-card">
                                                         <div class="card-header">
-                                                            <h3 class="card-title">Насочи към шофьор</h3>
-                                                            <div class="card-tools">
-                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                    <i class="fas fa-plus"></i>
-                                                                </button>
-                                                            </div>
+                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                Насочи към шофьор
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
                                                         </div>
                                                         <div class="card-body" style="display: none;">
                                                             @foreach (var driver in ViewBag.drivers)
@@ -138,6 +107,12 @@
                                                     <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
                                                asp-route-orderId="@order.Id">Delivery Order</a>
                                                 }
+                                                else  @if ((User.IsInRole("Admin") && @order.Status == Status.Нова)
+                                                                            || (User.IsInRole("Driver") && @order.Status == Status.Насочена))
+                                                {
+                                                    <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
+                                                    <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -151,9 +126,9 @@
                                         <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col">@Model.Sum(x => x.Price).ToString("F2") лв.</th>
                                         <th class="table-web" scope="col">@Model.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                                        <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col"></th>
                                         <th class="table-web" scope="col"></th>

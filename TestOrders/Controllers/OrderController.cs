@@ -39,7 +39,6 @@ namespace TestOrders.Controllers
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
 
-
             ViewData["RestName"] = sortOrder == "restName" ? "restName_desc" : "restName";
             ViewData["UserName"] = sortOrder == "userName" ? "userName_desc" : "userName";
             ViewData["DriverName"] = sortOrder == "driverName" ? "driverName_desc" : "driverName";
@@ -80,7 +79,7 @@ namespace TestOrders.Controllers
 
             if (result.Item1)
             {
-                return Redirect("/Order/NewOrders");
+                return Redirect("/Order/All");
             }
 
             return View();
@@ -153,7 +152,7 @@ namespace TestOrders.Controllers
                 return View();
             }
 
-            return Redirect("/Order/NewOrders");
+            return Redirect("/Order/All");
         }
 
         public async Task<IActionResult> Details(string Id)
@@ -183,22 +182,5 @@ namespace TestOrders.Controllers
             return Redirect("/Order/All");
         }
 
-        public async Task<IActionResult> NewOrders()
-        {
-            var orders = await orderService.GetAll(userManager.GetUserId(User));
-
-            if (this.User.IsInRole("Driver"))
-            {
-                orders = orders.Where(
-                 x => x.Status == Status.Насочена)
-                 .ToList();
-                return this.View(orders);
-            }
-
-            orders = orders.Where(
-                x => x.Status == Status.Нова)
-                .ToList();
-            return this.View(orders);
-        }
     }
 }

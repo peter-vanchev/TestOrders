@@ -64,7 +64,10 @@
                                                         <th>Адрес</th>
                                                         <th>Създаден на</th>
                                                         <th>Активен</th>
-                                                        <th>Редакция</th>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
+                                                            <th>Редакция</th>
+                                                        }
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -95,16 +98,19 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    @item.Created <br> 
+                                                                    @item.Created <br>
                                                                 </td>
                                                                 <td data-label="Featured">
                                                                     <i class="far fa-thumbs-up"></i>
                                                                 </td>
-                                                                <td data-label="Action">
-                                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="text--primary" data-toggle="tooltip" title="" data-original-title="Edit">
-                                                                        <span class="badge badge-warning">Промени</span>
-                                                                    </a>
-                                                                </td>
+                                                                @if (User.IsInRole("Admin"))
+                                                                {
+                                                                    <td data-label="Action">
+                                                                        <a asp-action="Edit" asp-route-id="@item.Id" class="text--primary" data-toggle="tooltip" title="" data-original-title="Edit">
+                                                                            <span class="badge badge-warning">Промени</span>
+                                                                        </a>
+                                                                    </td>
+                                                                }
                                                             </tr>
                                                         }
                                                     }

@@ -3,84 +3,87 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-        <li class="nav-item">
-            <a href="/" class="nav-link">
-                <i class="nav-icon fas fa-home"></i>
-                <p>
-                    Начало
-                </p>
-            </a>
-        </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-dragon"></i>
+                    <p>
+                        Users
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item ">
+                        <a class="btn btn-block btn-outline-white btn-sm" asp-controller="Admin" asp-action="Role">
+                            <p>Role Manager</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-block btn-outline-white  btn-sm" asp-controller="Admin" asp-action="UserRole">
+                            <p>User Roles</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
 
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-dragon"></i>
-                <p>
-                    Users
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item ">
-                    <a class="btn btn-block btn-outline-white btn-sm" asp-controller="Admin" asp-action="Role">
-                        <p>Role Manager</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-block btn-outline-white  btn-sm" asp-controller="Admin" asp-action="UserRole">
-                        <p>User Roles</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Ресторанти
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Restaurant" asp-action="Create">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Създай</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Restaurant" asp-action="All">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Всички</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
 
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                <p>
-                    Ресторанти
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Restaurant" asp-action="Create">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Създай</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Restaurant" asp-action="All">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Всички</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-car"></i>
-                <p>
-                    Шофьори
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Driver" asp-action="Create">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Създай</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Driver" asp-action="All">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Всички</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-car"></i>
+                    <p>
+                        Шофьори
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Driver" asp-action="Create">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Създай</p>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Driver" asp-action="All">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Всички</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
 
         <li class="nav-item">
             <a href="#" class="nav-link">
@@ -92,32 +95,21 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Order" asp-action="NewOrders">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Нови поръчки  <span class="badge badge-info right">0</span></p>                       
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" asp-controller="Order" asp-action="All">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Всички</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Order" asp-action="Create">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Създай</p>
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Order" asp-action="Create">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Създай</p>
+                        </a>
+                    </li>
+                }
             </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-chart-pie"></i>
-                <p>
-                    Отчети
-                </p>
-            </a>
         </li>
     </ul>
 </nav>

@@ -70,7 +70,7 @@ namespace TestOrders.Controllers
             return View(restaurant);
         }
 
-        [Authorize(Roles = "Admin, Restaurant")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string Id)
         {
             var restaurant = await restaurantService.GetRestaurantById(Id);
@@ -79,7 +79,7 @@ namespace TestOrders.Controllers
             return View(restEdit);
         }
 
-        [Authorize(Roles = "Admin, Restaurant")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditRestaurantViewModel model)
         {
