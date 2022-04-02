@@ -32,40 +32,12 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> All(string sortOrder)
+        public async Task<IActionResult> All()
         {
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
 
             var orders = await orderService.GetAll(userManager.GetUserId(User));
-
-            ViewData["RestName"] = sortOrder == "restName" ? "restName_desc" : "restName";
-            ViewData["UserName"] = sortOrder == "userName" ? "userName_desc" : "userName";
-            ViewData["DriverName"] = sortOrder == "driverName" ? "driverName_desc" : "driverName";
-
-            switch (sortOrder)
-            {
-                case "restName":
-                    orders = orders.OrderBy(s => s.RestaurantName);
-                    break;
-                case "restName_desc":
-                    orders = orders.OrderByDescending(s => s.RestaurantName);
-                    break;
-                case "userName":
-                    orders = orders.OrderBy(s => s.UserName);
-                    break;
-                case "userName_desc":
-                    orders = orders.OrderByDescending(s => s.UserName);
-                    break;
-                case "driverName":
-                    orders = orders.OrderBy(s => s.DriverName);
-                    break;
-                case "driverName_desc":
-                    orders = orders.OrderByDescending(s => s.DriverName);
-                    break;
-                default:
-                    break;
-            }
 
             return this.View(orders.ToList());
         }

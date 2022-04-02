@@ -7,146 +7,117 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form class="form-horizontal">
-    <section class="content">
-        <div class="container-fluid">
+<div class="card">
+    <div class="card-header">
+        <form>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="card shadow">
-                        <div class="table-responsive">
-                            <table class="table align-items-center">
+                <div class="col-sm-3">
+                    <input class="form-control" type="date" id="Date" name="Date" value="@DateTime.Today" />
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control" type="date" id="Date" name="Date" value="@DateTime.Today" />
+                </div>
+                <div class="col-sm-1">
+                    <a class="btn btn-block bg-gradient-secondary btn-flat" asp-controller="Order" asp-action="All">All Orders</a>
+                </div>
+            </div>
+        </form>
+    </div>
 
-                                <thead>
-                                    <tr style="color: #fff; background-color: #dc3545;">
-                                        <th class="table-web" scope="col">ID</th>
-                                        <th class="table-web" scope="col">
-                                            <a asp-action="All" asp-route-sortOrder="@ViewData["RestName"]">
-                                                Ресторант
-                                            </a>
-                                        </th>
-                                        <th class="table-web" scope="col">Създадена</th>
-                                        <th class="table-web" scope="col">
-                                            <a asp-action="All" asp-route-sortOrder="@ViewData["UserName"]">
-                                                Клиент
-                                            </a>
-                                        </th>
-                                        <th class="table-web" scope="col">Адрес</th>
-                                        <th class="table-web" scope="col">
-                                            <a asp-action="All" asp-route-sortOrder="@ViewData["DriverName"]">
-                                                Шофьор
-                                            </a>
-                                        </th>
-                                        <th class="table-web" scope="col">Цена</th>
-                                        <th class="table-web" scope="col">Доставка</th>
-                                        <th class="table-web" scope="col">Вид плащане</th>
-                                        <th class="table-web" scope="col">Време за доставка</th>
-                                        <th class="table-web" scope="col">Статус</th>
-                                        <th scope="col">Действие</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @foreach (var order in Model)
-                                    {
-                                        <tr>
-                                            <td>
-                                                <a class="btn badge badge-dark badge-pill" asp-action="Details" asp-route-id="@order.Id">Details</a>
-                                            </td>
-                                            <td>
-                                                <div class="media align-items-center">
-                                                    <div class="media-body">
-                                                        <span class="mb-0 text-sm">@order.RestaurantName</span>
-                                                    </div>
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                        <thead>
+                            <tr>
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Дата: activate to sort column descending">Дата</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Ресторант: activate to sort column ascending">Ресторант</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Адрес: activate to sort column ascending">Адрес</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Шофьор: activate to sort column ascending">Шофьор</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Доставка: activate to sort column ascending">Доставка</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Цена: activate to sort column ascending">Цена</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Вид плащане: activate to sort column ascending">Вид плащане</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Време за доставка: activate to sort column ascending">Време за доставка</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Статус: activate to sort column ascending">Статус</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Действие: activate to sort column ascending">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr class="odd">
+                                    <td>@order.DataCreated</td>
+                                    <td class="dtr-control sorting_1" tabindex="0">@order.RestaurantName</td>
+                                    <td>@order.UserName</td>
+                                    <td>
+                                        <p class="m-xl-auto">@order.Street, @order.Number</p>
+                                    </td>
+                                    <td>@order.DriverName</td>
+                                    <td>@order.Price.ToString("F2") лв.</td>
+                                    <td>@order.DeliveryPrice.ToString("F2") лв.</td>
+                                    <td>@order.PaymentType</td>
+                                    <td>@order.TimeForDelivery мин.</td>
+                                    <td class="table-web">
+                                        <span class="badge badge-pill" id="@order.Status">@order.Status</span>
+                                    </td>
+                                    <td>
+                                        @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
+                                        {
+                                            <div class="card card-primary collapsed-card">
+                                                <div class="card-header">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Насочи към шофьор
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
                                                 </div>
-                                            </td>
-                                            <td class="table-web">
-                                                <p class="m-xl-auto">@order.Town,</p>
-                                                <p class="m-xl-auto">@order.DataCreated</p>
-                                            </td>
+                                                <div class="card-body" style="display: none;">
+                                                    @foreach (var driver in ViewBag.drivers)
+                                                    {
+                                                        <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
+                                               asp-route-orderId="@order.Id">
+                                                            @driver.FirstName @driver.LastName
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (@order.Status == Status.Изпратена && User.IsInRole("Driver"))
+                                        {
+                                            <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
+                                       asp-route-orderId="@order.Id">Delivery Order</a>
+                                        }
+                                        else  @if ((User.IsInRole("Admin") && @order.Status == Status.Нова)
+                                                            || (User.IsInRole("Driver") && @order.Status == Status.Насочена))
+                                        {
+                                            <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
+                                            <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
 
-                                            <td>
-                                                <p>@order.UserName
-                                            </td>
-                                            <td class="table-web">
-                                                <p class="m-xl-auto">@order.Street, @order.Number</p>
-                                                <p class="m-xl-auto">@order.Town</p>
-                                            </td>
-                                            <td class="table-web">
-                                                @order.DriverName
-                                            </td>
-                                            <td>@order.Price.ToString("F2") лв.</td>
-                                            <td>@order.DeliveryPrice.ToString("F2") лв.</td>
-                                            <td>@order.PaymentType</td>
-                                            <td>@order.TimeForDelivery мин.</td>
-                                            <td class="table-web">
-                                                <span class="badge badge-pill" id="@order.Status">@order.Status</span>
-                                            </td>
-                                            <td>
-                                                @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
-                                                {
-                                                    <div class="card card-primary collapsed-card">
-                                                        <div class="card-header">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Насочи към шофьор
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="card-body" style="display: none;">
-                                                            @foreach (var driver in ViewBag.drivers)
-                                                            {
-                                                                <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
-                                                       asp-route-orderId="@order.Id">
-                                                                    @driver.FirstName @driver.LastName
-                                                                </a>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                }
-                                                else if (@order.Status == Status.Изпратена && User.IsInRole("Driver"))
-                                                {
-                                                    <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
-                                               asp-route-orderId="@order.Id">Delivery Order</a>
-                                                }
-                                                else  @if ((User.IsInRole("Admin") && @order.Status == Status.Нова)
-                                                                            || (User.IsInRole("Driver") && @order.Status == Status.Насочена))
-                                                {
-                                                    <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@true">Приеми</a>
-                                                    <a class="btn btn-info btn-sm order-action" asp-action="Action" asp-route-id="@order.Id" asp-route-accepted="@false">Откажи</a>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-
-                                <tfoot>
-                                    <tr style="color: #fff; background-color: #dc3545;">
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col">@Model.Sum(x => x.Price).ToString("F2") лв.</th>
-                                        <th class="table-web" scope="col">@Model.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                        <th class="table-web" scope="col"></th>
-                                    </tr>
-                                </tfoot>
-
-                            </table>
-                            <div class="card-tools">
-                                <ul class="pagination pagination-sm">
-                                    <li class="page-item"><a href="#" class="page-link">«</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">»</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                    </table>
+                </div>
+            </div>
         </div>
-    </section>
-</form>
+    </div>
+
+</div>
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+
+<script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>
