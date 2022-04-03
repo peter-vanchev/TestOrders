@@ -32,14 +32,31 @@ namespace TestOrders.Controllers
             return View();
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string from, string to)
         {
+            var userId = userManager.GetUserId(User);
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
 
-            var orders = await orderService.GetAll(userManager.GetUserId(User));
+            if (string.IsNullOrEmpty(from) )
+            {
+                var orders = await orderService.GetAll(userId);
 
-            return this.View(orders.ToList());
+                return this.View(orders.ToList());
+            }
+            else if (string.IsNullOrEmpty(to))
+            {
+                var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Now);
+
+                return this.View(orders.ToList());
+            }
+            else
+            {
+                var toDate = DateTime.Parse(to).AddDays(1);
+                var orders = await orderService.GetAll(userId, DateTime.Parse(from), toDate);
+
+                return this.View(orders.ToList());
+            }
         }
 
         [Authorize(Roles = "Admin, Manager, Driver")]

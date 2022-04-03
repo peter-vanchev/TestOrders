@@ -7,19 +7,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <div class="card">
     <div class="card-header">
-        <form>
-            <div class="row">
-                <div class="col-sm-3">
-                    <input class="form-control" type="date" id="Date" name="Date" value="@DateTime.Today" />
-                </div>
-                <div class="col-sm-3">
-                    <input class="form-control" type="date" id="Date" name="Date" value="@DateTime.Today" />
-                </div>
-                <div class="col-sm-1">
-                    <a class="btn btn-block bg-gradient-secondary btn-flat" asp-controller="Order" asp-action="All">All Orders</a>
-                </div>
+        <form asp-action="All" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    От: <input type="date" name="From" value="@DateTime.Now.ToString("dd-mm-yyyyy")" />
+                    До: <input type="date" name="To" value="@DateTime.Today" />
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </p>
             </div>
         </form>
     </div>

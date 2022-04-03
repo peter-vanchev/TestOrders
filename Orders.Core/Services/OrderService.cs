@@ -155,7 +155,6 @@ namespace Orders.Core.Services
             (startDate, endDate) = CheckDate(startDate, endDate);
 
             return await repo.All<Order>()
-              .Where(x => x.Create >= startDate && x.Create <= endDate)
               .Include(x => x.OrderDatas)
               .Select(o => new OrderViewModel
               {
@@ -176,6 +175,7 @@ namespace Orders.Core.Services
                   DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
                   DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
               })
+              .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
               .OrderByDescending(x => x.DataCreated)
               .ToListAsync();
         }
@@ -196,7 +196,6 @@ namespace Orders.Core.Services
                 var restaurantId = user.RestaurantId;
                 return await repo.All<Order>()
                     .Where(x => x.RestaurantId == restaurantId)
-                    .Where(x => x.Create >= startDate && x.Create <= endDate)
                     .Include(x => x.OrderDatas)
                     .Select(o => new OrderViewModel
                     {
@@ -217,6 +216,7 @@ namespace Orders.Core.Services
                         DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
                         DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
                     })
+                    .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
                     .OrderByDescending(x => x.DataCreated)
                     .ToListAsync();
             }
@@ -224,7 +224,6 @@ namespace Orders.Core.Services
             var driverId = user.DriverId;
             return await repo.All<Order>()
                 .Where(x => x.DriverId == driverId)
-                .Where(x => x.Create >= startDate && x.Create <= endDate)
                 .Include(x => x.OrderDatas)
                 .Select(o => new OrderViewModel
                 {
@@ -245,6 +244,7 @@ namespace Orders.Core.Services
                     DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
                     DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
                 })
+                .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
                 .OrderByDescending(x => x.DataCreated)
                 .ToListAsync();
         }
