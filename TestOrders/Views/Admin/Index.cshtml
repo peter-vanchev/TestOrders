@@ -25,7 +25,7 @@
                 <div class="small-box bg-warning">
                     <div class="inner">
                         <div class="progress-group">
-                            <h5>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h5>
+                            <h4>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h4>
                         </div>
 
                         <div class="progress-group">
@@ -73,16 +73,9 @@
                     </div>
                     <a asp-controller="Order" asp-action="All" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="card">
-
-                    <div class="card-body">
-                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-                    </div>
-
-                </div>
             </div>
-            <div class="col-lg-6">
 
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header border-0">
                         <h3 class="card-title">
@@ -148,6 +141,19 @@
                     </div>
                 </div>
                 <!-- small box -->
+            </div>
+            <!-- ./col -->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
                 <div class="small-box bg-success">
                     <div class="inner">
                         <h3>@Model.DeliverySells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
@@ -159,10 +165,10 @@
                     <a href="#" class="small-box-footer">Виж повече <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-            <!-- ./col -->
         </div>
-        <!-- /.row -->
+
     </div><!-- /.container-fluid -->
+
 </section>
 
 
