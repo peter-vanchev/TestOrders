@@ -7,6 +7,8 @@ namespace Orders.Core.Models
     {
         public Guid Id { get; set; }
 
+        public int OrderNumber { get; set; }
+
         [MaxLength(20)]
         public string? Town { get; set; }
 

@@ -15,6 +15,9 @@ namespace Orders.Infrastructure.Data.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Number { get; set; } 
+
         public DateTime Create { get; set; }
 
         [Required]

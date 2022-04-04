@@ -29,6 +29,7 @@
                         <thead>
                             <tr>
                                 <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Дата: activate to sort column descending">Дата</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Номер: activate to sort column ascending">Номер</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Ресторант: activate to sort column ascending">Ресторант</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Адрес: activate to sort column ascending">Адрес</th>
@@ -46,6 +47,9 @@
                             {
                                 <tr class="odd">
                                     <td>@order.DataCreated</td>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Details" asp-route-Id="@order.Id">@order.OrderNumber</a>
+                                    </td>
                                     <td class="dtr-control sorting_1" tabindex="0">@order.RestaurantName</td>
                                     <td>@order.UserName</td>
                                     <td>

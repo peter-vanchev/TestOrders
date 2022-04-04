@@ -159,6 +159,7 @@ namespace Orders.Core.Services
               .Select(o => new OrderViewModel
               {
                   Id = o.Id,
+                  OrderNumber = o.Number,
                   Town = o.Address.Town,
                   Aria = o.Address.Area,
                   Street = o.Address.Street,
@@ -200,6 +201,7 @@ namespace Orders.Core.Services
                     .Select(o => new OrderViewModel
                     {
                         Id = o.Id,
+                        OrderNumber = o.Number,
                         Town = o.Address.Town,
                         Aria = o.Address.Area,
                         Street = o.Address.Street,
@@ -228,6 +230,7 @@ namespace Orders.Core.Services
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
+                    OrderNumber = o.Number,
                     Town = o.Address.Town,
                     Aria = o.Address.Area,
                     Street = o.Address.Street,
@@ -258,6 +261,7 @@ namespace Orders.Core.Services
                 .Select(o => new OrderViewModel
                 {
                     Id = o.OrderId,
+                    OrderNumber = o.Order.Number,
                     Town = o.Order.Address.Town,
                     Aria = o.Order.Address.Area,
                     Street = o.Order.Address.Street,
