@@ -158,6 +158,12 @@ namespace Orders.Core.Services
                     Created = r.Restaurant.DataCreated
                 })
                 .FirstOrDefaultAsync();
+
+            if (restaurant != null)
+            {
+                throw new ArgumentException("Unknown Restaurant");
+            }
+
             return restaurant;
         }
     }
