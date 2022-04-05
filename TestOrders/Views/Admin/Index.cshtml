@@ -172,22 +172,12 @@
 </section>
 
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Start</a>
-    </div>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
     @{
         var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Keys.ToList());
         var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Values.ToList());
     }
-
-    //var xValues = ['as', 'ts', 'sa'];
-    //var yValues = [1, 2, 3];
 
     var barColors = [
       "#b91d47",
