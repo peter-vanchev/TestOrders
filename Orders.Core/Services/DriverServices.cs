@@ -40,7 +40,7 @@ namespace Orders.Core.Services
                 Driver = driver,
                 Order = order,
                 OrderId = orderId,
-                Status = Status.Изпратена,
+                Status = Status.Насочена,
                 LastUpdate = DateTime.Now,
                 UserId = userId,
                 User = user

@@ -79,9 +79,9 @@ namespace Orders.Core.Services
                     actionResult = true;
                 }
 
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    error = "Could not save Order";
+                    error = ex.Message;
                 }
             }
 
@@ -192,6 +192,7 @@ namespace Orders.Core.Services
                 var orders = await GetAll(startDate, endDate);
                 return orders;
             }
+
             else if (await userManager.IsInRoleAsync(user, "Restaurant"))
             {
                 var restaurantId = user.RestaurantId;
