@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Order.Test;
 using Orders.Core.Contracts;
+using Orders.Core.Models;
 using Orders.Core.Services;
 using Orders.Infrastructure.Data.Common;
 using Orders.Infrastructure.Data.Models;
 using Orders.Infrastructure.Data.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace Orders.Test
@@ -24,17 +27,23 @@ namespace Orders.Test
             serviceProvider = serviceCollection
                 .AddSingleton(sp => dbContext.CreateContext())
                 .AddSingleton<IApplicatioDbRepository, ApplicatioDbRepository>()
-                .AddSingleton<IRestaurantService, RestaurantService>()
+                .AddSingleton<IRestaurantService, RestaurantService>()                
                 .BuildServiceProvider();
+
+            serviceCollection
+                .AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>();
 
             var repo = serviceProvider.GetService<IApplicatioDbRepository>();
             var seed = SeedDbAsync(repo);
         }
 
         [Test]
-        public void Test1()
+        public void RestaurantServicesGetAllSuxxess()
         {
-            Assert.Pass();
+            var service = serviceProvider.GetService<IRestaurantService>();
+
+            Assert.DoesNotThrowAsync(async () => await service.GetAll());
         }
 
         [TearDown]
@@ -45,14 +54,26 @@ namespace Orders.Test
 
         private async Task SeedDbAsync(IApplicatioDbRepository repo)
         {
-            var addres = new Address
+            var address = new Address
             {
                 Town = "София",
                 Street = "Леге",
                 Number = "10"
             };
 
-            await repo.AddAsync(addres);
+            var restaurant = new Restaurant()
+            {
+                AddressId = address.Id,
+                Address = address,
+                Name = "Заведението",
+                Category = "bar",
+                PhoneNumner = "0897 456 654",
+                Url = "/alabala.img",
+                DataCreated = DateTime.Now
+            };
+
+          
+            await repo.AddAsync(restaurant);
             await repo.SaveChangesAsync();
         }
     }

@@ -69,9 +69,10 @@ namespace Orders.Core.Services
             }
 
             test = await userManager.AddToRoleAsync(user, "Restaurant");
+
             if (!test.Succeeded)
             {
-                error = "Could not Create \"Restaurant\" role for User";
+                error = String.Join(", ", test.Errors.Select(x => x.Description));
                 return (created, error);
             }
 
