@@ -26,7 +26,7 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
-            var restaurants = await restaurantService.GetAll();
+            var restaurants = await restaurantService.GetAllAsync();
 
             return View(restaurants);
         }

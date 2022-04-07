@@ -88,7 +88,7 @@ namespace Orders.Core.Services
             return (actionResult, error);
         }
 
-        public async Task<(bool created, string error)> Create(OrderViewModel model, string userId)
+        public async Task<(bool created, string error)> CreateAsync(OrderViewModel model, string userId)
         {
             bool created = true;
             string error = "";
@@ -148,6 +148,37 @@ namespace Orders.Core.Services
             }
 
             return (created, error);
+        }
+
+        public async Task<(bool edited, string error)> EditAsync(OrderViewModel model)
+        {
+            bool edited = true;
+            string error = "";
+
+            var order = await repo.All<Order>()
+                .Include(x => x.Address)
+                .Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            order.Address.Street = model.Street;
+            order.Address.Number = model.Number;
+            order.UserName = model.UserName;
+            order.Description = model.Description;
+            order.PhoneNumner = model.PhoneNumner;
+            
+
+            try
+            {
+                repo.SaveChanges();
+                edited = true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                throw;
+            }
+
+            return (edited, error);
         }
 
         public async Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null)

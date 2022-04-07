@@ -38,7 +38,7 @@ namespace TestOrders.Controllers
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
 
-            if (string.IsNullOrEmpty(from) )
+            if (string.IsNullOrEmpty(from))
             {
                 var orders = await orderService.GetAll(userId);
 
@@ -91,20 +91,7 @@ namespace TestOrders.Controllers
         [Authorize(Roles = "Admin, Manager, Restaurant")]
         public async Task<IActionResult> Create()
         {
-            if (this.User.IsInRole("Admin"))
-            {
-                var restaurants = await restaurantService.GetAll();
-                ViewData["restaurants"] = restaurants.ToList();
-            }
-            else
-            {
-                var userId = userManager.GetUserId(User);
-                var user = await userManager.FindByIdAsync(userId);
-                var restaurant = await restaurantService.GetRestaurantById(user.RestaurantId.ToString());
-                var restaurants = new List<RestaurantViewModel>();
-                restaurants.Add(restaurant);
-                ViewData["restaurants"] = restaurants;
-            }
+            ViewData["restaurants"] = await FindRestaurants();
 
             return View();
         }
@@ -113,28 +100,15 @@ namespace TestOrders.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel model)
         {
-            var userId = userManager.GetUserId(User);
+            ViewData["restaurants"] = await FindRestaurants();
 
-            if (!ModelState.IsValid || model.PaymentType == "false")
-            {
-                if (this.User.IsInRole("Admin"))
-                {
-                    var restaurants = await restaurantService.GetAll();
-                    ViewData["restaurants"] = restaurants.ToList();
-                }
-                else
-                {
-                    var user = await userManager.FindByIdAsync(userId);
-                    var restaurant = await restaurantService.GetRestaurantById(user.RestaurantId.ToString());
-                    var restaurants = new List<RestaurantViewModel>();
-                    restaurants.Add(restaurant);
-                    ViewData["restaurants"] = restaurants;
-                }
-
+            if (!ModelState.IsValid )
+            {                   
                 return View();
             }
 
-            var (created, error) = await orderService.Create(model, userId);
+            var (created, error) = await orderService.CreateAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
             if (!created)
             {
                 ModelState.AddModelError("", error);
@@ -153,9 +127,34 @@ namespace TestOrders.Controllers
         [Authorize(Roles = "Admin, Manager, Restaurant")]
         public async Task<IActionResult> Edit(string Id)
         {
+            ViewData["restaurants"] = await FindRestaurants();
+
             var order = await orderService.GetOrderById(Id);
             return View(order);
         }
+
+        [Authorize(Roles = "Admin, Manager, Restaurant")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(OrderViewModel model)
+        {
+            ViewData["restaurants"] = await FindRestaurants();
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var (edited, error) = await orderService.EditAsync(model);
+
+            if (!edited)
+            {
+                ModelState.AddModelError("", error);
+                return View();
+            }
+
+            return Redirect("/Order/All");
+        }
+
 
         [Authorize(Roles = "Admin, Manager, Driver")]
         public async Task<IActionResult> Delivery(Guid orderId)
@@ -171,5 +170,23 @@ namespace TestOrders.Controllers
             return Redirect("/Order/All");
         }
 
+        private async Task<List<RestaurantViewModel>> FindRestaurants()
+        {
+            var userId = userManager.GetUserId(User);
+
+            if (this.User.IsInRole("Admin"))
+            {
+                var restaurants = await restaurantService.GetAllAsync();
+                return restaurants.ToList();
+            }
+            else
+            {
+                var user = await userManager.FindByIdAsync(userId);
+                var restaurant = await restaurantService.GetRestaurantById(user.RestaurantId.ToString());
+                var restaurants = new List<RestaurantViewModel>();
+                restaurants.Add(restaurant);
+                return restaurants;
+            }
+        }
     }
 }

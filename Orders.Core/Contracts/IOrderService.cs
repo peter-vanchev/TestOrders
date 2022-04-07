@@ -7,7 +7,9 @@ namespace Orders.Core.Contracts
     {
         Task<(bool, string)> AcceptOrder(string userId, string orderId, bool action);
 
-        Task<(bool created, string error)> Create(OrderViewModel model, string userId);
+        Task<(bool created, string error)> CreateAsync(OrderViewModel model, string userId);
+
+        Task<(bool edited, string error)> EditAsync(OrderViewModel model);
 
         Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null);
 

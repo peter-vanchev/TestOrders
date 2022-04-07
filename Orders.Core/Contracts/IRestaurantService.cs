@@ -4,7 +4,7 @@ namespace Orders.Core.Contracts
 {
     public interface IRestaurantService
     {
-        public Task<IEnumerable<RestaurantViewModel>> GetAll();
+        public Task<IEnumerable<RestaurantViewModel>> GetAllAsync();
 
         public Task<(bool created, string error)> Create(RestaurantViewModel model);
 

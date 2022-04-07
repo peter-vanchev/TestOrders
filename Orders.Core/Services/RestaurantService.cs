@@ -83,7 +83,6 @@ namespace Orders.Core.Services
         {
             bool created = false;
             string error = "";
-            var tet = model.Id;
 
             var restaurant = await repo.All<Restaurant>()
                 .Include(x => x.Address)
@@ -112,7 +111,7 @@ namespace Orders.Core.Services
             return (created, error);
         }
 
-        public async Task<IEnumerable<RestaurantViewModel>> GetAll()
+        public async Task<IEnumerable<RestaurantViewModel>> GetAllAsync()
         {
             var restaurants = await repo.All<ApplicationUser>()
                 .Include(r => r.Restaurant)

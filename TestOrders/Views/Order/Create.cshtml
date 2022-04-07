@@ -47,8 +47,8 @@
                                 <input asp-for="Street " class="form-control" placeholder="ул. ..." />
                                 <span asp-validation-for="Street" class="text-danger"></span>
 
-                                <input asp-for="Number" class="form-control" placeholder="Номер ..." />
                                 <span asp-validation-for="Number" class="text-danger"></span>
+                                <input asp-for="Number" class="form-control" placeholder="Номер ..." />
                             </div>
 
                             <div class="input-group mb-3">
@@ -101,6 +101,7 @@
                             <!-- checkbox -->
 
                             <div class="form-group">
+                                <span asp-validation-for="PaymentType" class="text-danger"></span>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" name="PaymentType" type="checkbox" id="PaymentType" value="В брой">
                                     <label for="PaymentType" class="custom-control-label">В брой</label>

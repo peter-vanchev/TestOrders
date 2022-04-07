@@ -43,7 +43,7 @@ namespace Orders.Test
         {
             var service = serviceProvider.GetService<IRestaurantService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetAll());
+            Assert.DoesNotThrowAsync(async () => await service.GetAllAsync());
         }
 
         [TearDown]
