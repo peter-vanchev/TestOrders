@@ -160,12 +160,17 @@ namespace Orders.Core.Services
                 .Where(x => x.Id == model.Id)
                 .FirstOrDefaultAsync();
 
+            order.UserName = model.UserName;
             order.Address.Street = model.Street;
             order.Address.Number = model.Number;
-            order.UserName = model.UserName;
             order.Description = model.Description;
             order.PhoneNumner = model.PhoneNumner;
-            
+            order.Price = model.Price;
+            order.DeliveryPrice = model.DeliveryPrice;
+            order.TimeForDelivery = model.TimeForDelivery;
+            order.PaymentType = model.PaymentType;
+            order.RestaurantId = (Guid)model.RestaurantId;
+            order.Create = DateTime.Now;
 
             try
             {
