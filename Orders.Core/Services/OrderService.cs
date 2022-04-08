@@ -291,10 +291,39 @@ namespace Orders.Core.Services
 
         public async Task<OrderViewModel> GetOrderById(string orderId)
         {
+
+            return await repo.All<Order>()
+              .Where(x => x.Id == Guid.Parse(orderId))
+              .Select(o => new OrderViewModel
+              {
+                  Id = o.Id,
+                  OrderNumber = o.Number,
+                  Town = o.Address.Town,
+                  Aria = o.Address.Area,
+                  Street = o.Address.Street,
+                  Number = o.Address.Number,
+                  UserName = o.UserName,
+                  PhoneNumner = o.PhoneNumner,
+                  PaymentType = o.PaymentType,
+                  Price = o.Price,
+                  DeliveryPrice = o.DeliveryPrice,
+                  TimeForDelivery = o.TimeForDelivery,
+                  RestaurantId = o.RestaurantId,
+                  RestaurantName = o.Restaurant.Name,
+                  Status = o.Status,
+                  DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
+                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),                  
+              })
+              .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<OrderViewModel>> GetOrdersDetails(string orderId)
+        {                   
             var order = await repo.All<OrderData>()
                 .Where(x => x.OrderId == Guid.Parse(orderId))
                 .Include(x => x.Order)
                 .ThenInclude(r => r.Address)
+                .Include(u => u.User)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.OrderId,
@@ -303,7 +332,7 @@ namespace Orders.Core.Services
                     Aria = o.Order.Address.Area,
                     Street = o.Order.Address.Street,
                     Number = o.Order.Address.Number,
-                    UserName = o.Order.UserName,
+                    UserName = o.User.Email,
                     PhoneNumner = o.Order.PhoneNumner,
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
@@ -314,8 +343,9 @@ namespace Orders.Core.Services
                     Status = o.Status,
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
-                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.FirstName)
-                }).FirstOrDefaultAsync();
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.FirstName),
+                    TimeForDelivery = o.Order.TimeForDelivery
+                }).ToListAsync();
 
             return order;
         }

@@ -17,6 +17,8 @@ namespace Orders.Core.Contracts
 
         Task<OrderViewModel> GetOrderById(string orderId);
 
+        Task<List<OrderViewModel>> GetOrdersDetails(string orderId);
+
         Task<OrderStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null);
 
         Task<(bool created, string error)> DeliveryOrder(Guid orderId, string userId);

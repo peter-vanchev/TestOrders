@@ -120,7 +120,7 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> Details(string Id)
         {
-            var order = await orderService.GetOrderById(Id);
+            var order = await orderService.GetOrdersDetails(Id);
             return View(order);
         }
 

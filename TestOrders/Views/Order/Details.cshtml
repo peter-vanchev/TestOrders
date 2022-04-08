@@ -1,86 +1,88 @@
 ﻿@using Orders.Core.Models
-@model OrderViewModel
+@model List<OrderViewModel>
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Данни на поръчката</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Име клиент: </label>
+                    @Model.Select(x => x.UserCreatedName).FirstOrDefault()
+                </div>
+                <div class="form-group">
+                    <label>Телефонен номер: </label>
+                    @Model.Select(x => x.PhoneNumner).FirstOrDefault()
+                </div>
+                <div class="form-group">
+                    <label>Адрес: </label>
+                    @Model.Select(x => x.Street).FirstOrDefault(), @Model.Select(x => x.Number).FirstOrDefault()
+                </div>
+                <div class="form-group">
+                    <label>Цена: </label>
+                    @Model.Select(x => x.Price).FirstOrDefault().ToString("F2") лв.
+                </div>
+                <div class="form-group">
+                    <label>Цена на доставка: </label>
+                    @Model.Select(x => x.DeliveryPrice).FirstOrDefault().ToString("F2") лв.
+                </div>
+                <div class="form-group">
+                    <label>Платена с: </label>
+                    @Model.Select(x => x.PaymentType).FirstOrDefault()
+                </div>
+                <div class="form-group">
+                    <label>Време за доставка: </label>
+                    @Model.Select(x => x.TimeForDelivery).FirstOrDefault().ToString("F0") мин.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-success">
+
+            <div class="card-header">
+                <h3 class="card-title">Хронология</h3>
+            </div>
+            <div class="card-body">
+
+                <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Време</th>
+                            <th>Статус</th>
+                            <th>Шофьор</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.OrderBy(x => x.LastStatusTime))
+                        {
+                            <tr class="odd">
+                                <td>@order.UserName</td>
+                                <td>@order.LastStatusTime</td>
+                                <td>@order.Status</td>
+                                <td>@order.DriverName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div>
-    <h4>OrderViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Town)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Town)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Aria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Aria)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumner)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumner)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PaymentType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RestaurantName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RestaurantName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+    {
+         <a asp-action="Edit" asp-route-id="@Model?.Select(x => x.Id).FirstOrDefault()">Edit</a>   
+    }
     <a asp-action="All">Back to List</a>
 </div>
