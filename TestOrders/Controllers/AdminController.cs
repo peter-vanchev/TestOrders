@@ -23,7 +23,7 @@ namespace TestOrders.Controllers
             orderService = _orderService;
         }
 
-        public async Task<IActionResult> Index(string period)
+        public async Task<IActionResult> Index(string period = "week")
         {
             //var result = await adminService.Seed();
 

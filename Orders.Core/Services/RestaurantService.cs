@@ -159,7 +159,7 @@ namespace Orders.Core.Services
                 })
                 .FirstOrDefaultAsync();
 
-            if (restaurant != null)
+            if (restaurant == null)
             {
                 throw new ArgumentException("Unknown Restaurant");
             }
