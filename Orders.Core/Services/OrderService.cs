@@ -178,13 +178,13 @@ namespace Orders.Core.Services
                 Order = order,
                 OrderId = order.Id,
                 LastUpdate = DateTime.Now,
-                Status = order.Status,
+                Status = Status.Променена,
                 UserId = userId
             };
 
             try
             {
-                repo.AddAsync(orderData);
+                await repo.AddAsync(orderData);
                 repo.SaveChanges();
                 edited = true;
             }

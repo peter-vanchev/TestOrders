@@ -118,6 +118,19 @@ namespace TestOrders.Controllers
             return Redirect("/Order/All");
         }
 
+        public async Task<IActionResult> Delivery(Guid orderId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var (asign, error) = await orderService.DeliveryOrder(orderId, userId);
+
+            if (!asign)
+            {
+                return View(error, "/Error");
+            }
+
+            return Redirect("/Order/All");
+        }
+
         public async Task<IActionResult> Details(string Id)
         {
             var order = await orderService.GetOrdersDetails(Id);
@@ -137,11 +150,17 @@ namespace TestOrders.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(OrderViewModel model)
         {
-            ViewData["restaurants"] = await FindRestaurants();
+            var restaurants = await FindRestaurants();
+
+            ViewData["restaurants"] = restaurants;
 
             if (!ModelState.IsValid)
             {
-                return View();
+                var test = restaurants
+                    .Where(x => x.Id == model.RestaurantId)
+                    .Select(x => x.Name).FirstOrDefault();
+                model.RestaurantName = test;
+                return View(model);
             }
 
             var userId = userManager.GetUserId(User);
@@ -158,18 +177,6 @@ namespace TestOrders.Controllers
 
 
         [Authorize(Roles = "Admin, Manager, Driver")]
-        public async Task<IActionResult> Delivery(Guid orderId)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var (asign, error) = await orderService.DeliveryOrder(orderId, userId);
-
-            if (!asign)
-            {
-                return View(error, "/Error");
-            }
-
-            return Redirect("/Order/All");
-        }
 
         private async Task<List<RestaurantViewModel>> FindRestaurants()
         {

@@ -10,6 +10,8 @@ namespace Orders.Core.Contracts
 
         Task<(bool created, string error)> AsignDriver(Guid driverId, Guid orderId, string userId);
 
+        Task<DriverViewModel> GetDriver(string Id);
+
         Task<IEnumerable<DriverViewModel>> GetFreeDrivers();
     }
 }

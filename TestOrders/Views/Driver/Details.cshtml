@@ -1,0 +1,82 @@
+﻿@using Orders.Core.Models
+@model DriverViewModel
+
+@{
+    ViewData["Title"] = "Create Driver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Шофьор</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Данни на поръчката</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5 text-center">
+                                <img src="@Model.DriverUrl" alt="user-avatar" class="img-circle img-fluid">
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="hidden" id="Id" name="Id" value="@Model.Id">
+                                <div class="form-group mb-auto">
+                                    <label>Име: </label>
+                                    @Model.FirstName
+                                </div>
+                                <div class="form-group mb-auto">
+                                    <label>Фамилия: </label>
+                                    @Model.LastName
+                                </div>
+                                <div class="form-group mb-auto">
+                                    <label>Телефонен номер: </label>
+                                    @Model.PhoneNumber
+                                </div>
+                                <div class="form-group mb-auto">
+                                    <label>Статус: </label>
+                                    @Model.Status
+                                </div>
+                                <div class="form-group mb-auto">
+                                    <label>Кола: </label>
+                                    @Model.CarType: @Model.CarModel
+                                </div>
+                                <div class="form-group mb-auto">
+                                    <label>Номер: </label>
+                                    @Model.CarNumber
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-md-1">
+        @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+        {
+
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-block btn-outline-dark">Edit</a>
+        }
+    </div>
+    <div class="col-md-1">
+        <a asp-action="All" class="btn btn-block btn-outline-dark">Back</a>
+    </div>
+
+</div>
+

@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="hidden" id="RestaurantId" name="RestaurantId" value="@Model.Select(x => x.RestaurantId).FirstOrDefault()">                           
+                        <input type="hidden" id="RestaurantId" name="RestaurantId" value="@Model.Select(x => x.RestaurantId).FirstOrDefault()">
                         <div class="form-group mb-auto">
                             <label>Ресторант: </label>
                             @Model.Select(x => x.RestaurantName).FirstOrDefault()
@@ -103,10 +103,16 @@
 
 </div>
 
-<div>
-    @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Select(x => x.Id).FirstOrDefault()">Edit</a>
-    }
-    <a asp-action="All">Back to List</a>
+<div class="row">
+    <div class="col-md-1">
+        @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+        {
+
+            <a asp-action="Edit" asp-route-id="@Model?.Select(x => x.Id).FirstOrDefault()" class="btn btn-block btn-outline-dark">Edit</a>
+        }
+    </div>
+    <div class="col-md-1">
+        <a asp-action="All" class="btn btn-block btn-outline-dark">Back</a>
+    </div>
+
 </div>

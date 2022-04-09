@@ -37,7 +37,7 @@
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
                             <tr>
-                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="descending" aria-label="Дата: activate to sort column ascending">Дата</th>
+                                <th class="sorting sorting_desc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Дата: activate to sort column descending">Дата</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="No: activate to sort column ascending">No</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Ресторант: activate to sort column ascending">Ресторант</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
@@ -96,7 +96,7 @@
                                         else if (@order.Status == Status.Изпратена && User.IsInRole("Driver"))
                                         {
                                             <a class="btn btn-block btn-outline-dark btn-sm" asp-controller="Order" asp-action="Delivery"
-                                       asp-route-orderId="@order.Id">Delivery Order</a>
+                                                            asp-route-orderId="@order.Id">Delivery Order</a>
                                         }
                                         else  @if ((User.IsInRole("Admin") && @order.Status == Status.Нова)
                                                             || (User.IsInRole("Driver") && @order.Status == Status.Насочена))
@@ -108,7 +108,6 @@
                                 </tr>
                             }
                         </tbody>
-
                     </table>
                 </div>
             </div>

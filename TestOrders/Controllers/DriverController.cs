@@ -66,5 +66,11 @@ namespace TestOrders.Controllers
 
             return Redirect("/Driver/All");
         }
+
+        public async Task<IActionResult> Details(string Id)
+        {
+            var driver = await driverServices.GetDriver(Id);
+            return View(driver);
+        }
     }
 }

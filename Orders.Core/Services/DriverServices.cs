@@ -159,6 +159,28 @@ namespace Orders.Core.Services
             return (created, "");
         }
 
+        public async Task<DriverViewModel> GetDriver(string Id)
+        {
+            return await repo.All<ApplicationUser>()
+            .Include(x => x.Driver)
+            .ThenInclude(x => x.Car)
+            .Where(x => x.DriverId == Guid.Parse(Id))
+            .Select(x => new DriverViewModel()
+            {
+                Id = x.Driver.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                PhoneNumber = x.PhoneNumber,
+                Email = x.Email,
+                DriverUrl = x.Driver.Url,
+                CarModel = x.Driver.Car.Model,
+                CarNumber = x.Driver.Car.Number,
+                CarType = x.Driver.Car.Type,
+                CarUrl = x.Driver.Car.Url,
+                Status = x.Driver.Status
+            }).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()
         {
             var drivers = await repo.All<ApplicationUser>()
@@ -176,5 +198,6 @@ namespace Orders.Core.Services
 
             return drivers;
         }
+
     }
 }
