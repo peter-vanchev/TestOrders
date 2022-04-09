@@ -9,7 +9,7 @@ namespace Orders.Core.Contracts
 
         Task<(bool created, string error)> CreateAsync(OrderViewModel model, string userId);
 
-        Task<(bool edited, string error)> EditAsync(OrderViewModel model);
+        Task<(bool edited, string error)> EditAsync(OrderViewModel model, string userId);
 
         Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null);
 

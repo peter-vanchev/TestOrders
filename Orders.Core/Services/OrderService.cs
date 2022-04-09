@@ -150,7 +150,7 @@ namespace Orders.Core.Services
             return (created, error);
         }
 
-        public async Task<(bool edited, string error)> EditAsync(OrderViewModel model)
+        public async Task<(bool edited, string error)> EditAsync(OrderViewModel model, string userId)
         {
             bool edited = true;
             string error = "";
@@ -172,8 +172,19 @@ namespace Orders.Core.Services
             order.RestaurantId = (Guid)model.RestaurantId;
             order.Create = DateTime.Now;
 
+
+            var orderData = new OrderData()
+            {
+                Order = order,
+                OrderId = order.Id,
+                LastUpdate = DateTime.Now,
+                Status = order.Status,
+                UserId = userId
+            };
+
             try
             {
+                repo.AddAsync(orderData);
                 repo.SaveChanges();
                 edited = true;
             }
@@ -337,6 +348,7 @@ namespace Orders.Core.Services
                     PaymentType = o.Order.PaymentType,
                     Price = o.Order.Price,
                     DeliveryPrice = o.Order.DeliveryPrice,
+                    RestaurantId = o.Order.RestaurantId,
                     RestaurantName = o.Order.Restaurant.Name,
                     UserId = o.Order.UserCreated.Id,
                     UserCreatedName = o.Order.UserName,

@@ -15,7 +15,11 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-
+                        <input type="hidden" id="RestaurantId" name="RestaurantId" value="@Model.Select(x => x.RestaurantId).FirstOrDefault()">                           
+                        <div class="form-group mb-auto">
+                            <label>Ресторант: </label>
+                            @Model.Select(x => x.RestaurantName).FirstOrDefault()
+                        </div>
                         <div class="form-group mb-auto">
                             <label>Име клиент: </label>
                             @Model.Select(x => x.UserCreatedName).FirstOrDefault()

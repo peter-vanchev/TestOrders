@@ -144,7 +144,8 @@ namespace TestOrders.Controllers
                 return View();
             }
 
-            var (edited, error) = await orderService.EditAsync(model);
+            var userId = userManager.GetUserId(User);
+            var (edited, error) = await orderService.EditAsync(model, userId);
 
             if (!edited)
             {

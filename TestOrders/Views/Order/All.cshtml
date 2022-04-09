@@ -11,12 +11,21 @@
 <div class="card">
     <div class="card-header">
         <form asp-action="All" method="get">
-            <div class="form-actions no-color">
-                <p>
-                    От: <input type="date" name="From" data-date-format="dd-mm-yyyy" />
-                    До: <input type="date" name="To" />
-                    <input type="submit" value="Search" class="btn btn-default" />
-                </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        От: <input type="date" name="From" data-date-format="dd-MM-yyyy" />
+                        До: <input type="date" name="To" />
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        <strong>Най - нова поръчка:</strong> : @Model.Min(x => x.DataCreated).ToString("dd-MM-yyyy")
+                        <strong>Най - стара поръчка:</strong> @Model.Max(x => x.DataCreated).ToString("dd-MM-yyyy")
+                    </p>
+                </div>
             </div>
         </form>
     </div>
@@ -28,7 +37,7 @@
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
                             <tr>
-                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Дата: activate to sort column descending">Дата</th>
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="descending" aria-label="Дата: activate to sort column ascending">Дата</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="No: activate to sort column ascending">No</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Ресторант: activate to sort column ascending">Ресторант</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
