@@ -54,7 +54,7 @@ namespace Orders.Core.Services
                 UserName = model.UserEmail,
                 NormalizedUserName = model.UserEmail.ToUpper(),                
                 FirstName = model.FirsName,
-                LastName = model.FirsName,
+                LastName = model.LastName,
                 EmailConfirmed = true,
                 Restaurant = restaurant,
                 RestaurantId = restaurant.Id
@@ -130,7 +130,9 @@ namespace Orders.Core.Services
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.DataCreated
+                    Created = r.Restaurant.DataCreated,
+                    FirsName = r.FirstName,
+                    LastName = r.LastName                   
                 })
                 .ToListAsync();
             return restaurants;
@@ -155,7 +157,9 @@ namespace Orders.Core.Services
                     Category = r.Restaurant.Category,
                     Description = r.Restaurant.Description,
                     Url = r.Restaurant.Url,
-                    Created = r.Restaurant.DataCreated
+                    Created = r.Restaurant.DataCreated,
+                    FirsName = r.FirstName,
+                    LastName = r.LastName
                 })
                 .FirstOrDefaultAsync();
 

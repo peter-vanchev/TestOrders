@@ -28,15 +28,15 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             return services;
         }
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

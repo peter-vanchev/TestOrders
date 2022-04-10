@@ -8,91 +8,82 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>RestaurantViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumner)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumner)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Town)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Town)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Area)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Area)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserEmail)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirsName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirsName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserPassword)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserPassword)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ConfirmPassword)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ConfirmPassword)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Данни на ресторант</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input asp-for="FirsName" readonly class="form-control">
+                            <input asp-for="LastName" readonly class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input asp-for="PhoneNumner" readonly class="form-control">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            </div>
+                            <input asp-for="Name" readonly class="form-control">
+                        </div>
+
+                        <label asp-for="Category">Категория</label>
+                        <div class="input-group mb-3">
+                            <input asp-for="Category" readonly class="form-control">
+                        </div>
+
+                        <div class="form-group mb-auto">
+                            <h5><strong>Адрес:</strong></h5>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-check"></i></span>
+                            </div>
+                            <input asp-for="Town" readonly class="form-control">
+                            <input asp-for="Area" readonly class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-check"></i></span>
+                            </div>
+                            <input asp-for="Street" readonly class="form-control">
+                            <input asp-for="Number" readonly class="form-control">
+                        </div>
+
+                        <label asp-for="Description">Описание на ресторанта</label>
+                        <div class="input-group mb-3">
+                            <textarea asp-for="Description" readonly class="form-control" rows="3" ></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="row">
+    <div class="col-md-1">
+        @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+        {
+
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-block btn-outline-dark">Edit</a>
+        }
+    </div>
+    <div class="col-md-1">
+        <a asp-action="All" class="btn btn-block btn-outline-dark">Back</a>
+    </div>
 </div>
