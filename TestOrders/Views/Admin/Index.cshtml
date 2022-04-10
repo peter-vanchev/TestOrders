@@ -71,8 +71,7 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                   @{var from = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);}
-                    <a class="small-box-footer" asp-controller="Order" asp-action="All" asp-route-from=@from>Виж повече  
+                    <a class="small-box-footer" asp-controller="Order" asp-action="All" asp-route-from=@DateTime.Today>Виж повече  
                         <i class="fas fa-arrow-circle-right" ></i>
                     </a>
                 </div>

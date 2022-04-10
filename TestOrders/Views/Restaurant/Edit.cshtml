@@ -20,47 +20,51 @@
                         </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
-                                <input type="hidden" asp-for="Id" class="form-control" >
+                                <input type="hidden" asp-for="Id" class="form-control">
                             </div>
+
+                            <label>Име на ресторанта</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input asp-for="Name" class="form-control" placeholder="Име на ресторант">
+                                <input asp-for="Name" class="form-control">
                                 <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-                            <div class="input-group container-fluid row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input asp-for="Town" class="form-control" placeholder="Град ...">
-                                    <span asp-validation-for="Town" class="text-danger"></span>
-                                </div>
-                                <div class="col-sm-5">
-                                    <input asp-for="Area" class="form-control" placeholder="Квартал ...">
-                                    <span asp-validation-for="Area" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="input-group container-fluid row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input asp-for="Street" class="form-control" placeholder="ул. / бл. " />
-                                    <span asp-validation-for="Street" class="text-danger"></span>
-                                </div>
-                                <div class="col-sm-5">
-                                    <input asp-for="Number" class="form-control" placeholder="Номер ..." />
-                                    <span asp-validation-for="Number" class="text-danger"></span>
-                                </div>
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input asp-for="PhoneNumner" class="form-control" placeholder="Телефон">
+                                <input asp-for="PhoneNumner" class="form-control">
                                 <span asp-validation-for="PhoneNumner" class="text-danger"></span>
+                            </div>
+
+                            <label>Адрес</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <div class="input-group-prepend col-5">
+                                    <input asp-for="Town" class="form-control">
+                                    <span asp-validation-for="Town" class="text-danger"></span>
+                                </div>
+                                <div class=" input-group-prepend col-5">
+                                    <input asp-for="Area" class="form-control">
+                                    <span asp-validation-for="Area" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                </div>
+                                <div class="col-5">
+                                    <input asp-for="Street" class="form-control">
+                                    <span asp-validation-for="Street" class="text-danger"></span>
+                                </div>
+                                <div class="col-5">
+                                    <input asp-for="Number" class="form-control" />
+                                    <span asp-validation-for="Number" class="text-danger"></span>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -75,7 +79,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description">Описание на ресторанта</label>
-                                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Въведи ..."></textarea>
+                                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                             <div class="card-footer">

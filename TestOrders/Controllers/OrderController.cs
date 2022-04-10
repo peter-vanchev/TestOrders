@@ -37,26 +37,12 @@ namespace TestOrders.Controllers
             var userId = userManager.GetUserId(User);
             var drivers = await driverServices.GetAll();
             ViewBag.drivers = drivers;
+            if (string.IsNullOrEmpty(from)) from = DateTime.Today.ToString();
+            if (string.IsNullOrEmpty(to)) to = DateTime.Now.ToString();
 
-            if (string.IsNullOrEmpty(from))
-            {
-                var orders = await orderService.GetAll(userId);
+            var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Parse(to));
 
-                return this.View(orders.ToList());
-            }
-            else if (string.IsNullOrEmpty(to))
-            {
-                var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Now);
-
-                return this.View(orders.ToList());
-            }
-            else
-            {
-                var toDate = DateTime.Parse(to).AddDays(1);
-                var orders = await orderService.GetAll(userId, DateTime.Parse(from), toDate);
-
-                return this.View(orders.ToList());
-            }
+            return this.View(orders);
         }
 
         [Authorize(Roles = "Admin, Manager, Driver")]
