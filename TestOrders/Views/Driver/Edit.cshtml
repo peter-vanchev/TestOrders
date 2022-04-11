@@ -1,0 +1,91 @@
+﻿@using Orders.Core.Models
+@model DriverViewModel
+
+@{
+    ViewData["Title"] = "Create Driver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Промяна на шофьор</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<form class="form-horizontal" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="fluid col-md-6">
+                    <div class="card card-info">
+                        <div class="card-header" style="color: rgb(0, 0, 0); background-color:#ffc107;">
+                            <h3 class="card-title">Данни на шофьор</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="CarType">Име:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="FirstName" class="form-control">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    <input asp-for="LastName" class="form-control">
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input asp-for="PhoneNumber" class="form-control">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CarType">Автомобил:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                    </div>
+                                    <input asp-for="CarModel" class="form-control">
+                                    <span asp-validation-for="CarModel" class="text-danger"></span>
+                                    <input asp-for="CarNumber" class="form-control">
+                                    <span asp-validation-for="CarNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CarType">Категория</label>
+                                <span asp-validation-for="CarType" class="text-danger"></span>
+                                <div class="custom-control custom-radio">
+                                    <input asp-for="CarType" class="custom-control-input" type="radio" id="customRadio1" value="Фирмен автомобил" name="CarType">
+                                    <label for="customRadio1" class="custom-control-label">Фирмен автомобил</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input asp-for="CarType" class="custom-control-input" type="radio" id="customRadio2" value="Личен автомобил" name="CarType">
+                                    <label for="customRadio2" class="custom-control-label">Личен автомобил</label>
+                                </div>
+                            </div>
+
+                            <div class="card-footer" style="background-color: transparent">
+                                <button type="submit" class="btn btn-danger" style="color: rgb(0, 0, 0); background-color:#ffc107;">
+                                    Промени
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

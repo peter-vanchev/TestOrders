@@ -35,10 +35,10 @@ namespace TestOrders.Controllers
         public async Task<IActionResult> All(string from, string to)
         {
             var userId = userManager.GetUserId(User);
-            var drivers = await driverServices.GetAll();
+            var drivers = await driverServices.GetAllAsyncl();
             ViewBag.drivers = drivers;
             if (string.IsNullOrEmpty(from)) from = DateTime.Today.ToString();
-            if (string.IsNullOrEmpty(to)) to = DateTime.Now.ToString();
+            if (string.IsNullOrEmpty(to)) to = DateTime.Now.AddMinutes(1).ToString();
 
             var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Parse(to));
 

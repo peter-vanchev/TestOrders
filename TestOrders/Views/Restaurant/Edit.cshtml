@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <label asp-for="Category">Категория</label>
                                 <span asp-validation-for="Category" class="text-danger"></span>
-                                <select class="custom-select" name="Category">
+                                <select asp-for="Category" class="custom-select" name="Category">
                                     <option>Пицария</option>
                                     <option>Рибен</option>
                                     <option>Fast Food</option>
@@ -94,8 +94,7 @@
     </section>
 </form>
 
+
 @section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+<partial name="_ValidationScriptsPartial" />
 }

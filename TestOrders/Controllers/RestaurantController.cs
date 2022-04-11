@@ -88,7 +88,7 @@ namespace TestOrders.Controllers
                 return View();
             }
 
-            var (edited, error) = await restaurantService.Edit(model);
+            var (edited, error) = await restaurantService.EditAsync(model);
 
             if (!edited)
             {

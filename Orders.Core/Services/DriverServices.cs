@@ -67,31 +67,7 @@ namespace Orders.Core.Services
             return (created, error);
         }
 
-        public async Task<IEnumerable<DriverViewModel>> GetAll()
-        {
-            var drivers = await repo.All<ApplicationUser>()
-                .Include(x => x.Driver)
-                .ThenInclude(x => x.Car)
-                .Where(x => x.Driver != null)
-                 .Select(x => new DriverViewModel()
-                 { 
-                     Id = x.Driver.Id,
-                     FirstName = x.FirstName,
-                     LastName = x.LastName,
-                     PhoneNumber = x.PhoneNumber,
-                     Email = x.Email,
-                     DriverUrl = x.Driver.Url,
-                     CarModel = x.Driver.Car.Model,
-                     CarNumber = x.Driver.Car.Number,
-                     CarType = x.Driver.Car.Type, 
-                     CarUrl = x.Driver.Car.Url,
-                     Status = x.Driver.Status                        
-                 }).ToListAsync();
-
-            return drivers;
-        }          
-
-        public async Task<(bool created, string error)> Create(DriverViewModel model)
+        public async Task<(bool created, string error)> CreateAsync(DriverViewModel model)
         {
             bool created = true;
             var error = new List<string>();
@@ -102,7 +78,7 @@ namespace Orders.Core.Services
                 Model = model.CarModel,
                 Number = model.CarNumber,
                 Type = model.CarType,
-                Url = model.CarUrl 
+                Url = model.CarUrl
             };
 
             var driver = new Driver()
@@ -131,8 +107,8 @@ namespace Orders.Core.Services
             var addUser = await userManager.CreateAsync(user, model.Password);
 
             if (!addUser.Succeeded)
-            {                   
-                var result  = addUser.Errors.ToList();
+            {
+                var result = addUser.Errors.ToList();
                 foreach (var err in result)
                 {
                     error.Add(err.Description);
@@ -141,7 +117,7 @@ namespace Orders.Core.Services
                 created = false;
                 return (created, String.Join(", ", error));
             }
-            
+
             var addRole = await userManager.AddToRoleAsync(user, "Driver");
             if (!addRole.Succeeded)
             {
@@ -159,26 +135,84 @@ namespace Orders.Core.Services
             return (created, "");
         }
 
-        public async Task<DriverViewModel> GetDriver(string Id)
+        public async Task<(bool edited, string error)> EditAsync(EditDriverViewModel model)
         {
-            return await repo.All<ApplicationUser>()
-            .Include(x => x.Driver)
-            .ThenInclude(x => x.Car)
-            .Where(x => x.DriverId == Guid.Parse(Id))
-            .Select(x => new DriverViewModel()
+            bool edited = false;
+            string error = "";
+
+            var driver = await repo.All<ApplicationUser>()
+               .Include(x => x.Driver)
+               .ThenInclude(car => car.Car)
+               .Where(x => x.DriverId == model.Id)
+               .FirstOrDefaultAsync();
+
+            driver.FirstName = model.FirstName;
+            driver.LastName = model.LastName;
+            driver.PhoneNumber = model.PhoneNumber;
+            driver.Driver.Car.Type = model.CarType;
+            driver.Driver.Car.Model = model.CarModel;
+            driver.Driver.Car.Number = model.CarNumber;
+
+            try
             {
-                Id = x.Driver.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                PhoneNumber = x.PhoneNumber,
-                Email = x.Email,
-                DriverUrl = x.Driver.Url,
-                CarModel = x.Driver.Car.Model,
-                CarNumber = x.Driver.Car.Number,
-                CarType = x.Driver.Car.Type,
-                CarUrl = x.Driver.Car.Url,
-                Status = x.Driver.Status
-            }).FirstOrDefaultAsync();
+                repo.SaveChanges();
+                edited = true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                throw;
+            }
+
+            return (edited, error);
+        }
+
+        public async Task<IEnumerable<DriverViewModel>> GetAllAsyncl()
+        {
+            var drivers = await repo.All<ApplicationUser>()
+                .Include(x => x.Driver)
+                .ThenInclude(x => x.Car)
+                .Where(x => x.Driver != null)
+                 .Select(x => new DriverViewModel()
+                 { 
+                     Id = x.Driver.Id,
+                     FirstName = x.FirstName,
+                     LastName = x.LastName,
+                     PhoneNumber = x.PhoneNumber,
+                     Email = x.Email,
+                     DriverUrl = x.Driver.Url,
+                     CarModel = x.Driver.Car.Model,
+                     CarNumber = x.Driver.Car.Number,
+                     CarType = x.Driver.Car.Type, 
+                     CarUrl = x.Driver.Car.Url,
+                     Status = x.Driver.Status                        
+                 }).ToListAsync();
+
+            return drivers;
+        }
+
+        public async Task<DriverViewModel> GetDriverByIdAsync(Guid driverId)
+        {
+            var drivers = await repo.All<ApplicationUser>()
+                .Include(x => x.Driver)
+                .ThenInclude(x => x.Car)
+                .Where(x => x.DriverId == driverId)
+                 .Select(x => new DriverViewModel()
+                 {
+                     Id = x.Driver.Id,
+                     FirstName = x.FirstName,
+                     LastName = x.LastName,
+                     PhoneNumber = x.PhoneNumber,
+                     Email = x.Email,
+                     DriverUrl = x.Driver.Url,
+                     CarModel = x.Driver.Car.Model,
+                     CarNumber = x.Driver.Car.Number,
+                     CarType = x.Driver.Car.Type,
+                     CarUrl = x.Driver.Car.Url,
+                     Status = x.Driver.Status
+                 }).FirstOrDefaultAsync();
+
+            return drivers;
         }
 
         public async Task<IEnumerable<DriverViewModel>> GetFreeDrivers()

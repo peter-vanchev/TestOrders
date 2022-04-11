@@ -10,6 +10,6 @@ namespace Orders.Core.Contracts
 
         public Task<RestaurantViewModel> GetRestaurantById(string restaurantId);
 
-        public Task<(bool created, string error)> Edit(EditRestaurantViewModel model);
+        public Task<(bool created, string error)> EditAsync(EditRestaurantViewModel model);
     }
 }

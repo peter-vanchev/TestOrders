@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
@@ -32,13 +33,15 @@ namespace TestOrders.Controllers
 
         public async Task<IActionResult> All()
         {
-            var drivers = await driverServices.GetAll();
+            var drivers = await driverServices.GetAllAsyncl();
 
             return View(drivers);
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         public IActionResult Create() => View();
 
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         public async Task<IActionResult> Create(DriverViewModel model, IFormFile file)
         {
@@ -56,7 +59,7 @@ namespace TestOrders.Controllers
             }
 
             model.DriverUrl = "/Image/Drivers/" + result.fileName;
-            var (created, error) = await driverServices.Create(model);
+            var (created, error) = await driverServices.CreateAsync(model);
 
             if (!created)
             {
@@ -67,10 +70,37 @@ namespace TestOrders.Controllers
             return Redirect("/Driver/All");
         }
 
-        public async Task<IActionResult> Details(string Id)
+        public async Task<IActionResult> Details(Guid Id)
         {
-            var driver = await driverServices.GetDriver(Id);
+            var driver = await driverServices.GetDriverByIdAsync(Id);
             return View(driver);
+        }
+
+        [Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> Edit(Guid Id)
+        {
+            var driver = await driverServices.GetDriverByIdAsync(Id);
+            return View(driver);
+        }
+
+        [Authorize(Roles = "Admin, Manager, Restaurant")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditDriverViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var (edited, error) = await driverServices.EditAsync(model);
+
+            if (!edited)
+            {
+                ModelState.AddModelError("", error);
+                return View();
+            }
+
+            return Redirect("/Driver/All");
         }
     }
 }

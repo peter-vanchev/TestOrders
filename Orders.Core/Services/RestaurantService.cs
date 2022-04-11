@@ -79,7 +79,7 @@ namespace Orders.Core.Services
             return (true, error);
         }
 
-        public async Task<(bool created, string error)> Edit(EditRestaurantViewModel model)
+        public async Task<(bool created, string error)> EditAsync(EditRestaurantViewModel model)
         {
             bool created = false;
             string error = "";
