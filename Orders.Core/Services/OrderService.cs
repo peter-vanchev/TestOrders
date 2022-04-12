@@ -199,8 +199,6 @@ namespace Orders.Core.Services
 
         public async Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null)
         {
-            (startDate, endDate) = CheckDate(startDate, endDate);
-
             return await repo.All<Order>()
               .Include(x => x.OrderDatas)
               .Select(o => new OrderViewModel
@@ -486,6 +484,12 @@ namespace Orders.Core.Services
         {
             if (!startDate.HasValue) startDate = DateTime.Today;
             if (!endDate.HasValue) endDate = DateTime.Now;
+            if (endDate.Value.Hour == 0 && endDate.Value.Minute == 0 && endDate.Value.Second == 0)
+            {
+                endDate = endDate.Value.AddHours(23);
+                endDate = endDate.Value.AddMinutes(59);
+                endDate = endDate.Value.AddSeconds(59);
+            }
 
             return (startDate, endDate);
         }

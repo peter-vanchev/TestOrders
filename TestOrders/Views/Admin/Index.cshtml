@@ -71,8 +71,9 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a class="small-box-footer" asp-controller="Order" asp-action="All" asp-route-from=@DateTime.Today>Виж повече  
-                        <i class="fas fa-arrow-circle-right" ></i>
+                    <a class="small-box-footer" asp-controller="Order" asp-action="All" asp-route-from=@DateTime.Today>
+                        Виж повече
+                        <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
@@ -158,7 +159,11 @@
             <div class="col-lg-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>@Model.DeliverySells.ToString("F2")<sup style="font-size: 20px">лв</sup></h3>
+                        <h3>@Model.DeliverySells.ToString("F2")<sup style="font-size: 20px">лв.</sup></h3>
+                        <p>Оборот Доставки</p>
+                    </div>
+                    <div class="inner">
+                        <h3>@Model.TotalSells.ToString("F2")<sup style="font-size: 20px">лв.</sup></h3>
                         <p>Дневен оборот</p>
                     </div>
                     <div class="icon">
@@ -173,7 +178,7 @@
 
 </section>
 
-
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
     @{

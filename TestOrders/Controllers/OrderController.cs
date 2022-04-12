@@ -38,7 +38,7 @@ namespace TestOrders.Controllers
             var drivers = await driverServices.GetAllAsyncl();
             ViewBag.drivers = drivers;
             if (string.IsNullOrEmpty(from)) from = DateTime.Today.ToString();
-            if (string.IsNullOrEmpty(to)) to = DateTime.Now.AddMinutes(1).ToString();
+            if (string.IsNullOrEmpty(to)) to = DateTime.Now.AddMinutes(1).ToString();       
 
             var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Parse(to));
 

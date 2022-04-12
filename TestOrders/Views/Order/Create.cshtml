@@ -41,14 +41,15 @@
                             </div>
 
                             <div class="input-group mb-3">
+
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-check"></i></span>
                                 </div>
                                 <input asp-for="Street " class="form-control" placeholder="ул. ..." />
                                 <span asp-validation-for="Street" class="text-danger"></span>
 
-                                <span asp-validation-for="Number" class="text-danger"></span>
                                 <input asp-for="Number" class="form-control" placeholder="Номер ..." />
+                                <span asp-validation-for="Number" class="text-danger"></span>
                             </div>
 
                             <div class="input-group mb-3">
@@ -70,11 +71,11 @@
 
                             <div class="form-group">
                                 <label>Сума</label>
+                                <span asp-validation-for="Price" class="text-danger"></span>
                                 <div class="input-group">
                                     <input asp-for="Price" class="form-control" />
-                                    <span asp-validation-for="Price" class="text-danger"></span>
                                     <div class="input-group-append">
-                                        <span class="input-group-text">лв</span>
+                                        <span class="input-group-text">лв.</span>
                                     </div>
                                 </div>
                             </div>
@@ -131,8 +132,5 @@
     </div>
 </section>
 
-@section Scripts {
-<partial name="_ValidationScriptsPartial" />
-}
 
 

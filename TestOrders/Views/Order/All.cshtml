@@ -7,34 +7,30 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
-    var from = DateTime.Today.ToString("dd-MM-yyyy");
-    var to = DateTime.Today.ToString("dd-MM-yyyy");
 
+@{
+    var from = DateTime.Today.ToString("yyyy-MM-dd");
+    var to = DateTime.Now.ToString("yyyy-MM-dd");
     if (Model.Count != 0)
     {
-        from = @Model.Min(x => x.DataCreated).ToString("dd-MM-yyyy");
-        to = @Model.Max(x => x.DataCreated).ToString("dd-MM-yyyy");
+        from = @Model.Min(x => x.DataCreated).ToString("yyyy-MM-dd");
+        to = @Model.Max(x => x.DataCreated).ToString("yyyy-MM-dd");
     }
 }
 
 <div class="card">
     <div class="card-header">
-        <form asp-action="All" method="get">
+        <form asp-action="All" method="get" class="form pd-0">
             <div class="row">
-                <div class="col-md-6">
-                    <p>
-                        От: <input type="date" name="From" value="@from" />
-                        До: <input type="date" name="To" dvalue="@to" />
-                        <input type="submit" value="Search" class="btn btn-default" />
-                    </p>
+                <div class="col-xl-2">
+                    <p>От: <input type="date" name="From" value="@from" /></p>
                 </div>
 
-                <div class="col-md-6">
-                    <p>
-                        <strong>Най - нова поръчка:</strong> @from
-                        <strong>Най - стара поръчка:</strong> @to
-                    </p>
+                <div class="col-xl-2">
+                    <p>До: <input type="date" name="To" value="@to" /></p>
+                </div>
+                <div class="col-xl-2">
+                    <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
                 </div>
             </div>
         </form>
@@ -47,7 +43,7 @@
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
                             <tr>
-                                <th class="sorting sorting_desc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Дата: activate to sort column descending">Дата</th>
+                                <th class="sorting sorting_desc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="descending" aria-label="Дата: activate to sort column ascending">Дата</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="No: activate to sort column ascending">No</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Ресторант: activate to sort column ascending">Ресторант</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
@@ -85,20 +81,15 @@
                                     <td>
                                         @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
                                         {
-                                            <div class="card card-primary collapsed-card">
-                                                <div class="card-header">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        Насочи към шофьор
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="card-body" style="display: none;">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                                    <span class="sr-only">Шофьор</span>
+                                                </button>
+                                                <button type="button" class="btn btn-info btn-sm">Action</button>
+                                                <div class="dropdown-menu" role="menu" style="">
                                                     @foreach (var driver in ViewBag.drivers)
                                                     {
-                                                        <a class="btn btn-block btn-outline-dark btn-sm" asp-action="AsignOrder" asp-route-driverId="@driver.Id"
-                                               asp-route-orderId="@order.Id">
-                                                            @driver.FirstName @driver.LastName
-                                                        </a>
+                                                        <a class="dropdown-item" asp-action="AsignOrder" asp-route-driverId="@driver.Id" asp-route-orderId="@order.Id">@driver.FirstName @driver.LastName</a>
                                                     }
                                                 </div>
                                             </div>
@@ -123,8 +114,9 @@
             </div>
         </div>
     </div>
-
+    
 </div>
+
 <!-- jQuery -->
 <script src="~/plugins/jquery/jquery.min.js"></script>
 <script src="~/plugins/jszip/jszip.min.js"></script>
@@ -133,7 +125,7 @@
 <script>
     $(function () {
       $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "responsive": true, "lengthChange": false, "autoWidth": true,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });

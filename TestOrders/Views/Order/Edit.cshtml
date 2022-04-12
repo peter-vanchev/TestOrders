@@ -24,7 +24,7 @@
                             <div class="form-group">
                                 <label asp-for="RestaurantId" class="control-label">Обект</label>
                                 <select class="custom-select" name="RestaurantId" id="RestaurantId">
-              
+
                                     <option value=@Model.RestaurantId>@Model.RestaurantName</option>
                                     @foreach (var item in ViewData["restaurants"] as List<RestaurantViewModel>)
                                     {
@@ -105,6 +105,7 @@
                                 <label asp-for="PaymentType" class="control-label">Вид плащане</label>
                                 <span asp-validation-for="PaymentType" class="text-danger"></span>
                                 <select class="custom-select" name="PaymentType" id="PaymentType">
+                                    <option value="@Model.PaymentType">@Model.PaymentType</option>
                                     <option value="В брой">В брой</option>
                                     <option value="С карта">С карта</option>
                                 </select>
@@ -135,5 +136,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }
