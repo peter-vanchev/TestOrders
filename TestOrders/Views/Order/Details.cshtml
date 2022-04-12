@@ -16,6 +16,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <input type="hidden" id="RestaurantId" name="RestaurantId" value="@Model.Select(x => x.RestaurantId).FirstOrDefault()">
+                        <input type="hidden" id="RestaurantName" name="RestaurantId" value="@Model.Select(x => x.RestaurantName).FirstOrDefault()">
                         <div class="form-group mb-auto">
                             <label>Ресторант: </label>
                             @Model.Select(x => x.RestaurantName).FirstOrDefault()
@@ -81,6 +82,7 @@
                             <th>Време</th>
                             <th>Статус</th>
                             <th>Шофьор</th>
+                            <th>Действие</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,6 +93,7 @@
                                 <td>@order.LastStatusTime</td>
                                 <td>@order.Status</td>
                                 <td>@order.DriverName</td>
+                                <td>@order.Logs</td>
                             </tr>
                         }
                     </tbody>

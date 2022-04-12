@@ -30,5 +30,8 @@ namespace Orders.Infrastructure.Data.Models
 
         [ForeignKey(nameof(DriverId))]
         public Driver? Driver { get; set; }
+
+        [MaxLength(100)]
+        public string Logs { get; set; }
     }
 }

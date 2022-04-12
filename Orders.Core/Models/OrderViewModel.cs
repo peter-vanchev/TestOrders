@@ -67,5 +67,7 @@ namespace Orders.Core.Models
         public Guid? DriverId { get; set; }
 
         public string? DriverName { get; set; }
+
+        public string Logs { get; set; }
     }
 }

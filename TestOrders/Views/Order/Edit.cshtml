@@ -1,4 +1,5 @@
 ﻿@using Orders.Core.Models
+@using Orders.Infrastructure.Data.Models
 @model OrderViewModel
 
 @{
@@ -19,12 +20,13 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form class="form-horizontal" asp-action="Edit">
+                        <input type="hidden" id="DriverId" name="DriverId" value="@Model.DriverId">
+                        <input type="hidden" id="DriverName" name="DriverName" value="@Model.DriverName">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="card-body">
                             <div class="form-group">
                                 <label asp-for="RestaurantId" class="control-label">Обект</label>
                                 <select class="custom-select" name="RestaurantId" id="RestaurantId">
-
                                     <option value=@Model.RestaurantId>@Model.RestaurantName</option>
                                     @foreach (var item in ViewData["restaurants"] as List<RestaurantViewModel>)
                                     {
@@ -33,39 +35,57 @@
                                 </select>
                             </div>
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input asp-for="UserName" class="form-control" placeholder="Име и фамили ..." />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label">Статус поръчка</label>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                                <select class="custom-select" name="Status" id="Status">
+                                    <option value="@Model.Status">@Model.Status</option>
+                                    <option value="@Status.Нова">@Status.Нова</option>
+                                    <option value="@Status.Приета">@Status.Приета</option>
+                                    <option value="@Status.Насочена">@Status.Насочена</option>
+                                    <option value="@Status.Изпратена">@Status.Изпратена</option>
+                                    <option value="@Status.Доставена">@Status.Доставена</option>
+                                    <option value="@Status.Отказана">@Status.Отказана</option>
+                                    <option value="@Status.ОтказанаШофьор">@Status.ОтказанаШофьор</option>
+                                </select>
                             </div>
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label">Клиент</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="UserName" class="form-control" placeholder="Име и фамили ..." />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
-                                <input asp-for="Street " class="form-control" placeholder="ул. ..." />
-                                <span asp-validation-for="Street" class="text-danger"></span>
 
-                                <input asp-for="Number" class="form-control" placeholder="Номер ..." />
-                                <span asp-validation-for="Number" class="text-danger"></span>
-                            </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                    </div>
+                                    <input asp-for="Street " class="form-control" placeholder="ул. ..." />
+                                    <span asp-validation-for="Street" class="text-danger"></span>
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                    <input asp-for="Number" class="form-control" placeholder="Номер ..." />
+                                    <span asp-validation-for="Number" class="text-danger"></span>
                                 </div>
-                                <input asp-for="AddressOther" class="form-control" placeholder="Допълнителна информация ..." />
-                                <span asp-validation-for="AddressOther" class="text-danger"></span>
-                            </div>
 
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-check"></i></span>
+                                    </div>
+                                    <input asp-for="AddressOther" class="form-control" placeholder="Допълнителна информация ..." />
+                                    <span asp-validation-for="AddressOther" class="text-danger"></span>
                                 </div>
-                                <input asp-for="PhoneNumner" class="form-control col-3" placeholder="999999999" />
-                                <span asp-validation-for="PhoneNumner" class="text-danger"></span>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input asp-for="PhoneNumner" class="form-control col-3" placeholder="999999999" />
+                                    <span asp-validation-for="PhoneNumner" class="text-danger"></span>
+                                </div>
                             </div>
 
                             <div class="form-group">

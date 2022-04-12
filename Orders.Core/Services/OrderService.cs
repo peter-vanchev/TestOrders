@@ -4,6 +4,8 @@ using Orders.Core.Contracts;
 using Orders.Core.Models;
 using Orders.Infrastructure.Data.Models;
 using Orders.Infrastructure.Data.Repositories;
+using System.Reflection;
+using System.Text;
 
 namespace Orders.Core.Services
 {
@@ -33,6 +35,7 @@ namespace Orders.Core.Services
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
             var userRole = await userManager.GetRolesAsync(user);
+
             if (order != null)
             {
                 if (!action)
@@ -154,24 +157,14 @@ namespace Orders.Core.Services
         {
             bool edited = true;
             string error = "";
+            string log = "";
 
             var order = await repo.All<Order>()
                 .Include(x => x.Address)
                 .Where(x => x.Id == model.Id)
                 .FirstOrDefaultAsync();
 
-            order.UserName = model.UserName;
-            order.Address.Street = model.Street;
-            order.Address.Number = model.Number;
-            order.Description = model.Description;
-            order.PhoneNumner = model.PhoneNumner;
-            order.Price = model.Price;
-            order.DeliveryPrice = model.DeliveryPrice;
-            order.TimeForDelivery = model.TimeForDelivery;
-            order.PaymentType = model.PaymentType;
-            order.RestaurantId = (Guid)model.RestaurantId;
-            order.Create = DateTime.Now;
-
+            (order, log) = ArangeModels(order, model);
 
             var orderData = new OrderData()
             {
@@ -179,7 +172,9 @@ namespace Orders.Core.Services
                 OrderId = order.Id,
                 LastUpdate = DateTime.Now,
                 Status = Status.Променена,
-                UserId = userId
+                UserId = userId,
+                Logs = log,
+                DriverId = model.DriverId,               
             };
 
             try
@@ -237,7 +232,6 @@ namespace Orders.Core.Services
                 var orders = await GetAll(startDate, endDate);
                 return orders;
             }
-
             else if (await userManager.IsInRoleAsync(user, "Restaurant"))
             {
                 var restaurantId = user.RestaurantId;
@@ -321,7 +315,8 @@ namespace Orders.Core.Services
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
                   DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),                  
+                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),
+                  DriverId = o.DriverId
               })
               .FirstOrDefaultAsync();
         }
@@ -354,7 +349,8 @@ namespace Orders.Core.Services
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
                     DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.FirstName),
-                    TimeForDelivery = o.Order.TimeForDelivery
+                    TimeForDelivery = o.Order.TimeForDelivery,
+                    Logs = o.Logs
                 }).ToListAsync();
 
             return order;
@@ -442,17 +438,12 @@ namespace Orders.Core.Services
             var actionResult = false;
 
             var order = await repo.All<Order>()
+                .Include(d => d.Driver)
                 .Where(x => x.Id == orderId)
                 .FirstOrDefaultAsync();
 
             order.Status = Status.Доставена;
-
-            var user = await repo.All<ApplicationUser>()
-                  .Include(u => u.Driver)
-                  .Where(x => x.Id == userId)
-                  .FirstOrDefaultAsync();
-
-            user.Driver.Status = Status.Свободен;
+            order.Driver.Status = Status.Свободен;
 
             var orderData = new OrderData()
             {
@@ -461,7 +452,6 @@ namespace Orders.Core.Services
                 LastUpdate = DateTime.Now,
                 Status = order.Status,
                 UserId = userId,
-                User = user
             };
 
             try
@@ -492,6 +482,85 @@ namespace Orders.Core.Services
             }
 
             return (startDate, endDate);
+        }
+
+        private (Order, string) ArangeModels(Order order, OrderViewModel model)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (model.UserName != null && (model.UserName != order.UserName))
+            {
+                sb.AppendLine($"{order.UserName} -> {model.UserName}");
+                order.UserName = model.UserName; 
+            }
+            
+            if (model.Street != null && (model.Street != order.Address.Street))
+            {
+                sb.AppendLine($"{order.Address.Street} -> {model.Street}");
+                order.Address.Street = model.Street;
+            }
+            
+            if (model.Number != null && (model.Number != order.Address.Number))
+            {
+                sb.AppendLine($"{model.Number} -> {order.Address.Number}");
+                order.Address.Number = model.Number;
+            }
+
+            if (model.Description != null && (model.Description != order.Description))
+            {
+                sb.AppendLine($"{model.Description} -> {order.Description}");
+                order.Description = model.Description;
+            }
+
+            if (model.PhoneNumner != null && (model.PhoneNumner != order.PhoneNumner))
+            {
+                sb.AppendLine($"PhoneNumner: {model.PhoneNumner} -> {order.PhoneNumner}");
+                order.PhoneNumner = model.PhoneNumner;
+            }
+
+            if (model.Price != 0 && (model.Price != order.Price))
+            {
+                sb.AppendLine($"Price: {model.Price} -> {order.Price}");
+                order.Price = model.Price;
+            }
+
+            if (model.DeliveryPrice != 0 && (model.DeliveryPrice != order.DeliveryPrice))
+            {
+                sb.AppendLine($"{model.DeliveryPrice} -> {order.DeliveryPrice}");
+                order.DeliveryPrice = model.DeliveryPrice;
+            }
+
+            if (model.PaymentType != null && (model.PaymentType != order.PaymentType))
+            {
+                sb.AppendLine($"{model.PaymentType} -> {order.PaymentType}");
+                order.PaymentType = model.PaymentType;
+            }
+
+            if (model.TimeForDelivery != order.TimeForDelivery)
+            {
+                sb.AppendLine($"{model.TimeForDelivery} -> {order.TimeForDelivery}");
+                order.TimeForDelivery = model.TimeForDelivery;
+            }
+
+            if (model.RestaurantId != order.RestaurantId)
+            {
+                sb.AppendLine($"{model.RestaurantId} -> {order.RestaurantId}");
+                order.RestaurantId = (Guid)model.RestaurantId;
+            }
+
+            if (model.DriverId != order.DriverId)
+            {
+                sb.AppendLine($"{model.DriverId} -> {order.DriverId}");
+                order.DriverId = (Guid)model.DriverId;
+            }
+
+            if (model.Status != order.Status)
+            {
+                sb.AppendLine($"{model.Status} -> {order.Status}");
+                 order.Status = model.Status;
+             }
+
+            return (order, sb.ToString().TrimEnd());
         }
     }
 }

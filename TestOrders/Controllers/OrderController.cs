@@ -37,6 +37,7 @@ namespace TestOrders.Controllers
             var userId = userManager.GetUserId(User);
             var drivers = await driverServices.GetAllAsyncl();
             ViewBag.drivers = drivers;
+
             if (string.IsNullOrEmpty(from)) from = DateTime.Today.ToString();
             if (string.IsNullOrEmpty(to)) to = DateTime.Now.AddMinutes(1).ToString();       
 
@@ -136,24 +137,14 @@ namespace TestOrders.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(OrderViewModel model)
         {
-            var restaurants = await FindRestaurants();
-
-            ViewData["restaurants"] = restaurants;
-
-            if (!ModelState.IsValid)
-            {
-                var test = restaurants
-                    .Where(x => x.Id == model.RestaurantId)
-                    .Select(x => x.Name).FirstOrDefault();
-                model.RestaurantName = test;
-                return View(model);
-            }
-
             var userId = userManager.GetUserId(User);
             var (edited, error) = await orderService.EditAsync(model, userId);
 
             if (!edited)
             {
+                var restaurants = await FindRestaurants();
+                ViewData["restaurants"] = restaurants;
+
                 ModelState.AddModelError("", error);
                 return View();
             }
@@ -163,7 +154,6 @@ namespace TestOrders.Controllers
 
 
         [Authorize(Roles = "Admin, Manager, Driver")]
-
         private async Task<List<RestaurantViewModel>> FindRestaurants()
         {
             var userId = userManager.GetUserId(User);
