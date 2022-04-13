@@ -152,7 +152,6 @@ namespace TestOrders.Controllers
             return Redirect("/Order/All");
         }
 
-
         [Authorize(Roles = "Admin, Manager, Driver")]
         private async Task<List<RestaurantViewModel>> FindRestaurants()
         {

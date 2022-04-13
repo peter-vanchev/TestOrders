@@ -13,8 +13,8 @@
     var to = DateTime.Now.ToString("yyyy-MM-dd");
     if (Model.Count != 0)
     {
-        from = @Model.Min(x => x.DataCreated).ToString("yyyy-MM-dd");
-        to = @Model.Max(x => x.DataCreated).ToString("yyyy-MM-dd");
+        from = @Model.Min(x => x.LastStatusTime).ToString("yyyy-MM-dd");
+        to = @Model.Max(x => x.LastStatusTime).ToString("yyyy-MM-dd");
     }
 }
 
@@ -49,8 +49,8 @@
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Клиент: activate to sort column ascending">Клиент</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Адрес: activate to sort column ascending">Адрес</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Шофьор: activate to sort column ascending">Шофьор</th>
-                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Доставка: activate to sort column ascending">Доставка</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Цена: activate to sort column ascending">Цена</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Доставка: activate to sort column ascending">Доставка</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Вид плащане: activate to sort column ascending">Вид плащане</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Време за доставка: activate to sort column ascending">Време за доставка</th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Статус: activate to sort column ascending">Статус</th>
@@ -61,7 +61,7 @@
                             @foreach (var order in Model)
                             {
                                 <tr class="odd">
-                                    <td>@order.DataCreated.ToString("dd-MM-yyyy")</td>
+                                    <td>@order.LastStatusTime.ToString("dd-MM-yyyy")</td>
                                     <td>
                                         <a asp-controller="Order" asp-action="Details" asp-route-Id="@order.Id">@order.OrderNumber</a>
                                     </td>

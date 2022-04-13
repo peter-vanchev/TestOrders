@@ -1,5 +1,216 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Orders.Core.Models
+@model IndexStatsModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-Hello
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Табло</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <div class="progress-group">
+                            <h4>Всички Поръчки - <strong>@Model.OrdersCount.ToString("F0")</strong></h4>
+                        </div>
+
+                        <div class="progress-group">
+                            Нови Поръчки - @Model.NewOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.NewOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.NewOrdersProogres.ToString("F2")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Приети Поръчки - @Model.AcceptedOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.AcceptedOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.AcceptedOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Поръчки в изпълнение- @Model.InProgresOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.InProgresOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.InProgresOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-group">
+                            Отказани Поръчки - @Model.CancelledOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.CancelledOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.CancelledOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-group">
+                            Завършени Поръчки - @Model.EndOrdersCount.ToString("F0")
+                            <span class="float-right"><b>@Model.EndOrdersCount.ToString("F0")</b>/@Model.OrdersCount.ToString("F0")</span>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" style="width: @Model.EndOrdersProogres.ToString("F0")%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a class="small-box-footer" asp-controller="Order" asp-action="All" asp-route-from=@DateTime.Today>
+                        Виж повече
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">
+                            <a asp-action="Index" asp-route-period="day" class="btn btn-sm btn-tool">
+                                Поръчки за деня
+                            </a>
+                            <a asp-action="Index" asp-route-period="week" class="btn btn-sm btn-tool">
+                                Поръчки за седмицата
+                            </a>
+                            <a asp-action="Index" asp-route-period="month" class="btn btn-sm btn-tool">
+                                Поръчки за месеца
+                            </a>
+                            <a asp-action="Index" asp-route-period="year" class="btn btn-sm btn-tool">
+                                Поръчки за годината
+                            </a>
+                        </h3>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fas fa-bars"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-xl">
+                                <i class="ion-android-clipboard"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    @Model.EndOrdersCount
+                                </span>
+                                <span class="text-muted">Брой Поръчки</span>
+                            </p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-xl">
+                                <i class="ion ion-android-car"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    @Model.DeliverySells.ToString("F2") лв.
+                                </span>
+                                <span class="text-muted">Транспорт Поръчки</span>
+                            </p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-0">
+                            <p class="text-success text-xl">
+                                <i class="fas fa-donate"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold">
+                                    @Model.TotalSells.ToString("F2") лв.
+                                </span>
+                                <span class="text-muted">Сума Поръчки</span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- small box -->
+            </div>
+            <!-- ./col -->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@Model.DeliverySells.ToString("F2")<sup style="font-size: 20px">лв.</sup></h3>
+                        <p>Сума Доставки</p>
+                    </div>
+                    <div class="inner">
+                        <h3>@Model.TotalSells.ToString("F2")<sup style="font-size: 20px">лв.</sup></h3>
+                        <p>Сума Поръчки</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a class="small-box-footer" asp-controller="Home" asp-action="OrderStats" asp-route-from=@DateTime.Today>
+                        Виж повече
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+    @{
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Keys.ToList());
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(@Model.ChartData.Values.ToList());
+    }
+
+    var barColors = [
+      "#b91d47",
+      "#00aba9",
+      "#2b5797",
+      "#e8c3b9",
+      "#1e7145"
+    ];
+
+      new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: @Html.Raw(XLabels),
+        datasets: [{
+          backgroundColor: barColors,
+          data: @Html.Raw(YValues)
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Поръчки"
+        }
+      }
+    });
+</script>

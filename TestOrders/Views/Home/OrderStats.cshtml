@@ -1,0 +1,77 @@
+﻿@using Orders.Core.Models
+@using Orders.Infrastructure.Data.Models
+@using System.Globalization
+@model List<OrderStatsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var from = DateTime.Today.ToString("yyyy-MM-dd");
+    var to = DateTime.Now.ToString("yyyy-MM-dd");
+    if (Model.Count != 0)
+    {
+        from = @Model.Min(x => x.LastStatusTime).ToString("yyyy-MM-dd");
+        to = @Model.Max(x => x.LastStatusTime).ToString("yyyy-MM-dd");
+    }
+}
+
+<div class="card">
+    <div class="card-header">
+        <form asp-action="All" method="get" class="form pd-0">
+            <div class="row">
+                <div class="col-xl-2">
+                    <p>От: <input type="date" name="From" value="@from" /></p>
+                </div>
+
+                <div class="col-xl-2">
+                    <p>До: <input type="date" name="To" value="@to" /></p>
+                </div>
+                <div class="col-xl-2">
+                    <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Дата</th>
+                                <th>Ресторант</th>
+                                <th>Шофьор</th>
+                                <th>Цена</th>
+                                <th>Доставка</th>
+                                <th>Вид плащане</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr class="odd">
+                                    <td>@order.LastStatusTime</td>
+                                    <td>@order.OrderNumber</td>
+                                    <td>@order.RestaurantName</td>
+                                    <td>@order.DriverName</td>
+                                    <td>@order.Price</td>
+                                    <td>@order.DeliveryPrice</td>
+                                    <td>@order.PaymentType</td>
+                                    <td>@order.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

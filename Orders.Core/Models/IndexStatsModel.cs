@@ -1,8 +1,8 @@
 ﻿namespace Orders.Core.Models
 {
-    public class OrderStatsModel
+    public class IndexStatsModel
     {
-        public OrderStatsModel()
+        public IndexStatsModel()
         {
             ChartData = new Dictionary<string, int>();
         }

@@ -174,7 +174,7 @@ namespace Orders.Core.Services
                 Status = Status.Променена,
                 UserId = userId,
                 Logs = log,
-                DriverId = model.DriverId,               
+                DriverId = model.DriverId,
             };
 
             try
@@ -194,6 +194,10 @@ namespace Orders.Core.Services
 
         public async Task<IEnumerable<OrderViewModel>> GetAll(DateTime? startDate = null, DateTime? endDate = null)
         {
+            var test = await repo.All<Order>().Where(x => x.Create >= startDate && x.Create <= endDate)
+              .OrderByDescending(x => x.Create)
+              .ToListAsync();
+
             return await repo.All<Order>()
               .Include(x => x.OrderDatas)
               .Select(o => new OrderViewModel
@@ -213,11 +217,15 @@ namespace Orders.Core.Services
                   RestaurantId = o.RestaurantId,
                   RestaurantName = o.Restaurant.Name,
                   Status = o.Status,
-                  DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                  DataCreated = o.Create,
+                  DriverId = o.DriverId,
+                  DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),
+                  UserId = o.UserId,
+                  UserCreatedName = o.UserCreated.Email,
+                  LastStatusTime = o.OrderDatas.Max(x => x.LastUpdate)
               })
-              .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
-              .OrderByDescending(x => x.DataCreated)
+              .Where(x => x.LastStatusTime >= startDate && x.LastStatusTime <= endDate)
+              .OrderByDescending(x => x.LastStatusTime)
               .ToListAsync();
         }
 
@@ -255,11 +263,15 @@ namespace Orders.Core.Services
                         RestaurantId = o.RestaurantId,
                         RestaurantName = o.Restaurant.Name,
                         Status = o.Status,
-                        DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                        DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                        DataCreated = o.Create,
+                        DriverId = o.DriverId,
+                        DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),
+                        UserId = o.UserId,
+                        UserCreatedName = o.UserCreated.FirstName + " " + o.UserCreated.FirstName,
+                        LastStatusTime = o.OrderDatas.Max(x => x.LastUpdate)
                     })
-                    .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
-                    .OrderByDescending(x => x.DataCreated)
+                    .Where(x => x.LastStatusTime >= startDate && x.LastStatusTime <= endDate)
+                    .OrderByDescending(x => x.LastStatusTime)
                     .ToListAsync();
             }
 
@@ -322,7 +334,7 @@ namespace Orders.Core.Services
         }
 
         public async Task<List<OrderViewModel>> GetOrdersDetails(string orderId)
-        {                   
+        {
             var order = await repo.All<OrderData>()
                 .Where(x => x.OrderId == Guid.Parse(orderId))
                 .Include(x => x.Order)
@@ -356,16 +368,16 @@ namespace Orders.Core.Services
             return order;
         }
 
-        public async Task<OrderStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null)
+        public async Task<IndexStatsModel> GetStats(string userId, DateTime? startDate = null, DateTime? endDate = null)
         {
             var orders = await GetAll(userId, startDate, endDate);
 
             var delyverySells = orders
-                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
+                .Where(x => x.Status == Status.Доставена)
                 .Select(x => x.DeliveryPrice).Sum();
 
             var totalSells = orders
-                .Where(x => x.Status != Status.Отказана && x.Status != Status.ОтказанаШофьор)
+                .Where(x => x.Status == Status.Доставена)
                 .Select(x => x.Price).Sum();
 
             var ordersCount = orders.Count();
@@ -406,7 +418,7 @@ namespace Orders.Core.Services
                 / (double)orders.Count())
                 * 100;
 
-            var ordersStats = new OrderStatsModel
+            var ordersStats = new IndexStatsModel
             {
                 OrdersCount = ordersCount,
                 NewOrdersCount = newOrdersCount,
@@ -491,77 +503,78 @@ namespace Orders.Core.Services
             if (model.UserName != null && (model.UserName != order.UserName))
             {
                 sb.AppendLine($"{order.UserName} -> {model.UserName}");
-                order.UserName = model.UserName; 
+                order.UserName = model.UserName;
             }
-            
+
             if (model.Street != null && (model.Street != order.Address.Street))
             {
                 sb.AppendLine($"{order.Address.Street} -> {model.Street}");
                 order.Address.Street = model.Street;
             }
-            
+
             if (model.Number != null && (model.Number != order.Address.Number))
             {
-                sb.AppendLine($"{model.Number} -> {order.Address.Number}");
+                sb.AppendLine($"{order.Address.Number} -> {model.Number}");
                 order.Address.Number = model.Number;
             }
 
             if (model.Description != null && (model.Description != order.Description))
             {
-                sb.AppendLine($"{model.Description} -> {order.Description}");
+                sb.AppendLine($"{order.Description} -> {model.Description}");
                 order.Description = model.Description;
             }
 
             if (model.PhoneNumner != null && (model.PhoneNumner != order.PhoneNumner))
             {
-                sb.AppendLine($"PhoneNumner: {model.PhoneNumner} -> {order.PhoneNumner}");
+                sb.AppendLine($"PhoneNumner: {order.PhoneNumner} -> {model.PhoneNumner}");
                 order.PhoneNumner = model.PhoneNumner;
             }
 
             if (model.Price != 0 && (model.Price != order.Price))
             {
-                sb.AppendLine($"Price: {model.Price} -> {order.Price}");
+                sb.AppendLine($"Price: {order.Price} -> {model.Price}");
                 order.Price = model.Price;
             }
 
             if (model.DeliveryPrice != 0 && (model.DeliveryPrice != order.DeliveryPrice))
             {
-                sb.AppendLine($"{model.DeliveryPrice} -> {order.DeliveryPrice}");
+                sb.AppendLine($"{order.DeliveryPrice} -> {model.DeliveryPrice}");
                 order.DeliveryPrice = model.DeliveryPrice;
             }
 
-            if (model.PaymentType != null && (model.PaymentType != order.PaymentType))
+            if (model.PaymentType != null && (model.PaymentType != model.PaymentType))
             {
-                sb.AppendLine($"{model.PaymentType} -> {order.PaymentType}");
+                sb.AppendLine($"{order.PaymentType} -> {model.PaymentType}");
                 order.PaymentType = model.PaymentType;
             }
 
             if (model.TimeForDelivery != order.TimeForDelivery)
             {
-                sb.AppendLine($"{model.TimeForDelivery} -> {order.TimeForDelivery}");
+                sb.AppendLine($"{order.TimeForDelivery} -> {model.TimeForDelivery}");
                 order.TimeForDelivery = model.TimeForDelivery;
             }
 
             if (model.RestaurantId != order.RestaurantId)
             {
-                sb.AppendLine($"{model.RestaurantId} -> {order.RestaurantId}");
+                sb.AppendLine($"{order.RestaurantId} -> {model.RestaurantId}");
                 order.RestaurantId = (Guid)model.RestaurantId;
             }
 
             if (model.DriverId != order.DriverId)
             {
-                sb.AppendLine($"{model.DriverId} -> {order.DriverId}");
+                sb.AppendLine($"{order.DriverId} -> {model.DriverId}");
                 order.DriverId = (Guid)model.DriverId;
             }
 
             if (model.Status != order.Status)
             {
-                sb.AppendLine($"{model.Status} -> {order.Status}");
-                 order.Status = model.Status;
-             }
+                sb.AppendLine($"{order.Status} -> {model.Status}");
+                order.Status = model.Status;
+            }
 
             return (order, sb.ToString().TrimEnd());
         }
+
     }
 }
 

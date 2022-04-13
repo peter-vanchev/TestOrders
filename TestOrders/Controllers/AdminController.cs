@@ -20,10 +20,9 @@ namespace TestOrders.Controllers
             IOrderService _orderService)
         {
             adminService = _adminService;
-            orderService = _orderService;
         }
 
-        public async Task<IActionResult> Index(string period = null)
+        public async Task<IActionResult> Index()
         {
             //var result = await adminService.Seed();
 
@@ -32,13 +31,8 @@ namespace TestOrders.Controllers
             //    SignOut();
             //}
 
-            var (startDate, endDate) = CheckPeriod(period);            
 
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);            
-
-            var orders = await orderService.GetStats(userId, startDate, endDate);
-
-            return View(orders);
+            return View();
         }
 
 
@@ -91,27 +85,5 @@ namespace TestOrders.Controllers
             return RedirectToAction("UserRole");
         }
 
-        private (DateTime, DateTime) CheckPeriod(string period)
-        {
-            var startDate = DateTime.Today;
-            var endDate = DateTime.Now;
-
-            switch (period)
-            {
-                case "year":
-                    startDate = new DateTime(endDate.Year, 1, 1);
-                    break;
-                case "month":
-                    startDate = new DateTime(endDate.Year, endDate.Month, 1);
-                    break;
-                case "week":
-                    startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
-                    break;
-                default:
-                    break;
-            }
-
-            return (startDate, endDate);
-        }
     }
 }

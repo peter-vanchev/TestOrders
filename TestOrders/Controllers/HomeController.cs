@@ -1,37 +1,53 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Orders.Core.Contracts;
 using Orders.Core.Models;
 using Orders.Infrastructure.Data.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace TestOrders.Controllers
 {
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> logger;
+        private readonly IOrderService orderService;
 
-        public HomeController(ILogger<HomeController> _logger)
+
+        public HomeController(
+            ILogger<HomeController> _logger,
+            IOrderService _orderService)
         {
             logger = _logger;
+            orderService = _orderService;
         }
 
-        public IActionResult Index()
-        {               
-            if (User.IsInRole("Admin"))
-            {
-                return Redirect("/Admin");
-            }
-            else if(User.IsInRole("Restaurant"))
-            {
-                return Redirect("/Restaurant");
-            }
-            else if (User.IsInRole("Driver"))
-            {
-                return Redirect("/Driver");
-            }
+        public async Task<IActionResult> Index(string period = null)
+        {
 
-            return View();
+            var (startDate, endDate) = CheckPeriod(period);
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var orders = await orderService.GetStats(userId, startDate, endDate);
+
+            return View(orders);
         }
+
+        public async Task<IActionResult> OrderStats(string period = null)
+        {
+            var (startDate, endDate) = CheckPeriod(period);
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var orders = await orderService.GetAll(userId, startDate, endDate);
+
+            var orderStats = JsonConvert.DeserializeObject<IEnumerable<OrderStatsViewModel>>(JsonConvert.SerializeObject(orders));
+
+            return View(orderStats);
+        }
+
 
         public IActionResult Privacy()
         {
@@ -43,5 +59,29 @@ namespace TestOrders.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private (DateTime, DateTime) CheckPeriod(string period)
+        {
+            var startDate = DateTime.Today;
+            var endDate = DateTime.Now;
+
+            switch (period)
+            {
+                case "year":
+                    startDate = new DateTime(endDate.Year, 1, 1);
+                    break;
+                case "month":
+                    startDate = new DateTime(endDate.Year, endDate.Month, 1);
+                    break;
+                case "week":
+                    startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
+                    break;
+                default:
+                    break;
+            }
+
+            return (startDate, endDate);
+        }
+
     }
 }
