@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Orders.Core.Contracts;
 using Orders.Core.Models;
 using Orders.Infrastructure.Data.Models;
@@ -170,6 +171,20 @@ namespace TestOrders.Controllers
                 restaurants.Add(restaurant);
                 return restaurants;
             }
+        }
+
+        public async Task<IActionResult> OrderStats(string from, string to)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(from)) from = DateTime.Today.ToString();
+            if (string.IsNullOrEmpty(to)) to = DateTime.Now.AddMinutes(1).ToString();
+
+            var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Parse(to));
+
+            var orderStats = JsonConvert.DeserializeObject<IEnumerable<OrderStatsViewModel>>(JsonConvert.SerializeObject(orders));
+
+            return View(orderStats);
         }
     }
 }

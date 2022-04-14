@@ -1,0 +1,217 @@
+﻿@using Orders.Core.Models
+@using Orders.Infrastructure.Data.Models
+@using System.Globalization
+
+@model List<OrderStatsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var from = DateTime.Today.ToString("yyyy-MM-dd");
+    var to = DateTime.Now.ToString("yyyy-MM-dd");
+    if (Model.Count != 0)
+    {
+        from = @Model.Min(x => x.LastStatusTime).ToString("yyyy-MM-dd");
+        to = @Model.Max(x => x.LastStatusTime).ToString("yyyy-MM-dd");
+    }
+}
+
+<div class="card">
+    <div class="card-header">
+        <form asp-action="OrderStats" method="get" class="form pd-0">
+            <div class="row">
+                <div class="col-xl-2">
+                    <p>От: <input type="date" name="From" value="@from" /></p>
+                </div>
+
+                <div class="col-xl-2">
+                    <p>До: <input type="date" name="To" value="@to" /></p>
+                </div>
+                <div class="col-xl-2">
+                    <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                        <thead>
+                            <tr>
+                                <th>Ресторант</th>
+                                <th>Цена</th>
+                                <th>Доставка</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var restaurntGroups = Model
+                                .GroupBy(x => new { x.RestaurantName })
+                                .Select(x => new
+                                {
+                                    RestaurantName = x.Key.RestaurantName,
+                                    DeliveryPrice = x.Sum(x => x.DeliveryPrice),
+                                    Price = x.Sum(x => x.Price)
+                                })
+                                .OrderBy(x => x.RestaurantName)
+                                .ToList();
+                            }
+                            @foreach (var order in restaurntGroups)
+                            {
+                                <tr class="odd">
+                                    <td>@order.RestaurantName</td>
+                                    <td>@order.Price.ToString("F2") лв.</td>
+                                    <td>@order.DeliveryPrice.ToString("F2") лв.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                        <th></th>
+                        <th>@restaurntGroups.Sum(x => x.Price).ToString("F2") лв.</th>
+                        <th>@restaurntGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                        </tfoot>
+                    </table>
+                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                        <thead>
+                            <tr>
+                                <th>Шофьор</th>
+                                <th>Цена</th>
+                                <th>Доставка</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var driverGroups = Model
+                                .GroupBy(x => new { x.DriverName })
+                                .Select(x => new
+                                {
+                                    DriverName = x.Key.DriverName,
+                                    DeliveryPrice = x.Sum(x => x.DeliveryPrice),
+                                    Price = x.Sum(x => x.Price)
+                                })
+                                .OrderBy(x => x.DriverName)
+                                .ToList();
+                            }
+                            @foreach (var order in driverGroups)
+                            {
+                                <tr class="odd">
+                                    <td>@order.DriverName</td>
+                                    <td>@order.Price.ToString("F2") лв.</td>
+                                    <td>@order.DeliveryPrice.ToString("F2") лв.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                        <th></th>
+                        <th>@driverGroups.Sum(x => x.Price).ToString("F2") лв.</th>
+                        <th>@driverGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <canvas id="myChartNew"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    @{
+        var test = restaurntGroups
+        .GroupBy(x => x.RestaurantName)
+        .Select(x => new
+        {
+            XLabels = x.Key,
+            YValues = x.Sum(x => x.DeliveryPrice)
+        }).ToList();
+
+        var xLabels = test.Select(x => x.XLabels).ToList();
+        var yValues = test.Select(x => x.YValues).ToList();
+
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
+    }
+
+    const data = {
+      labels: @Html.Raw(XLabels),
+      datasets: [{
+        label: 'Оборот по ресторанти',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: @Html.Raw(YValues),
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
+</script>
+
+<script>
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+</script>
+
+
+<script>
+    @{
+var restoraunt = Model
+            .GroupBy(x => new { x.RestaurantName, x.LastStatusTime })
+            .Select(x => new
+            {
+                Date = x.Key.LastStatusTime.ToString("dd-MM-yyyy"),
+                RestaurantName = x.Key.RestaurantName,
+                DeliveryPrice = x.Sum(x => x.DeliveryPrice),
+                Price = x.Sum(x => x.Price)
+            })
+            .OrderBy(x => x.RestaurantName)
+            .ToList();
+
+        var XValues = restoraunt.Select(x => x.Date).ToHashSet();
+        var WValues = restoraunt.Select(x => x.RestaurantName).ToHashSet();
+        var ZValues = restoraunt.Select(x => x.Price);
+
+        var xValues = Newtonsoft.Json.JsonConvert.SerializeObject(XValues);
+        var zValues = Newtonsoft.Json.JsonConvert.SerializeObject(ZValues);
+    }
+
+    new Chart("myChartNew", {
+      type: "line",
+      data: {
+        labels: @Html.Raw(xValues),
+        datasets: [{
+          data: @Html.Raw(zValues),
+          borderColor: "red",
+          fill: false
+        }, {
+          data: [28.4,32.5],
+          borderColor: "blue",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: false}
+      }
+    });
+</script>

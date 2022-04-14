@@ -360,7 +360,7 @@ namespace Orders.Core.Services
                     Status = o.Status,
                     DataCreated = o.Order.Create,
                     LastStatusTime = o.LastUpdate,
-                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.FirstName),
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),
                     TimeForDelivery = o.Order.TimeForDelivery,
                     Logs = o.Logs
                 }).ToListAsync();

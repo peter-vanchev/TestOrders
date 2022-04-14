@@ -35,20 +35,6 @@ namespace TestOrders.Controllers
             return View(orders);
         }
 
-        public async Task<IActionResult> OrderStats(string period = null)
-        {
-            var (startDate, endDate) = CheckPeriod(period);
-
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var orders = await orderService.GetAll(userId, startDate, endDate);
-
-            var orderStats = JsonConvert.DeserializeObject<IEnumerable<OrderStatsViewModel>>(JsonConvert.SerializeObject(orders));
-
-            return View(orderStats);
-        }
-
-
         public IActionResult Privacy()
         {
             return View();
