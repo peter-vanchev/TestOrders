@@ -59,6 +59,8 @@ namespace TestOrders.Controllers
                 return Redirect("/Order/All");
             }
 
+            ModelState.AddModelError("", result.Item2);
+
             return View();
         }
 

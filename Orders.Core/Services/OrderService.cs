@@ -26,6 +26,7 @@ namespace Orders.Core.Services
         {
             var error = "";
             var actionResult = false;
+
             var order = await repo.All<Order>()
                 .Where(x => x.Id == Guid.Parse(orderId))
                 .FirstOrDefaultAsync();
@@ -34,15 +35,15 @@ namespace Orders.Core.Services
                 .Include(x => x.Driver)
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
-            var userRole = await userManager.GetRolesAsync(user);
 
             if (order != null)
             {
                 if (!action)
                 {
-                    if (userRole.Contains("Driver"))
+                    if (await userManager.IsInRoleAsync(user, "Driver"))
                     {
                         order.Status = Status.ОтказанаШофьор;
+                        user.Driver.Status = Status.Свободен;
                     }
                     else
                     {
@@ -51,7 +52,7 @@ namespace Orders.Core.Services
                 }
                 else
                 {
-                    if (userRole.Contains("Admin"))
+                    if (await userManager.IsInRoleAsync(user, "Admin"))
                     {
                         order.Status = Status.Приета;
                     }
@@ -243,7 +244,7 @@ namespace Orders.Core.Services
             else if (await userManager.IsInRoleAsync(user, "Restaurant"))
             {
                 var restaurantId = user.RestaurantId;
-                return await repo.All<Order>()
+                var restauranOrders = await repo.All<Order>()
                     .Where(x => x.RestaurantId == restaurantId)
                     .Include(x => x.OrderDatas)
                     .Select(o => new OrderViewModel
@@ -273,10 +274,12 @@ namespace Orders.Core.Services
                     .Where(x => x.LastStatusTime >= startDate && x.LastStatusTime <= endDate)
                     .OrderByDescending(x => x.LastStatusTime)
                     .ToListAsync();
+
+                return restauranOrders;
             }
 
             var driverId = user.DriverId;
-            return await repo.All<Order>()
+            var driverOrders = await repo.All<Order>()
                 .Where(x => x.DriverId == driverId)
                 .Include(x => x.OrderDatas)
                 .Select(o => new OrderViewModel
@@ -297,11 +300,14 @@ namespace Orders.Core.Services
                     RestaurantName = o.Restaurant.Name,
                     Status = o.Status,
                     DataCreated = o.OrderDatas.Max(x => x.LastUpdate),
-                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName)
+                    DriverName = String.Join(" ", o.Driver.User.FirstName, o.Driver.User.LastName),
+                    LastStatusTime = o.OrderDatas.Max(x => x.LastUpdate)
                 })
-                .Where(x => x.DataCreated >= startDate && x.DataCreated <= endDate)
-                .OrderByDescending(x => x.DataCreated)
+                .Where(x => x.LastStatusTime >= startDate && x.LastStatusTime <= endDate)
+                .OrderByDescending(x => x.LastStatusTime)
                 .ToListAsync();
+            
+            return driverOrders;
         }
 
         public async Task<OrderViewModel> GetOrderById(string orderId)

@@ -10,6 +10,7 @@
 }
 
 @{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     var from = DateTime.Today.ToString("yyyy-MM-dd");
     var to = DateTime.Now.ToString("yyyy-MM-dd");
     if (Model.Count != 0)
@@ -40,11 +41,7 @@
     <div class="card-body">
         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
             <div class="row">
-                <div class="col-lg-6 ">
-                    <div>
-                        <canvas id="myChart"></canvas>
-                    </div>
-                </div>
+
                 <div class="col-lg-6">
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
@@ -77,11 +74,25 @@
                             }
                         </tbody>
                         <tfoot>
-                        <th></th>
-                        <th>@restaurntGroups.Sum(x => x.Price).ToString("F2") лв.</th>
-                        <th>@restaurntGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @restaurntGroups.Sum(x => x.Price).ToString("F2") лв.
+                                </th>
+                                <th>@restaurntGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+
+                            </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="col-lg-6 ">
+                    <div>
+                        <canvas id="myChart" style="height: 50%"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
                     <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
                             <tr>
@@ -113,16 +124,17 @@
                             }
                         </tbody>
                         <tfoot>
-                        <th></th>
-                        <th>@driverGroups.Sum(x => x.Price).ToString("F2") лв.</th>
-                        <th>@driverGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                            <tr>
+                                <th></th>
+                                <th>@driverGroups.Sum(x => x.Price).ToString("F2") лв.</th>
+                                <th>@driverGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-6 ">
-                    <canvas id="myChartNew"></canvas>
+                    <canvas id="myChart1" style="height: 50%"></canvas>
+
                 </div>
             </div>
         </div>
@@ -134,7 +146,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     @{
-        var test = restaurntGroups
+        var rest = restaurntGroups
         .GroupBy(x => x.RestaurantName)
         .Select(x => new
         {
@@ -142,25 +154,26 @@
             YValues = x.Sum(x => x.DeliveryPrice)
         }).ToList();
 
-        var xLabels = test.Select(x => x.XLabels).ToList();
-        var yValues = test.Select(x => x.YValues).ToList();
+        var xLabels = rest.Select(x => x.XLabels).ToList();
+        var yValues = rest.Select(x => x.YValues).ToList();
 
         var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
         var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
     }
+    var barColors = ["red", "green","blue","orange","brown"];
 
     const data = {
       labels: @Html.Raw(XLabels),
       datasets: [{
         label: 'Оборот по ресторанти',
-        backgroundColor: 'rgb(255, 99, 132)',
+        backgroundColor: barColors,
         borderColor: 'rgb(255, 99, 132)',
         data: @Html.Raw(YValues),
       }]
     };
 
     const config = {
-      type: 'line',
+      type: 'bar',
       data: data,
       options: {}
     };
@@ -174,44 +187,45 @@
 </script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     @{
-var restoraunt = Model
-            .GroupBy(x => new { x.RestaurantName, x.LastStatusTime })
-            .Select(x => new
-            {
-                Date = x.Key.LastStatusTime.ToString("dd-MM-yyyy"),
-                RestaurantName = x.Key.RestaurantName,
-                DeliveryPrice = x.Sum(x => x.DeliveryPrice),
-                Price = x.Sum(x => x.Price)
-            })
-            .OrderBy(x => x.RestaurantName)
-            .ToList();
+        var driver = driverGroups
+        .GroupBy(x => x.DriverName)
+        .Select(x => new
+        {
+            XLabels = x.Key,
+            YValues = x.Sum(x => x.DeliveryPrice)
+        }).ToList();
 
-        var XValues = restoraunt.Select(x => x.Date).ToHashSet();
-        var WValues = restoraunt.Select(x => x.RestaurantName).ToHashSet();
-        var ZValues = restoraunt.Select(x => x.Price);
+        var driver_xLabels = driver.Select(x => x.XLabels).ToList();
+        var driver_yValues = driver.Select(x => x.YValues).ToList();
 
-        var xValues = Newtonsoft.Json.JsonConvert.SerializeObject(XValues);
-        var zValues = Newtonsoft.Json.JsonConvert.SerializeObject(ZValues);
+        var driver_XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(driver_xLabels);
+        var driver_YValues = Newtonsoft.Json.JsonConvert.SerializeObject(driver_yValues);
     }
+    var barColors1 = ["green","blue","orange","brown", "red"];
 
-    new Chart("myChartNew", {
-      type: "line",
-      data: {
-        labels: @Html.Raw(xValues),
-        datasets: [{
-          data: @Html.Raw(zValues),
-          borderColor: "red",
-          fill: false
-        }, {
-          data: [28.4,32.5],
-          borderColor: "blue",
-          fill: false
-        }]
-      },
-      options: {
-        legend: {display: false}
-      }
-    });
+    const data1 = {
+      labels: @Html.Raw(driver_XLabels),
+      datasets: [{
+        label: 'Оборот по шофьори',
+        backgroundColor: barColors1,
+        borderColor: 'rgb(125, 199, 132)',
+        data: @Html.Raw(driver_YValues),
+      }]
+    };
+
+    const config1 = {
+      type: 'bar',
+      data: data1,
+      options: {}
+    };
+</script>
+
+<script>
+    const myChart1 = new Chart(
+      document.getElementById('myChart1'),
+      config1
+    );
 </script>
