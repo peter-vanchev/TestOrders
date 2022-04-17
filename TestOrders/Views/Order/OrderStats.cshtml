@@ -19,147 +19,208 @@
         to = @Model.Max(x => x.LastStatusTime).ToString("yyyy-MM-dd");
     }
 }
-
-<div class="card">
-    <div class="card-header">
-        <form asp-action="OrderStats" method="get" class="form pd-0">
-            <div class="row">
-                <div class="col-xl-2">
-                    <p>От: <input type="date" name="From" value="@from" /></p>
-                </div>
-
-                <div class="col-xl-2">
-                    <p>До: <input type="date" name="To" value="@to" /></p>
-                </div>
-                <div class="col-xl-2">
-                    <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
-                </div>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <form asp-action="OrderStats" method="get" class="form pd-0">
+                    <div class="row">
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-3">
+                                <i class="fas fa-square text-primary"></i> От: <input type="date" name="From" value="@from" />
+                            </span>
+                            <span class="mr-3">
+                                <i class="fas fa-square text-gray"></i> До: <input type="date" name="To" value="@to" />
+                            </span>
+                            <span class="mr-3">
+                                <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
+                            </span>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
+</div>
 
-    <div class="card-body">
-        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-            <div class="row">
 
-                <div class="col-lg-6">
-                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
-                        <thead>
-                            <tr>
-                                <th>Ресторант</th>
-                                <th>Цена</th>
-                                <th>Доставка</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="position-relative mb-4">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class="">
+                                    </div>
+                                </div>
+                            </div>
+                            <canvas id="myChart" height="200" width="618" style="display: block; width: 618px; height: 200px;" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-danger"></i> Пицария "Топла Пица"
+                            </span>
+                            <span>
+                                <i class="fas fa-square text-success" "></i> Севън Секъндс
+                            </span>
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> Строежа
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-body table-responsive p-0">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                            <thead>
+                                <tr>
+                                    <th>Ресторант</th>
+                                    <th>Цена</th>
+                                    <th>Доставка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
                                 var restaurntGroups = Model
                                 .GroupBy(x => new { x.RestaurantName })
                                 .Select(x => new
                                 {
-                                    RestaurantName = x.Key.RestaurantName,
-                                    DeliveryPrice = x.Sum(x => x.DeliveryPrice),
-                                    Price = x.Sum(x => x.Price)
+                                RestaurantName = x.Key.RestaurantName,
+                                DeliveryPrice = x.Sum(x => x.DeliveryPrice),
+                                Price = x.Sum(x => x.Price)
                                 })
                                 .OrderBy(x => x.RestaurantName)
                                 .ToList();
-                            }
-                            @foreach (var order in restaurntGroups)
-                            {
+                                }
+
+                                @foreach (var order in restaurntGroups)
+                                {
                                 <tr class="odd">
                                     <td>@order.RestaurantName</td>
                                     <td>@order.Price.ToString("F2") лв.</td>
                                     <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                 </tr>
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>
-                                    @restaurntGroups.Sum(x => x.Price).ToString("F2") лв.
-                                </th>
-                                <th>@restaurntGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        @restaurntGroups.Sum(x => x.Price).ToString("F2") лв.
+                                    </th>
+                                    <th>@restaurntGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
 
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-lg-6 ">
-                    <div>
-                        <canvas id="myChart" style="height: 50%"></canvas>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
+
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
-                        <thead>
-                            <tr>
-                                <th>Шофьор</th>
-                                <th>Цена</th>
-                                <th>Доставка</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
+
+            <div class="col-lg-6">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="position-relative mb-4">
+                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                            <canvas id="myChart1" height="200" style="display: block; width: 618px; height: 200px;" width="618" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> This year
+                            </span>
+                            <span>
+                                <i class="fas fa-square text-gray"></i> Last year
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-body table-responsive p-0">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                            <thead>
+                                <tr>
+                                    <th>Шофьор</th>
+                                    <th>Цена</th>
+                                    <th>Доставка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
                                 var driverGroups = Model
                                 .GroupBy(x => new { x.DriverName })
                                 .Select(x => new
                                 {
-                                    DriverName = x.Key.DriverName,
-                                    DeliveryPrice = x.Sum(x => x.DeliveryPrice),
-                                    Price = x.Sum(x => x.Price)
+                                DriverName = x.Key.DriverName,
+                                DeliveryPrice = x.Sum(x => x.DeliveryPrice),
+                                Price = x.Sum(x => x.Price)
                                 })
                                 .OrderBy(x => x.DriverName)
                                 .ToList();
-                            }
-                            @foreach (var order in driverGroups)
-                            {
+                                }
+                                @foreach (var order in driverGroups)
+                                {
                                 <tr class="odd">
                                     <td>@order.DriverName</td>
                                     <td>@order.Price.ToString("F2") лв.</td>
                                     <td>@order.DeliveryPrice.ToString("F2") лв.</td>
                                 </tr>
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>@driverGroups.Sum(x => x.Price).ToString("F2") лв.</th>
-                                <th>@driverGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-lg-6 ">
-                    <canvas id="myChart1" style="height: 50%"></canvas>
-
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>@driverGroups.Sum(x => x.Price).ToString("F2") лв.</th>
+                                    <th>@driverGroups.Sum(x => x.DeliveryPrice).ToString("F2") лв.</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 
 </div>
 
 
+
+
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    @{
-        var rest = restaurntGroups
-        .GroupBy(x => x.RestaurantName)
-        .Select(x => new
-        {
-            XLabels = x.Key,
-            YValues = x.Sum(x => x.DeliveryPrice)
-        }).ToList();
+                                        @{
+                                            var rest = restaurntGroups
+                                            .GroupBy(x => x.RestaurantName)
+                                            .Select(x => new
+                                            {
+                                                XLabels = x.Key,
+                                                YValues = x.Sum(x => x.DeliveryPrice)
+                                            }).ToList();
 
-        var xLabels = rest.Select(x => x.XLabels).ToList();
-        var yValues = rest.Select(x => x.YValues).ToList();
+                                            var xLabels = rest.Select(x => x.XLabels).ToList();
+                                            var yValues = rest.Select(x => x.YValues).ToList();
 
-        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
-        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
-    }
+                                            var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
+                                            var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
+                                        }
     var barColors = ["red", "green","blue","orange","brown"];
 
     const data = {
@@ -189,21 +250,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    @{
-        var driver = driverGroups
-        .GroupBy(x => x.DriverName)
-        .Select(x => new
-        {
-            XLabels = x.Key,
-            YValues = x.Sum(x => x.DeliveryPrice)
-        }).ToList();
+                                        @{
+                                            var driver = driverGroups
+                                            .GroupBy(x => x.DriverName)
+                                            .Select(x => new
+                                            {
+                                                XLabels = x.Key,
+                                                YValues = x.Sum(x => x.DeliveryPrice)
+                                            }).ToList();
 
-        var driver_xLabels = driver.Select(x => x.XLabels).ToList();
-        var driver_yValues = driver.Select(x => x.YValues).ToList();
+                                            var driver_xLabels = driver.Select(x => x.XLabels).ToList();
+                                            var driver_yValues = driver.Select(x => x.YValues).ToList();
 
-        var driver_XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(driver_xLabels);
-        var driver_YValues = Newtonsoft.Json.JsonConvert.SerializeObject(driver_yValues);
-    }
+                                            var driver_XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(driver_xLabels);
+                                            var driver_YValues = Newtonsoft.Json.JsonConvert.SerializeObject(driver_yValues);
+                                        }
     var barColors1 = ["green","blue","orange","brown", "red"];
 
     const data1 = {

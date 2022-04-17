@@ -184,7 +184,9 @@ namespace TestOrders.Controllers
 
             var orders = await orderService.GetAll(userId, DateTime.Parse(from), DateTime.Parse(to));
 
-            var orderStats = JsonConvert.DeserializeObject<IEnumerable<OrderStatsViewModel>>(JsonConvert.SerializeObject(orders));
+            var orderStats = JsonConvert.DeserializeObject<IEnumerable<OrderStatsViewModel>>(JsonConvert.SerializeObject(
+                orders
+                .Where(s => s.Status == Status.Доставена)));
 
             return View(orderStats);
         }

@@ -23,15 +23,16 @@
     <div class="card-header">
         <form asp-action="All" method="get" class="form pd-0">
             <div class="row">
-                <div class="col-xl-2">
-                    <p>От: <input type="date" name="From" value="@from" /></p>
-                </div>
-
-                <div class="col-xl-2">
-                    <p>До: <input type="date" name="To" value="@to" /></p>
-                </div>
-                <div class="col-xl-2">
-                    <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
+                <div class="d-flex flex-row justify-content-end">
+                    <span class="mr-3">
+                        <i class="fas fa-square text-primary"></i> От: <input type="date" name="From" value="@from" />
+                    </span>
+                    <span class="mr-3">
+                        <i class="fas fa-square text-gray"></i> До: <input type="date" name="To" value="@to" />
+                    </span>
+                    <span class="mr-3">
+                        <input type="submit" value="Search" class="btn btn-block btn-outline-dark btn-sm" />
+                    </span>
                 </div>
             </div>
         </form>
@@ -79,7 +80,7 @@
                                     <td class="table-web">
                                         <span class="badge badge-pill" id="@order.Status">@order.Status</span>
                                     </td>
-                                    <td>
+                                    <td class="mr-3">
                                         @if (User.IsInRole("Admin") && (@order.Status == Status.Приета || @order.Status == Status.ОтказанаШофьор))
                                         {
                                             <div class="btn-group">
@@ -115,7 +116,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <!-- jQuery -->

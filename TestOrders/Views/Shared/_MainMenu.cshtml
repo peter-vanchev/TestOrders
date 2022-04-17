@@ -1,38 +1,117 @@
-﻿<nav class="mt-2">
-<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-    <!-- Add icons to the links using the .nav-icon class
-        with font-awesome or any other icon font library -->
-    <li class="nav-item menu-open">
-    <a href="#" class="nav-link active">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>
-        Starter Pages
-        <i class="right fas fa-angle-left"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
+﻿@using Orders.Infrastructure.Data.Models
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-dragon"></i>
+                    <p>
+                        Users
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-controller="Admin" asp-action="Role">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Role Manager</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Admin" asp-action="UserRole">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>User Roles</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Ресторанти
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Restaurant" asp-action="Create">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Създай</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Restaurant" asp-action="All">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Всички</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-car"></i>
+                    <p>
+                        Шофьори
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Driver" asp-action="Create">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Създай</p>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Driver" asp-action="All">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Всички</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
         <li class="nav-item">
-        <a href="#" class="nav-link active">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Active Page</p>
-        </a>
-        </li>
-        <li class="nav-item">
-        <a href="#" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Inactive Page</p>
-        </a>
+            <a href="#" class="nav-link">
+                <i class="nav-icon far fa-plus-square"></i>
+                <p>
+                    Поръчки
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Order" asp-action="All">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Всички</p>
+                    </a>
+                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Restaurant"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Order" asp-action="Create">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Създай</p>
+                        </a>
+                    </li>
+                }
+            </ul>
         </li>
     </ul>
-    </li>
-    <li class="nav-item">
-    <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-th"></i>
-        <p>
-        Simple Link
-        <span class="right badge badge-danger">New</span>
-        </p>
-    </a>
-    </li>
-</ul>
 </nav>
