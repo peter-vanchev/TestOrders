@@ -206,21 +206,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-                                        @{
-                                            var rest = restaurntGroups
-                                            .GroupBy(x => x.RestaurantName)
-                                            .Select(x => new
-                                            {
-                                                XLabels = x.Key,
-                                                YValues = x.Sum(x => x.DeliveryPrice)
-                                            }).ToList();
+    @{
+        var rest = restaurntGroups
+        .GroupBy(x => x.RestaurantName)
+        .Select(x => new
+        {
+            XLabels = x.Key,
+            YValues = x.Sum(x => x.DeliveryPrice)
+        }).ToList();
 
-                                            var xLabels = rest.Select(x => x.XLabels).ToList();
-                                            var yValues = rest.Select(x => x.YValues).ToList();
+        var xLabels = rest.Select(x => x.XLabels).ToList();
+        var yValues = rest.Select(x => x.YValues).ToList();
 
-                                            var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
-                                            var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
-                                        }
+        var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(xLabels);
+        var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(yValues);
+    }
     var barColors = ["red", "green","blue","orange","brown"];
 
     const data = {
@@ -250,21 +250,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-                                        @{
-                                            var driver = driverGroups
-                                            .GroupBy(x => x.DriverName)
-                                            .Select(x => new
-                                            {
-                                                XLabels = x.Key,
-                                                YValues = x.Sum(x => x.DeliveryPrice)
-                                            }).ToList();
+    @{
+        var driver = driverGroups
+        .GroupBy(x => x.DriverName)
+        .Select(x => new
+        {
+            XLabels = x.Key,
+            YValues = x.Sum(x => x.DeliveryPrice)
+        }).ToList();
 
-                                            var driver_xLabels = driver.Select(x => x.XLabels).ToList();
-                                            var driver_yValues = driver.Select(x => x.YValues).ToList();
+        var driver_xLabels = driver.Select(x => x.XLabels).ToList();
+        var driver_yValues = driver.Select(x => x.YValues).ToList();
 
-                                            var driver_XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(driver_xLabels);
-                                            var driver_YValues = Newtonsoft.Json.JsonConvert.SerializeObject(driver_yValues);
-                                        }
+        var driver_XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(driver_xLabels);
+        var driver_YValues = Newtonsoft.Json.JsonConvert.SerializeObject(driver_yValues);
+    }
     var barColors1 = ["green","blue","orange","brown", "red"];
 
     const data1 = {
